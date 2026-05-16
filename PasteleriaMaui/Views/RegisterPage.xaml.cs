@@ -21,6 +21,20 @@ namespace PasteleriaMaui.Views
                 return;
             }
 
+            var emailRegex = new System.Text.RegularExpressions.Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+            var passRegex = new System.Text.RegularExpressions.Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
+            
+            if (!emailRegex.IsMatch(EmailEntry.Text))
+            {
+                await DisplayAlert("Error", "Formato de correo inválido", "OK");
+                return;
+            }
+            if (!passRegex.IsMatch(PasswordEntry.Text))
+            {
+                await DisplayAlert("Error", "La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial", "OK");
+                return;
+            }
+
             var nuevoUsuario = new Usuario
             {
                 Nombre = NombreEntry.Text,
@@ -44,6 +58,15 @@ namespace PasteleriaMaui.Views
         private void OnBackClicked(object sender, EventArgs e)
         {
             Application.Current.MainPage = new LoginPage();
+        }
+
+        private void OnTogglePasswordVisibilityClicked(object sender, EventArgs e)
+        {
+            PasswordEntry.IsPassword = !PasswordEntry.IsPassword;
+            if (sender is Button button)
+            {
+                button.Text = PasswordEntry.IsPassword ? "◉" : "◠";
+            }
         }
     }
 }

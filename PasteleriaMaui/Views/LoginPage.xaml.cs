@@ -39,5 +39,14 @@ namespace PasteleriaMaui.Views
         {
             Application.Current.MainPage = new RegisterPage();
         }
+
+        private void OnTogglePasswordVisibilityClicked(object sender, EventArgs e)
+        {
+            PasswordEntry.IsPassword = !PasswordEntry.IsPassword;
+            if (sender is Button button)
+            {
+                button.Text = PasswordEntry.IsPassword ? "◉" : "◠";
+            }
+        }
     }
 }

@@ -26,11 +26,22 @@
                BackgroundColor="#FFF8DC" 
                TextColor="Black" />
 
-        <Entry x:Name="PasswordEntry" 
-               Placeholder="Contraseña" 
-               IsPassword="True" 
-               BackgroundColor="#FFF8DC" 
-               TextColor="Black" />
+        <Grid>
+            <Entry x:Name="PasswordEntry" 
+                   Placeholder="Contraseña" 
+                   IsPassword="True" 
+                   BackgroundColor="#FFF8DC" 
+                   TextColor="Black" />
+            <Button Text="◉" 
+                    BackgroundColor="Transparent"
+                    TextColor="#5C4033"
+                    FontSize="18"
+                    HorizontalOptions="End" 
+                    VerticalOptions="Center" 
+                    Clicked="OnTogglePasswordVisibilityClicked" 
+                    WidthRequest="50" 
+                    HeightRequest="45" />
+        </Grid>
 
         <Button Text="Iniciar Sesión" 
                 HeightRequest="50" 

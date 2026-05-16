@@ -18,7 +18,10 @@ namespace PasteleriaMaui.Services
         public async Task<Usuario> LoginAsync(string email, string password)
         {
             var credenciales = new Usuario { Email = email, Password = password };
-            var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}/login", credenciales);
+            var json = System.Text.Json.JsonSerializer.Serialize(credenciales);
+            var payload = new PasteleriaMaui.Helpers.EncryptedPayload { Data = PasteleriaMaui.Helpers.CryptoHelper.Encrypt(json) };
+
+            var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}/login", payload);
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadFromJsonAsync<Usuario>();
@@ -28,7 +31,10 @@ namespace PasteleriaMaui.Services
 
         public async Task<Usuario> RegisterAsync(Usuario nuevoUsuario)
         {
-            var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}/register", nuevoUsuario);
+            var json = System.Text.Json.JsonSerializer.Serialize(nuevoUsuario);
+            var payload = new PasteleriaMaui.Helpers.EncryptedPayload { Data = PasteleriaMaui.Helpers.CryptoHelper.Encrypt(json) };
+
+            var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}/register", payload);
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadFromJsonAsync<Usuario>();

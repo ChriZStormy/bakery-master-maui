@@ -50,13 +50,22 @@ namespace PasteleriaAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> ActualizarPedido(int id, [FromBody] PedidoUpdateDto pedidoActualizado)
+        public async Task<IActionResult> ActualizarPedido(int id, [FromBody] PedidoUpdateDto pedidoActualizado, [FromServices] PasteleriaAPI.Services.IEmailService emailService)
         {
-            var pedido = await _context.Pedidos.FindAsync(id);
+            var pedido = await _context.Pedidos.Include(p => p.Usuario).FirstOrDefaultAsync(p => p.Id == id);
             if (pedido == null) return NotFound();
 
             pedido.Estatus = pedidoActualizado.Estatus;
             await _context.SaveChangesAsync();
+
+            // Trigger Email Notification
+            if (pedido.Usuario != null && !string.IsNullOrWhiteSpace(pedido.Usuario.Email))
+            {
+                var subject = $"Actualización de Estatus - Pedido #{pedido.Id}";
+                var body = $"Hola {pedido.Usuario.Nombre},\n\nTu pedido con el Folio #{pedido.Id} ha cambiado su estatus a: {pedido.Estatus}.\n\nSaludos,\nPasteleria App";
+                await emailService.SendEmailAsync(pedido.Usuario.Email, subject, body);
+            }
+
             return NoContent();
         }
     }
