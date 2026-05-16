@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="PasteleriaAPI/PasteleriaAPI.csproj" />
+  <Project Path="PasteleriaMaui/PasteleriaMaui.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
+</Solution>

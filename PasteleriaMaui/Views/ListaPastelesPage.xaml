@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PasteleriaMaui.Views.ListaPastelesPage"
+             Title="Lista de Pasteles">
+
+	<ContentPage.Background>
+		<SolidColorBrush Color="#F5F7FA" />
+	</ContentPage.Background>
+
+	<Grid RowDefinitions="Auto, *, Auto">
+		<VerticalStackLayout Padding="20" Spacing="15" Grid.Row="0">
+			<SearchBar Placeholder="Buscar pastel..." 
+                       CancelButtonColor="Red" 
+                       BackgroundColor="#FFF8DC"/>
+		</VerticalStackLayout>
+
+		<CollectionView ItemsSource="{Binding Pasteles}" Grid.Row="1" Margin="20,0,20,0">
+			<CollectionView.ItemTemplate>
+				<DataTemplate>
+					<Border StrokeShape="RoundRectangle 12" 
+                            Stroke="Transparent" 
+                            BackgroundColor="#FFF8DC" 
+                            Padding="15"
+                            Margin="0,0,0,15"
+                            Shadow="{Shadow Brush=Black, Offset='0,3', Opacity=0.1, Radius=4}">
+						<Grid ColumnDefinitions="*, Auto" VerticalOptions="Center">
+							<VerticalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="5">
+								<Label Text="{Binding Nombre, StringFormat='Pastel: {0}'}" 
+                                       FontSize="18" 
+                                       FontAttributes="Bold"
+                                       TextColor="#5C4033" />
+								<Label Text="{Binding Tamanio, StringFormat='Tamaño: {0}'}" 
+                                       FontSize="14" 
+                                       TextColor="#3E2723" />
+								<Label Text="{Binding Bizcocho.Nombre, StringFormat='Bizcocho: {0}'}" 
+                                       FontSize="14" 
+                                       TextColor="#666666" />
+								<Label Text="{Binding Relleno.Nombre, StringFormat='Relleno: {0}'}" 
+                                       FontSize="14" 
+                                       TextColor="#666666" />
+							</VerticalStackLayout>
+
+							<Button Grid.Column="1" 
+                                    Text="Ver / Pedir ya" 
+                                    HeightRequest="40" 
+                                    Padding="15,0" 
+                                    BackgroundColor="#8B4513" 
+                                    TextColor="#FFF8DC"
+                                    FontAttributes="Bold"
+                                    CornerRadius="20"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.VerDetalleCommand}"
+                                    CommandParameter="{Binding .}" />
+						</Grid>
+					</Border>
+				</DataTemplate>
+			</CollectionView.ItemTemplate>
+		</CollectionView>
+
+		<Button Grid.Row="2" 
+                x:Name="BtnRegistrarPastel"
+                Text="+ Registrar Nuevo Pastel" 
+                Command="{Binding RegistrarNuevoCommand}"
+                IsVisible="{Binding IsAdmin}"
+                Margin="20"
+                HeightRequest="55"
+                CornerRadius="27"
+                BackgroundColor="#5C4033"
+                TextColor="#FFF8DC"
+                FontAttributes="Bold"
+                FontSize="16"
+                Shadow="{Shadow Brush=Black, Offset='0,5', Opacity=0.3, Radius=5}" />
+	</Grid>
+
+</ContentPage>

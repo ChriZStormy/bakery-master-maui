@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PasteleriaMaui.Views.PedidoPersonalizadoPage"
+             Title="Arma tu Pastel">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="20">
+            <Label Text="Crea tu Pastel Personalizado" FontSize="24" FontAttributes="Bold" TextColor="#5C4033" HorizontalOptions="Center" Margin="0,0,0,10"/>
+
+            <Label Text="Nombre de tu creación:" FontAttributes="Bold" />
+            <Entry Placeholder="Ponle un nombre a tu pastel" Text="{Binding Nombre}" />
+
+            <Label Text="Tamaño:" FontAttributes="Bold" />
+            <Picker Title="Selecciona el tamaño" SelectedItem="{Binding Tamanio}">
+                <Picker.Items>
+                    <x:String>Chico</x:String>
+                    <x:String>Mediano</x:String>
+                    <x:String>Grande</x:String>
+                    <x:String>Extra Grande</x:String>
+                </Picker.Items>
+            </Picker>
+
+            <Label Text="Bizcocho:" FontAttributes="Bold" />
+            <Picker Title="Selecciona el bizcocho" ItemsSource="{Binding Bizcochos}" ItemDisplayBinding="{Binding Nombre}" SelectedItem="{Binding BizcochoSeleccionado}" />
+
+            <Label Text="Relleno:" FontAttributes="Bold" />
+            <Picker Title="Selecciona el relleno" ItemsSource="{Binding Rellenos}" ItemDisplayBinding="{Binding Nombre}" SelectedItem="{Binding RellenoSeleccionado}" />
+
+            <Label Text="Glaseado:" FontAttributes="Bold" />
+            <Picker Title="Selecciona el glaseado" ItemsSource="{Binding Glaseados}" ItemDisplayBinding="{Binding Nombre}" SelectedItem="{Binding GlaseadoSeleccionado}" />
+
+            <Label Text="Categoría:" FontAttributes="Bold" />
+            <Picker Title="Selecciona la categoría" ItemsSource="{Binding Categorias}" ItemDisplayBinding="{Binding categoria}" SelectedItem="{Binding CategoriaSeleccionada}" />
+
+            <Label Text="Foto del diseño (URL):" FontAttributes="Bold" />
+            <Entry Placeholder="http://ejemplo.com/foto.jpg" Text="{Binding FotoUrl}" />
+
+            <Label Text="Fecha deseada de entrega:" FontAttributes="Bold" />
+            <DatePicker MinimumDate="{Binding FechaMinima}" Date="{Binding FechaEntrega}" />
+
+            <Label Text="Cantidad de pasteles:" FontAttributes="Bold" />
+            <Entry Keyboard="Numeric" Placeholder="1" Text="{Binding Cantidad}" />
+
+            <Button Text="Realizar Pedido" BackgroundColor="#8B4513" TextColor="#FFF8DC" FontAttributes="Bold" CornerRadius="8" HeightRequest="50" Margin="0,20,0,0" Command="{Binding GuardarPedidoCommand}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

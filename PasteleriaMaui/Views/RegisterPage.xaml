@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PasteleriaMaui.Views.RegisterPage"
+             Title="Registro">
+
+    <ContentPage.Background>
+        <LinearGradientBrush EndPoint="0,1">
+            <GradientStop Color="#5C4033" Offset="0.0" />
+            <GradientStop Color="#8B4513" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <VerticalStackLayout Padding="30" Spacing="20" VerticalOptions="Center">
+
+        <Label Text="Crear Cuenta" 
+               FontSize="32" 
+               FontAttributes="Bold" 
+               TextColor="#FFF8DC" 
+               HorizontalOptions="Center" 
+               Margin="0,0,0,30" />
+
+        <Entry x:Name="NombreEntry" Placeholder="Nombre completo" BackgroundColor="#FFF8DC" TextColor="Black" />
+        <Entry x:Name="EmailEntry" Placeholder="Correo Electrónico" Keyboard="Email" BackgroundColor="#FFF8DC" TextColor="Black" />
+        <Entry x:Name="PasswordEntry" Placeholder="Contraseña" IsPassword="True" BackgroundColor="#FFF8DC" TextColor="Black" />
+
+        <Picker x:Name="RolPicker" Title="Selecciona tu Rol" BackgroundColor="#FFF8DC" TextColor="Black">
+            <Picker.Items>
+                <x:String>Cliente</x:String>
+                <x:String>Admin</x:String>
+            </Picker.Items>
+        </Picker>
+
+        <Button Text="Registrarse" 
+                HeightRequest="50" 
+                FontSize="18"
+                FontAttributes="Bold"
+                CornerRadius="25"
+                BackgroundColor="#FFF8DC"
+                TextColor="#5C4033"
+                Clicked="OnRegisterClicked" />
+
+        <Button Text="Ya tengo cuenta (Volver)" 
+                BackgroundColor="Transparent" 
+                TextColor="#FFF8DC" 
+                Clicked="OnBackClicked" />
+
+    </VerticalStackLayout>
+</ContentPage>

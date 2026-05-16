@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PasteleriaMaui.Views.DetallePedidoPage"
+             Title="Detalle del Pedido">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="20">
+            <Border StrokeShape="RoundRectangle 12" Stroke="#D2B48C" BackgroundColor="#FFF8DC" Padding="20">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Información del Pedido" FontSize="22" FontAttributes="Bold" TextColor="#5C4033" Margin="0,0,0,10" />
+                    
+                    <Label Text="{Binding Pedido.Id, StringFormat='Folio: #{0}'}" FontSize="16" FontAttributes="Bold" TextColor="#3E2723" />
+                    <Label Text="{Binding Pedido.Fecha, StringFormat='Fecha de creación: {0:dd/MM/yyyy HH:mm}'}" FontSize="16" TextColor="#4E342E" />
+                    <Label Text="{Binding Pedido.FechaEntrega, StringFormat='Fecha de entrega: {0:dd/MM/yyyy}'}" FontSize="16" FontAttributes="Bold" TextColor="#5C4033" />
+                    <Label Text="{Binding Pedido.Estatus, StringFormat='Estatus Actual: {0}'}" FontSize="16" FontAttributes="Bold" TextColor="#E65100" />
+                    <Label Text="{Binding Pedido.Cantidad, StringFormat='Cantidad Solicitada: {0} unidad(es)'}" FontSize="16" TextColor="#4E342E" />
+                    
+                    <BoxView HeightRequest="1" Color="#EEEEEE" Margin="0,10" />
+                    
+                    <Label Text="Detalles del Producto" FontSize="18" FontAttributes="Bold" TextColor="#5C4033" Margin="0,0,0,5" />
+                    <Label Text="{Binding Pedido.Pastel.Nombre, StringFormat='Pastel: {0}'}" FontSize="16" FontAttributes="Bold" TextColor="#3E2723" />
+                    <Label Text="{Binding Pedido.Pastel.Tamanio, StringFormat='Tamaño: {0}'}" FontSize="16" TextColor="#4E342E" />
+                    <Label Text="{Binding Pedido.Pastel.Bizcocho.Nombre, StringFormat='Bizcocho: {0}'}" FontSize="16" TextColor="#4E342E" />
+                    <Label Text="{Binding Pedido.Pastel.Relleno.Nombre, StringFormat='Relleno: {0}'}" FontSize="16" TextColor="#4E342E" />
+                    <Label Text="{Binding Pedido.Pastel.Glaseado.Nombre, StringFormat='Glaseado: {0}'}" FontSize="16" TextColor="#4E342E" />
+                    <Label Text="{Binding Pedido.Pastel.Categoria.categoria, StringFormat='Categoría: {0}'}" FontSize="16" TextColor="#4E342E" />
+                    
+                    <BoxView HeightRequest="1" Color="#EEEEEE" Margin="0,10" />
+                    
+                    <Label Text="Información del Cliente" FontSize="18" FontAttributes="Bold" TextColor="#5C4033" Margin="0,0,0,5" />
+                    <Label Text="{Binding Pedido.Usuario.Nombre, StringFormat='Nombre: {0}'}" FontSize="16" TextColor="#3E2723" />
+                    <Label Text="{Binding Pedido.Usuario.Email, StringFormat='Correo: {0}'}" FontSize="16" TextColor="#4E342E" />
+                </VerticalStackLayout>
+            </Border>
+
+            <VerticalStackLayout IsVisible="{Binding IsAdmin}" Spacing="10">
+                <Label Text="Actualizar Estatus (Solo Admin)" FontSize="16" FontAttributes="Bold" TextColor="#3E2723"/>
+                <Picker x:Name="PickerEstatus" SelectedItem="{Binding NuevoEstatus}">
+                    <Picker.Items>
+                        <x:String>Pendiente</x:String>
+                        <x:String>En Proceso</x:String>
+                        <x:String>Entregado</x:String>
+                        <x:String>Cancelado</x:String>
+                    </Picker.Items>
+                </Picker>
+                <Button Text="Guardar Estatus" Command="{Binding ActualizarEstatusCommand}" BackgroundColor="#8B4513" TextColor="#FFF8DC" CornerRadius="8" HeightRequest="45" />
+            </VerticalStackLayout>
+            
+            <Button Text="Volver" Command="{Binding VolverCommand}" BackgroundColor="#8B4513" TextColor="#FFF8DC" CornerRadius="8" HeightRequest="50" FontSize="18" FontAttributes="Bold" />
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

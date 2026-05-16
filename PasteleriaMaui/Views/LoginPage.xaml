@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PasteleriaMaui.Views.LoginPage"
+             Title="Iniciar Sesión">
+
+    <ContentPage.Background>
+        <LinearGradientBrush EndPoint="0,1">
+            <GradientStop Color="#5C4033" Offset="0.0" />
+            <GradientStop Color="#8B4513" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <VerticalStackLayout Padding="30" Spacing="25" VerticalOptions="Center">
+
+        <Label Text="Bienvenido a la Pastelería" 
+               FontSize="32" 
+               FontAttributes="Bold" 
+               TextColor="#FFF8DC" 
+               HorizontalOptions="Center" 
+               Margin="0,0,0,40" />
+
+        <Entry x:Name="EmailEntry" 
+               Placeholder="Correo Electrónico" 
+               Keyboard="Email" 
+               BackgroundColor="#FFF8DC" 
+               TextColor="Black" />
+
+        <Entry x:Name="PasswordEntry" 
+               Placeholder="Contraseña" 
+               IsPassword="True" 
+               BackgroundColor="#FFF8DC" 
+               TextColor="Black" />
+
+        <Button Text="Iniciar Sesión" 
+                HeightRequest="50" 
+                FontSize="18"
+                FontAttributes="Bold"
+                CornerRadius="25"
+                BackgroundColor="#FFF8DC"
+                TextColor="#5C4033"
+                Clicked="OnLoginClicked" />
+
+        <Button Text="¿No tienes cuenta? Regístrate" 
+                BackgroundColor="Transparent" 
+                TextColor="#FFF8DC" 
+                Clicked="OnRegisterClicked" />
+
+    </VerticalStackLayout>
+</ContentPage>

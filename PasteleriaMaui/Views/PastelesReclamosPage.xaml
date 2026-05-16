@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PasteleriaMaui.Views.PastelesReclamosPage"
+             Title="Pasteles con Reclamos">
+
+	<ScrollView>
+		<VerticalStackLayout Padding="20" Spacing="15">
+
+			<Frame CornerRadius="8" Padding="15" BorderColor="#f8d7da" BackgroundColor="#f8d7da" HasShadow="False">
+				<VerticalStackLayout Spacing="5">
+					<Label Text="Pastel de Chocolate" FontAttributes="Bold" FontSize="16" TextColor="#721c24"/>
+					<Label Text="3 Reclamos reportados" FontSize="14" TextColor="#721c24"/>
+				</VerticalStackLayout>
+			</Frame>
+
+			<Frame CornerRadius="8" Padding="15" BorderColor="#fff3cd" BackgroundColor="#fff3cd" HasShadow="False">
+				<VerticalStackLayout Spacing="5">
+					<Label Text="Pastel Red Velvet" FontAttributes="Bold" FontSize="16" TextColor="#856404"/>
+					<Label Text="1 Reclamo reportado" FontSize="14" TextColor="#856404"/>
+				</VerticalStackLayout>
+			</Frame>
+
+			<BoxView HeightRequest="1" Color="#CCCCCC" Margin="0,10,0,0" />
+			<BoxView HeightRequest="1" Color="#CCCCCC" Margin="0,10,0,0" />
+			<BoxView HeightRequest="1" Color="#CCCCCC" Margin="0,10,0,0" />
+			<BoxView HeightRequest="1" Color="#CCCCCC" Margin="0,10,0,0" />
+
+			<Button Text="Ver Reporte" 
+                    Margin="0,20,0,0"
+                    HeightRequest="50"
+                    CornerRadius="8"
+                    BackgroundColor="#A0522D"
+                    TextColor="#FFF8DC"
+                    FontAttributes="Bold"
+                    FontSize="18"/>
+
+		</VerticalStackLayout>
+	</ScrollView>
+
+</ContentPage>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:PasteleriaMaui.ViewModels"
+             x:Class="PasteleriaMaui.Views.RegistrarPastelPage"
+             Title="Registrar Pastel">
+
+	<ContentPage.BindingContext>
+		<viewmodels:RegistrarPastelViewModel />
+	</ContentPage.BindingContext>
+
+	<ContentPage.Background>
+		<SolidColorBrush Color="#F5F7FA" />
+	</ContentPage.Background>
+
+	<ScrollView>
+		<VerticalStackLayout Padding="30" Spacing="25">
+
+            <Label Text="Ingresar Datos" FontSize="22" FontAttributes="Bold" TextColor="#5C4033" Margin="0,0,0,10"/>
+
+			<Border StrokeShape="RoundRectangle 12" Stroke="Transparent" BackgroundColor="#FFF8DC" Padding="20" Shadow="{Shadow Brush=Black, Offset='0,3', Opacity=0.1, Radius=5}">
+				<VerticalStackLayout Spacing="15">
+					<Label Text="Nombre" FontSize="14" FontAttributes="Bold" TextColor="#4E342E" />
+					<Entry Placeholder="ej. Pastel de Chocolate" Text="{Binding Nombre}" BackgroundColor="#FAEBD7" TextColor="#3E2723" PlaceholderColor="#8B4513" />
+
+					<Label Text="Tamaño" FontSize="14" FontAttributes="Bold" TextColor="#4E342E" />
+					<Picker Title="Selecciona el tamaño" ItemsSource="{Binding TamanioList}" SelectedItem="{Binding Tamanio}" BackgroundColor="#FAEBD7" TextColor="#3E2723" TitleColor="#8B4513" />
+
+                    <Label Text="Foto (URL)" FontSize="14" FontAttributes="Bold" TextColor="#4E342E" />
+					<Entry Placeholder="ej. http://foto.com/pastel.jpg" Text="{Binding FotoUrl}" BackgroundColor="#FAEBD7" TextColor="#3E2723" PlaceholderColor="#8B4513" />
+
+					<Label Text="Categoría" FontSize="14" FontAttributes="Bold" TextColor="#4E342E" />
+					<Picker Title="Selecciona la categoría" ItemsSource="{Binding Categorias}" ItemDisplayBinding="{Binding categoria}" SelectedItem="{Binding CategoriaSeleccionada}" BackgroundColor="#FAEBD7" TextColor="#3E2723" TitleColor="#8B4513" />
+
+					<Label Text="Bizcocho" FontSize="14" FontAttributes="Bold" TextColor="#4E342E" />
+					<Picker Title="Selecciona el bizcocho" ItemsSource="{Binding Bizcochos}" ItemDisplayBinding="{Binding Nombre}" SelectedItem="{Binding BizcochoSeleccionado}" BackgroundColor="#FAEBD7" TextColor="#3E2723" TitleColor="#8B4513" />
+
+					<Label Text="Relleno" FontSize="14" FontAttributes="Bold" TextColor="#4E342E" />
+					<Picker Title="Selecciona el relleno" ItemsSource="{Binding Rellenos}" ItemDisplayBinding="{Binding Nombre}" SelectedItem="{Binding RellenoSeleccionado}" BackgroundColor="#FAEBD7" TextColor="#3E2723" TitleColor="#8B4513" />
+
+					<Label Text="Glaseado" FontSize="14" FontAttributes="Bold" TextColor="#4E342E" />
+					<Picker Title="Selecciona el glaseado" ItemsSource="{Binding Glaseados}" ItemDisplayBinding="{Binding Nombre}" SelectedItem="{Binding GlaseadoSeleccionado}" BackgroundColor="#FAEBD7" TextColor="#3E2723" TitleColor="#8B4513" />
+				</VerticalStackLayout>
+			</Border>
+
+			<Button Text="Guardar Pastel" 
+                    Command="{Binding GuardarCommand}"
+                    HeightRequest="55"
+                    CornerRadius="27"
+                    BackgroundColor="#5C4033"
+                    TextColor="#FFF8DC"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    Margin="0,15,0,0"
+                    Shadow="{Shadow Brush=Black, Offset='0,5', Opacity=0.3, Radius=5}"/>
+
+		</VerticalStackLayout>
+	</ScrollView>
+
+</ContentPage>

@@ -1,4 +1,4 @@
-# Vehículos App
+# Pasteles App
 
 [![es](https://img.shields.io/badge/lang-es-yellow.svg)](README.md)
 [![en](https://img.shields.io/badge/lang-en-red.svg)](README.en.md)
@@ -7,26 +7,26 @@
 ![.NET MAUI](https://img.shields.io/badge/.NET_MAUI-10.0-512BD4?logo=dotnet)
 ![C#](https://img.shields.io/badge/C%23-239120?logo=c-sharp)
 
-Comprehensive application for vehicle management and maintenance. The project consists of a backend developed with ASP.NET Core (Web API) and a cross-platform client developed with .NET MAUI using the MVVM pattern.
+Comprehensive application for bakery management. The project consists of a backend developed with ASP.NET Core (Web API) and a cross-platform client developed with .NET MAUI using a strict MVVM pattern.
 
 ## 🚀 Key Features
 
-*   **Vehicle Management**: Complete CRUD operations (Create, Read, Update, Delete) for the vehicle inventory.
-*   **Maintenance & Incidents**: Logging of maintenance history, reporting faults, and services performed on each vehicle.
-*   **System Catalogs**: Administration of catalogs for standardized classification.
-*   **Modern UI/UX**: Attractive and intuitive design in the client application, offering a smooth and professional user experience.
-*   **MVVM Pattern**: Clear separation of concerns in the MAUI application using Model-View-ViewModel.
+*   **Cake Management**: Complete CRUD operations (Create, Read, Update, Delete) for the cake menu, integrating real-time catalog pickers.
+*   **Orders & Statuses**: Order history logging, waste reporting, and a robust status update system utilizing DTOs to bypass deep object tree validation issues.
+*   **Dynamic System Catalogs**: Fully functional administration of catalogs (Sponges, Fillings, Frostings, Categories) with direct database operations (Add/Delete).
+*   **Modern & Responsive UI/UX**: Attractive and intuitive design in the client application, offering a smooth user experience, contrast fixes, and standardized picker components.
+*   **Decoupled MVVM Architecture**: Clear separation of concerns in the MAUI application, isolating all logic from Code-Behind into dedicated ViewModels (e.g. `DetallePedidoViewModel`).
 
 ## 🛠️ Technologies Used
 
-### Backend (`VehiculosAPI`)
+### Backend (`PasteleriaAPI`)
 *   **.NET 10.0**
 *   **ASP.NET Core Web API**
 *   **Entity Framework Core** for data access.
 *   **SQL Server** as the relational database.
 *   **OpenAPI/Swagger** for API documentation and testing.
 
-### Frontend (`VehiculosMaui`)
+### Frontend (`PasteleriaMaui`)
 *   **.NET MAUI** (.NET Multi-platform App UI) targeting .NET 10.0.
 *   **XAML** for designing user interfaces.
 *   Cross-platform support: Windows, Android, iOS, and MacCatalyst.
@@ -35,8 +35,8 @@ Comprehensive application for vehicle management and maintenance. The project co
 
 The solution contains two main projects:
 
-1.  **`VehiculosAPI`**: Backend project that exposes RESTful endpoints for business logic and data persistence.
-2.  **`VehiculosMaui`**: MAUI client project with Views, ViewModels, and presentation logic to consume the API.
+1.  **`PasteleriaAPI`**: Backend project that exposes RESTful endpoints for business logic and data persistence.
+2.  **`PasteleriaMaui`**: MAUI client project with Views, ViewModels, and presentation logic to consume the API.
 
 ## ⚙️ Setup and Execution
 
@@ -49,13 +49,13 @@ The solution contains two main projects:
 
 1.  **Clone the repository**:
     ```bash
-    git clone https://github.com/ChriZStormy/Vehiculos-App.git
-    cd VehiculosApp
+    git clone https://github.com/ChriZStormy/Pasteles-App.git
+    cd PasteleriaApp
     ```
 
-2.  **Configure the Database (`VehiculosAPI`)**:
-    *   Verify the connection string in the `appsettings.json` file of the `VehiculosAPI` project.
-    *   Open the Package Manager Console in Visual Studio, select the `VehiculosAPI` project, and run:
+2.  **Configure the Database (`PasteleriaAPI`)**:
+    *   Verify the connection string in the `appsettings.json` file of the `PasteleriaAPI` project.
+    *   Open the Package Manager Console in Visual Studio, select the `PasteleriaAPI` project, and run:
         ```powershell
         Update-Database
         ```
@@ -64,12 +64,12 @@ The solution contains two main projects:
         dotnet ef database update
         ```
 
-3.  **Configure the API URL (`VehiculosMaui`)**:
-    *   Ensure that the services in the MAUI app (e.g., `VehiculoService.cs`) point to the correct local or remote URL where `VehiculosAPI` is running (default is usually `https://localhost:port`).
+3.  **Configure the API URL (`PasteleriaMaui`)**:
+    *   Ensure that the services in the MAUI app (e.g., `PastelService.cs`) point to the correct local or remote URL where `PasteleriaAPI` is running (default is usually `https://localhost:port`).
 
 4.  **Run the Solution**:
-    *   Open `VehiculosApp.sln` in Visual Studio.
-    *   To run both projects simultaneously, you can configure Visual Studio for "Multiple startup projects" and start both (`VehiculosAPI` and `VehiculosMaui`).
+    *   Open `PasteleriaApp.sln` in Visual Studio.
+    *   To run both projects simultaneously, you can configure Visual Studio for "Multiple startup projects" and start both (`PasteleriaAPI` and `PasteleriaMaui`).
 
 ## 📝 License
 This project is distributed under the terms specified in the repository.

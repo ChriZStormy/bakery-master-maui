@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PasteleriaMaui.Views.HistorialPedidosPage"
+             Title="Mis Pedidos">
+
+    <Grid RowDefinitions="Auto, Auto, *">
+        <Grid Grid.Row="0" ColumnDefinitions="*, *" Margin="20,20,20,0" ColumnSpacing="10">
+            <Button x:Name="BtnNuevoPedido" Text="+ Realizar Pedido" BackgroundColor="#8B4513" TextColor="#FFF8DC" CornerRadius="8" HeightRequest="50" FontAttributes="Bold" Clicked="OnRealizarPedidoPersonalizadoClicked" Grid.Column="0"/>
+            <Button x:Name="BtnCalendario" Text="📅 Ver Calendario" BackgroundColor="#5C4033" TextColor="#FFF8DC" CornerRadius="8" HeightRequest="50" FontAttributes="Bold" Clicked="OnVerCalendarioClicked" Grid.Column="1" IsVisible="False"/>
+        </Grid>
+        <Label x:Name="LblLeyenda" Text="Pedidos que has realizado" FontSize="18" FontAttributes="Bold" TextColor="#3E2723" Margin="20,15,20,0" Grid.Row="1" />
+
+	    <CollectionView ItemsSource="{Binding Pedidos}" Margin="20,15,20,0" SelectionMode="Single" SelectionChanged="OnPedidoSelected" Grid.Row="2">
+		<CollectionView.ItemTemplate>
+			<DataTemplate>
+				<Border StrokeShape="RoundRectangle 8" 
+                        Stroke="#D2B48C" 
+                        BackgroundColor="#FFF8DC" 
+                        Padding="15"
+                        Margin="0,0,0,10">
+					<VerticalStackLayout>
+                        <Label Text="{Binding Pastel.Nombre, StringFormat='Pastel: {0}'}" FontSize="18" FontAttributes="Bold" TextColor="#5C4033" />
+						<Label Text="{Binding Fecha, StringFormat='Fecha: {0:dd/MM/yyyy}'}" FontSize="14" TextColor="#4E342E" />
+                        <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}" FontSize="14" TextColor="#3E2723" />
+                        <Label Text="{Binding Estatus, StringFormat='Estatus: {0}'}" FontSize="14" TextColor="#E65100" FontAttributes="Bold" />
+                        <Label Text="{Binding Usuario.Nombre, StringFormat='Cliente: {0}'}" FontSize="14" TextColor="#3E2723" />
+					</VerticalStackLayout>
+				</Border>
+			</DataTemplate>
+		</CollectionView.ItemTemplate>
+	</CollectionView>
+    </Grid>
+
+</ContentPage>

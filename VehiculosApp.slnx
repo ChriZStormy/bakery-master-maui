@@ -1,6 +1,0 @@
-<Solution>
-  <Project Path="VehiculosAPI/VehiculosAPI.csproj" />
-  <Project Path="VehiculosMaui/VehiculosMaui.csproj">
-    <Deploy Solution="Debug|*" />
-  </Project>
-</Solution>

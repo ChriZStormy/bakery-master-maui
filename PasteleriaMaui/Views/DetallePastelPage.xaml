@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PasteleriaMaui.Views.DetallePastelPage"
+             Title="Detalle del Pastel">
+
+	<ContentPage.Background>
+		<SolidColorBrush Color="#F5F7FA" />
+	</ContentPage.Background>
+
+	<ScrollView>
+		<VerticalStackLayout Padding="30" Spacing="25">
+
+			<Border StrokeShape="RoundRectangle 16" 
+                    Stroke="Transparent" 
+                    BackgroundColor="#FFF8DC" 
+                    Padding="25"
+                    Shadow="{Shadow Brush=Black, Offset='0,5', Opacity=0.1, Radius=10}">
+				<VerticalStackLayout Spacing="15">
+					<Label Text="Información del Pastel" FontSize="22" FontAttributes="Bold" TextColor="#5C4033" Margin="0,0,0,10"/>
+                    
+                    <Image Source="{Binding PastelSeleccionado.FotoUrl}" 
+                           HeightRequest="200" 
+                           Aspect="AspectFill"
+                           Margin="0,0,0,15" />
+					
+                    <Grid ColumnDefinitions="120, *" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="15">
+                        <Label Grid.Row="0" Grid.Column="0" Text="Nombre:" FontSize="16" FontAttributes="Bold" TextColor="#4E342E" />
+                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding PastelSeleccionado.Nombre}" FontSize="16" TextColor="#3E2723" />
+                        
+                        <Label Grid.Row="1" Grid.Column="0" Text="Tamaño:" FontSize="16" FontAttributes="Bold" TextColor="#4E342E" />
+                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding PastelSeleccionado.Tamanio}" FontSize="16" TextColor="#3E2723" />
+                        
+                        <Label Grid.Row="2" Grid.Column="0" Text="Bizcocho:" FontSize="16" FontAttributes="Bold" TextColor="#4E342E" />
+                        <Label Grid.Row="2" Grid.Column="1" Text="{Binding PastelSeleccionado.Bizcocho.Nombre}" FontSize="16" TextColor="#3E2723" />
+                        
+                        <Label Grid.Row="3" Grid.Column="0" Text="Relleno:" FontSize="16" FontAttributes="Bold" TextColor="#4E342E" />
+                        <Label Grid.Row="3" Grid.Column="1" Text="{Binding PastelSeleccionado.Relleno.Nombre}" FontSize="16" TextColor="#3E2723" />
+
+                        <Label Grid.Row="4" Grid.Column="0" Text="Glaseado:" FontSize="16" FontAttributes="Bold" TextColor="#4E342E" />
+                        <Label Grid.Row="4" Grid.Column="1" Text="{Binding PastelSeleccionado.Glaseado.Nombre}" FontSize="16" TextColor="#3E2723" />
+
+                        <Label Grid.Row="5" Grid.Column="0" Text="Categoría:" FontSize="16" FontAttributes="Bold" TextColor="#4E342E" />
+                        <Label Grid.Row="5" Grid.Column="1" Text="{Binding PastelSeleccionado.Categoria.categoria}" FontSize="16" TextColor="#3E2723" />
+                    </Grid>
+
+				</VerticalStackLayout>
+			</Border>
+
+			<Grid ColumnDefinitions="*, *" ColumnSpacing="15" Margin="0,20,0,0">
+				<Button Grid.Column="0" 
+                        Text="Editar" 
+                        HeightRequest="55"
+                        BackgroundColor="#8B4513" 
+                        TextColor="#FFF8DC"
+                        CornerRadius="27"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Shadow="{Shadow Brush=Black, Offset='0,3', Opacity=0.2, Radius=5}"
+                        Command="{Binding EditarCommand}"
+                        IsVisible="{Binding IsAdmin}" />
+
+				<Button Grid.Column="1" 
+                        Text="Eliminar" 
+                        HeightRequest="55"
+                        BackgroundColor="#D32F2F" 
+                        TextColor="#FFF8DC"
+                        CornerRadius="27"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Shadow="{Shadow Brush=Black, Offset='0,3', Opacity=0.2, Radius=5}"
+                        Command="{Binding EliminarCommand}"
+                        IsVisible="{Binding IsAdmin}" />
+			</Grid>
+
+            <Button Text="🍰 Realizar Pedido" 
+                    HeightRequest="60"
+                    BackgroundColor="#8B4513" 
+                    TextColor="#FFF8DC"
+                    CornerRadius="30"
+                    FontAttributes="Bold"
+                    FontSize="18"
+                    Margin="0,15,0,0"
+                    Shadow="{Shadow Brush=Black, Offset='0,4', Opacity=0.3, Radius=6}"
+                    Command="{Binding RealizarPedidoCommand}"
+                    IsVisible="{Binding IsCliente}" />
+		</VerticalStackLayout>
+	</ScrollView>
+
+</ContentPage>

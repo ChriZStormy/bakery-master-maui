@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PasteleriaMaui.Views.ReporteMermaPage"
+             Title="Reportes de Merma">
+
+	<Grid RowDefinitions="Auto, *">
+		
+        <VerticalStackLayout x:Name="FormularioMerma" Padding="30" Spacing="10" Grid.Row="0">
+            <Label Text="Crear Nuevo Reporte de Merma" FontAttributes="Bold" FontSize="18" TextColor="#5C4033" />
+            
+            <Label Text="Pastel Afectado:" FontAttributes="Bold" FontSize="14" TextColor="#3E2723" />
+            <Picker x:Name="PickerPastel" Title="Selecciona el pastel" ItemDisplayBinding="{Binding Nombre}" />
+
+			<Label Text="Fecha:" FontAttributes="Bold" FontSize="14" TextColor="#3E2723" />
+			<DatePicker x:Name="FechaMerma" Format="dd/MM/yyyy" />
+
+			<Label Text="Descripción del Problema:" FontAttributes="Bold" FontSize="14" TextColor="#3E2723" />
+			<Editor x:Name="DescripcionMerma" Placeholder="Describe la merma detalladamente..." HeightRequest="100" AutoSize="TextChanges" />
+
+			<Button Text="Guardar Reporte" Margin="0,10,0,0" HeightRequest="45" CornerRadius="8" BackgroundColor="#8B4513" TextColor="#FFF8DC" FontAttributes="Bold" FontSize="16" Clicked="OnGuardarClicked" />
+		</VerticalStackLayout>
+
+        <CollectionView x:Name="MermasList" ItemsSource="{Binding Mermas}" Grid.Row="1" Margin="20,10,20,10">
+		    <CollectionView.ItemTemplate>
+			    <DataTemplate>
+				    <Border StrokeShape="RoundRectangle 8" Stroke="#D2B48C" BackgroundColor="#FFF8DC" Padding="15" Margin="0,0,0,10">
+					    <VerticalStackLayout>
+                            <Label Text="{Binding Pastel.Nombre, StringFormat='Pastel: {0}'}" FontSize="16" FontAttributes="Bold" TextColor="#D32F2F" />
+						    <Label Text="{Binding Fecha, StringFormat='Fecha: {0:dd/MM/yyyy}'}" FontSize="14" TextColor="#4E342E" />
+                            <Label Text="{Binding Descripcion}" FontSize="14" TextColor="#3E2723" />
+                            <Label Text="{Binding Estatus, StringFormat='Estatus: {0}'}" FontSize="14" FontAttributes="Bold" TextColor="#E65100" />
+                            <Label Text="{Binding Usuario.Nombre, StringFormat='Reportado por: {0}'}" FontSize="14" TextColor="#3E2723" FontAttributes="Italic" />
+                            
+                            <HorizontalStackLayout Spacing="10" Margin="0,10,0,0">
+                                <Button Text="📞 Contactar" BackgroundColor="#2E7D32" TextColor="White" Clicked="OnContactarClicked" CommandParameter="{Binding .}" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=IsAdmin}" CornerRadius="8" HeightRequest="40" />
+                                <Button Text="✔️ Atender" BackgroundColor="#1565C0" TextColor="White" Clicked="OnAtenderClicked" CommandParameter="{Binding .}" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=IsAdmin}" CornerRadius="8" HeightRequest="40" />
+                            </HorizontalStackLayout>
+					    </VerticalStackLayout>
+				    </Border>
+			    </DataTemplate>
+		    </CollectionView.ItemTemplate>
+	    </CollectionView>
+
+	</Grid>
+</ContentPage>
