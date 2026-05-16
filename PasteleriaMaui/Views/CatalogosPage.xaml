@@ -3,38 +3,66 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:PasteleriaMaui.ViewModels"
              x:Class="PasteleriaMaui.Views.CatalogosPage"
-             Title="Catálogos">
+             Title="Catálogos"
+             BackgroundColor="#F7F4EF">
 
 	<ContentPage.BindingContext>
 		<viewmodels:CatalogosViewModel />
 	</ContentPage.BindingContext>
 
-	<ContentPage.Background>
-		<SolidColorBrush Color="#F5F7FA" />
-	</ContentPage.Background>
-
 	<Grid RowDefinitions="Auto, Auto, *">
-		<VerticalStackLayout Padding="20" Spacing="15" Grid.Row="0">
-			<Label Text="Administración de Catálogos" FontSize="22" FontAttributes="Bold" TextColor="#5C4033" Margin="0,0,0,10" HorizontalOptions="Center"/>
-            <Grid ColumnDefinitions="*,*,*,*">
-                <Button Grid.Column="0" Text="Cat" Command="{Binding SeleccionarTabCommand}" CommandParameter="Categorías" Margin="2" />
-                <Button Grid.Column="1" Text="Biz" Command="{Binding SeleccionarTabCommand}" CommandParameter="Bizcochos" Margin="2" />
-                <Button Grid.Column="2" Text="Rel" Command="{Binding SeleccionarTabCommand}" CommandParameter="Rellenos" Margin="2" />
-                <Button Grid.Column="3" Text="Gla" Command="{Binding SeleccionarTabCommand}" CommandParameter="Glaseados" Margin="2" />
+		<VerticalStackLayout Padding="20" Spacing="20" Grid.Row="0">
+			<Label Text="Administración" FontSize="22" FontAttributes="Bold" TextColor="#3E2723" Margin="0,0,0,5" HorizontalOptions="Center"/>
+            <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="8">
+                <Button Grid.Column="0" Text="Cat" BackgroundColor="#FAF8F5" TextColor="#8B5E34" CornerRadius="12" HeightRequest="44" Command="{Binding SeleccionarTabCommand}" CommandParameter="Categorías" FontAttributes="Bold" BorderWidth="1" BorderColor="#EAE4DB" />
+                <Button Grid.Column="1" Text="Biz" BackgroundColor="#FAF8F5" TextColor="#8B5E34" CornerRadius="12" HeightRequest="44" Command="{Binding SeleccionarTabCommand}" CommandParameter="Bizcochos" FontAttributes="Bold" BorderWidth="1" BorderColor="#EAE4DB" />
+                <Button Grid.Column="2" Text="Rel" BackgroundColor="#FAF8F5" TextColor="#8B5E34" CornerRadius="12" HeightRequest="44" Command="{Binding SeleccionarTabCommand}" CommandParameter="Rellenos" FontAttributes="Bold" BorderWidth="1" BorderColor="#EAE4DB" />
+                <Button Grid.Column="3" Text="Gla" BackgroundColor="#FAF8F5" TextColor="#8B5E34" CornerRadius="12" HeightRequest="44" Command="{Binding SeleccionarTabCommand}" CommandParameter="Glaseados" FontAttributes="Bold" BorderWidth="1" BorderColor="#EAE4DB" />
             </Grid>
-            <Button Text="Agregar Nuevo Elemento" Command="{Binding AgregarElementoCommand}" BackgroundColor="#8B4513" TextColor="#FFF8DC" CornerRadius="8" HeightRequest="45" Margin="0,10,0,0" />
+            <Button Text="+ Agregar Elemento" 
+                    Command="{Binding AgregarElementoCommand}" 
+                    BackgroundColor="#8B5E34" 
+                    TextColor="#FFFFFF" 
+                    CornerRadius="14" 
+                    HeightRequest="52" 
+                    Margin="0,5,0,0"
+                    FontAttributes="Bold"
+                    FontSize="15">
+                <Button.Shadow>
+                    <Shadow Brush="#8B5E34" Offset="0,4" Radius="10" Opacity="0.15" />
+                </Button.Shadow>
+            </Button>
 		</VerticalStackLayout>
 
-        <Label Grid.Row="1" Text="{Binding TabActual}" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#5C4033" Margin="0,10,0,10" />
+        <Label Grid.Row="1" Text="{Binding TabActual}" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#5D4037" Margin="0,5,0,15" />
 
 		<CollectionView ItemsSource="{Binding Elementos}" Grid.Row="2" Margin="20,0,20,0">
 			<CollectionView.ItemTemplate>
 				<DataTemplate>
-					<Border StrokeShape="RoundRectangle 12" Stroke="Transparent" BackgroundColor="#FFF8DC" Padding="20" Margin="0,0,0,15" Shadow="{Shadow Brush=Black, Offset='0,3', Opacity=0.1, Radius=4}">
+					<Border Stroke="#EAE4DB" 
+                            StrokeThickness="1" 
+                            BackgroundColor="#FFFFFF" 
+                            Padding="20" 
+                            Margin="0,0,0,15">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow Brush="#8B5E34" Offset="0,4" Radius="10" Opacity="0.05" />
+                        </Border.Shadow>
 						<Grid ColumnDefinitions="Auto, *, Auto" VerticalOptions="Center">
-							<Label Grid.Column="0" Text="{Binding Id}" FontSize="16" FontAttributes="Bold" TextColor="#4E342E" Margin="0,0,15,0"/>
-							<Label Grid.Column="1" Text="{Binding DisplayName}" FontSize="18" FontAttributes="Bold" TextColor="#5C4033" />
-                            <Button Grid.Column="2" Text="Eliminar" BackgroundColor="#E53935" TextColor="#FFF8DC" CornerRadius="5" HeightRequest="35" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CatalogosViewModel}}, Path=EliminarElementoCommand}" CommandParameter="{Binding .}" />
+							<Label Grid.Column="0" Text="{Binding Id, StringFormat='#{0}'}" FontSize="14" FontAttributes="Bold" TextColor="#A1887F" Margin="0,0,15,0" VerticalOptions="Center"/>
+							<Label Grid.Column="1" Text="{Binding DisplayName}" FontSize="16" FontAttributes="Bold" TextColor="#3E2723" VerticalOptions="Center"/>
+                            <Button Grid.Column="2" 
+                                    Text="Eliminar" 
+                                    BackgroundColor="#FFF0F0" 
+                                    TextColor="#D32F2F" 
+                                    CornerRadius="10" 
+                                    HeightRequest="40" 
+                                    FontSize="13"
+                                    FontAttributes="Bold"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CatalogosViewModel}}, Path=EliminarElementoCommand}" 
+                                    CommandParameter="{Binding .}" />
 						</Grid>
 					</Border>
 				</DataTemplate>

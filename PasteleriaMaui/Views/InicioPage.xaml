@@ -2,93 +2,113 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PasteleriaMaui.Views.InicioPage"
-             Title="Inicio">
+             Title="Inicio"
+             BackgroundColor="#F7F4EF">
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="20,40,20,20" Spacing="15" VerticalOptions="Center">
 
-	<ContentPage.Background>
-		<LinearGradientBrush EndPoint="0,1">
-			<GradientStop Color="#5C4033" Offset="0.0" />
-			<GradientStop Color="#8B4513" Offset="1.0" />
-		</LinearGradientBrush>
-	</ContentPage.Background>
+                <Label Text="Sistema de Pasteles" 
+                       FontSize="30" 
+                       FontAttributes="Bold" 
+                       TextColor="#3E2723" 
+                       HorizontalOptions="Center" 
+                       Margin="0,0,0,30" />
 
-	<Grid>
-		<VerticalStackLayout Padding="30" Spacing="25" VerticalOptions="Center">
+                <Button x:Name="BotonGestiones" 
+                        Text="Gestión de Pasteles" 
+                        HeightRequest="60" 
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        CornerRadius="14"
+                        BackgroundColor="#FFFFFF"
+                        TextColor="#3E2723"
+                        Clicked="OnPastelesClicked">
+                    <Button.Shadow>
+                        <Shadow Brush="#8B5E34" Offset="0,4" Radius="10" Opacity="0.08" />
+                    </Button.Shadow>
+                </Button>
 
-            <Label Text="Sistema de Pasteles" 
-                   FontSize="32" 
-                   FontAttributes="Bold" 
-                   TextColor="#FFF8DC" 
-                   HorizontalOptions="Center" 
-                   Margin="0,0,0,40" />
+                <Button x:Name="BotonPedidos" 
+                        Text="Pedidos" 
+                        HeightRequest="60" 
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        CornerRadius="14"
+                        BackgroundColor="#FFFFFF"
+                        TextColor="#3E2723"
+                        Clicked="OnPedidosClicked">
+                    <Button.Shadow>
+                        <Shadow Brush="#8B5E34" Offset="0,4" Radius="10" Opacity="0.08" />
+                    </Button.Shadow>
+                </Button>
 
-			<Button x:Name="BotonGestiones" Text="Gestión de Pasteles" 
-                    HeightRequest="60" 
-                    FontSize="18"
-                    FontAttributes="Bold"
-                    CornerRadius="30"
-                    BackgroundColor="#FFF8DC"
-                    TextColor="#5C4033"
-                    Shadow="{Shadow Brush=Black, Offset='0,5', Opacity=0.2, Radius=5}"
-                    Clicked="OnPastelesClicked" />
+                <Button x:Name="BotonMermas" 
+                        Text="Reportes de Mermas" 
+                        HeightRequest="60" 
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        CornerRadius="14"
+                        BackgroundColor="#FFFFFF"
+                        TextColor="#3E2723"
+                        Clicked="OnReportesClicked">
+                    <Button.Shadow>
+                        <Shadow Brush="#8B5E34" Offset="0,4" Radius="10" Opacity="0.08" />
+                    </Button.Shadow>
+                </Button>
 
-			<Button x:Name="BotonPedidos" Text="Pedidos" 
-                    HeightRequest="60" 
-                    FontSize="18"
-                    FontAttributes="Bold"
-                    CornerRadius="30"
-                    BackgroundColor="#FFF8DC"
-                    TextColor="#5C4033"
-                    Shadow="{Shadow Brush=Black, Offset='0,5', Opacity=0.2, Radius=5}"
-                    Clicked="OnPedidosClicked"/>
+                <Button x:Name="BotonCatalogos" 
+                        Text="Catálogos" 
+                        HeightRequest="60" 
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        CornerRadius="14"
+                        BackgroundColor="#FFFFFF"
+                        TextColor="#3E2723"
+                        Clicked="OnCatalogosClicked">
+                    <Button.Shadow>
+                        <Shadow Brush="#8B5E34" Offset="0,4" Radius="10" Opacity="0.08" />
+                    </Button.Shadow>
+                </Button>
 
-			<Button x:Name="BotonMermas" Text="Reportes de Mermas" 
-                    HeightRequest="60" 
-                    FontSize="18"
-                    FontAttributes="Bold"
-                    CornerRadius="30"
-                    BackgroundColor="#FFF8DC"
-                    TextColor="#5C4033"
-                    Shadow="{Shadow Brush=Black, Offset='0,5', Opacity=0.2, Radius=5}"
-                    Clicked="OnReportesClicked"/>
+                <Button x:Name="BotonSalir" 
+                        Text="Cerrar Sesión" 
+                        HeightRequest="60" 
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        CornerRadius="14"
+                        BackgroundColor="#FFF0F0" 
+                        TextColor="#D32F2F"
+                        Margin="0,20,0,0"
+                        Clicked="OnSalirClicked">
+                    <Button.Shadow>
+                        <Shadow Brush="#D32F2F" Offset="0,4" Radius="10" Opacity="0.05" />
+                    </Button.Shadow>
+                </Button>
 
-			<Button x:Name="BotonCatalogos" Text="Catálogos" 
-                    HeightRequest="60" 
-                    FontSize="18"
-                    FontAttributes="Bold"
-                    CornerRadius="30"
-                    BackgroundColor="#FFF8DC"
-                    TextColor="#5C4033"
-                    Shadow="{Shadow Brush=Black, Offset='0,5', Opacity=0.2, Radius=5}"
-                    Clicked="OnCatalogosClicked"/>
+            </VerticalStackLayout>
+        </ScrollView>
 
-			<Button x:Name="BotonSalir" Text="Cerrar Sesión" 
-                    HeightRequest="60" 
-                    FontSize="18"
-                    FontAttributes="Bold"
-                    CornerRadius="30"
-                    BackgroundColor="#D32F2F"
-                    TextColor="#FFF8DC"
-                    Shadow="{Shadow Brush=Black, Offset='0,5', Opacity=0.2, Radius=5}"
-                    Margin="0,20,0,0"
-                    Clicked="OnSalirClicked"/>
-
-		</VerticalStackLayout>
-
-		<!-- DEBUG BUTTON: remove before release -->
-		<Button x:Name="BtnDebugRol"
+        <!-- DEBUG BUTTON: remove before release -->
+        <!-- Mantenemos su funcionalidad y posición, pero con un borde redondeado más moderno -->
+        <Button x:Name="BtnDebugRol"
                 Text="🔄 DEBUG"
-                BackgroundColor="#FF6F00"
-                TextColor="#FFF8DC"
+                BackgroundColor="#FF9800"
+                TextColor="#FFFFFF"
                 FontSize="11"
                 FontAttributes="Bold"
-                CornerRadius="20"
+                CornerRadius="19"
                 HeightRequest="38"
-                WidthRequest="90"
-                Opacity="0.85"
+                WidthRequest="95"
+                Opacity="0.9"
                 HorizontalOptions="End"
                 VerticalOptions="Start"
-                Margin="0,12,12,0"
-                Clicked="OnDebugRolClicked" />
-	</Grid>
+                Margin="0,15,15,0"
+                Clicked="OnDebugRolClicked">
+            <Button.Shadow>
+                <Shadow Brush="#FF9800" Offset="0,4" Radius="8" Opacity="0.2" />
+            </Button.Shadow>
+        </Button>
+    </Grid>
 
 </ContentPage>

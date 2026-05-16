@@ -46,9 +46,9 @@ namespace PasteleriaAPI.Controllers
                 if (!emailRegex.IsMatch(nuevoUsuario.Email)) return BadRequest("Formato de correo inválido");
                 if (!passRegex.IsMatch(nuevoUsuario.Password)) return BadRequest("La contraseña no cumple con los requisitos de seguridad");
 
-                if (await _context.Usuarios.AnyAsync(u => u.Email == nuevoUsuario.Email))
+                if (await _context.Usuarios.AnyAsync(u => u.Email == nuevoUsuario.Email && u.Rol == nuevoUsuario.Rol))
                 {
-                    return BadRequest("El correo electrónico ya está en uso");
+                    return BadRequest($"Ya existe una cuenta con el rol de {nuevoUsuario.Rol} para este correo electrónico");
                 }
 
                 if (string.IsNullOrEmpty(nuevoUsuario.Rol)) nuevoUsuario.Rol = "Cliente";

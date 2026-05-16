@@ -2,39 +2,128 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PasteleriaMaui.Views.ReporteMermaPage"
-             Title="Reportes de Merma">
+             Title="Reportes de Merma"
+             BackgroundColor="#F7F4EF">
 
 	<Grid RowDefinitions="Auto, *">
 		
-        <VerticalStackLayout x:Name="FormularioMerma" Padding="30" Spacing="10" Grid.Row="0">
-            <Label Text="Crear Nuevo Reporte de Merma" FontAttributes="Bold" FontSize="18" TextColor="#5C4033" />
+        <VerticalStackLayout x:Name="FormularioMerma" Padding="20,20,20,10" Spacing="15" Grid.Row="0">
+            <Label Text="Nuevo Reporte" FontAttributes="Bold" FontSize="20" TextColor="#3E2723" Margin="0,0,0,5" HorizontalOptions="Center"/>
             
-            <Label Text="Pastel Afectado:" FontAttributes="Bold" FontSize="14" TextColor="#3E2723" />
-            <Picker x:Name="PickerPastel" Title="Selecciona el pastel" ItemDisplayBinding="{Binding Nombre}" />
+            <Border Stroke="#EAE4DB" 
+                    StrokeThickness="1" 
+                    BackgroundColor="#FFFFFF" 
+                    Padding="20">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow Brush="#8B5E34" Offset="0,4" Radius="10" Opacity="0.05" />
+                </Border.Shadow>
+                
+                <VerticalStackLayout Spacing="15">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Pastel Afectado" FontAttributes="Bold" FontSize="14" TextColor="#5D4037" Margin="4,0,0,0" />
+                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <Picker x:Name="PickerPastel" Title="Selecciona el pastel" ItemDisplayBinding="{Binding Nombre}" TextColor="#3E2723" TitleColor="#BCAAA4" VerticalOptions="Center"/>
+                        </Border>
+                    </VerticalStackLayout>
 
-			<Label Text="Fecha:" FontAttributes="Bold" FontSize="14" TextColor="#3E2723" />
-			<DatePicker x:Name="FechaMerma" Format="dd/MM/yyyy" />
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Fecha" FontAttributes="Bold" FontSize="14" TextColor="#5D4037" Margin="4,0,0,0" />
+                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <DatePicker x:Name="FechaMerma" Format="dd/MM/yyyy" TextColor="#3E2723" VerticalOptions="Center"/>
+                        </Border>
+                    </VerticalStackLayout>
 
-			<Label Text="Descripción del Problema:" FontAttributes="Bold" FontSize="14" TextColor="#3E2723" />
-			<Editor x:Name="DescripcionMerma" Placeholder="Describe la merma detalladamente..." HeightRequest="100" AutoSize="TextChanges" />
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Descripción del Problema" FontAttributes="Bold" FontSize="14" TextColor="#5D4037" Margin="4,0,0,0" />
+                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" Padding="15,10">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <Editor x:Name="DescripcionMerma" Placeholder="Describe la merma detalladamente..." HeightRequest="80" AutoSize="TextChanges" BackgroundColor="Transparent" TextColor="#3E2723" PlaceholderColor="#BCAAA4"/>
+                        </Border>
+                    </VerticalStackLayout>
 
-			<Button Text="Guardar Reporte" Margin="0,10,0,0" HeightRequest="45" CornerRadius="8" BackgroundColor="#8B4513" TextColor="#FFF8DC" FontAttributes="Bold" FontSize="16" Clicked="OnGuardarClicked" />
+                    <Button Text="Guardar Reporte" 
+                            Margin="0,5,0,0" 
+                            HeightRequest="52" 
+                            CornerRadius="14" 
+                            BackgroundColor="#8B5E34" 
+                            TextColor="#FFFFFF" 
+                            FontAttributes="Bold" 
+                            FontSize="15" 
+                            Clicked="OnGuardarClicked">
+                        <Button.Shadow>
+                            <Shadow Brush="#8B5E34" Offset="0,4" Radius="10" Opacity="0.15" />
+                        </Button.Shadow>
+                    </Button>
+                </VerticalStackLayout>
+            </Border>
 		</VerticalStackLayout>
 
-        <CollectionView x:Name="MermasList" ItemsSource="{Binding Mermas}" Grid.Row="1" Margin="20,10,20,10">
+        <CollectionView x:Name="MermasList" ItemsSource="{Binding Mermas}" Grid.Row="1" Margin="20,10,20,20">
 		    <CollectionView.ItemTemplate>
 			    <DataTemplate>
-				    <Border StrokeShape="RoundRectangle 8" Stroke="#D2B48C" BackgroundColor="#FFF8DC" Padding="15" Margin="0,0,0,10">
-					    <VerticalStackLayout>
+				    <Border Stroke="#EAE4DB" 
+                            StrokeThickness="1" 
+                            BackgroundColor="#FFFFFF" 
+                            Padding="20" 
+                            Margin="0,0,0,15">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow Brush="#D32F2F" Offset="0,4" Radius="10" Opacity="0.06" />
+                        </Border.Shadow>
+					    <VerticalStackLayout Spacing="8">
                             <Label Text="{Binding Pastel.Nombre, StringFormat='Pastel: {0}'}" FontSize="16" FontAttributes="Bold" TextColor="#D32F2F" />
-						    <Label Text="{Binding Fecha, StringFormat='Fecha: {0:dd/MM/yyyy}'}" FontSize="14" TextColor="#4E342E" />
-                            <Label Text="{Binding Descripcion}" FontSize="14" TextColor="#3E2723" />
-                            <Label Text="{Binding Estatus, StringFormat='Estatus: {0}'}" FontSize="14" FontAttributes="Bold" TextColor="#E65100" />
-                            <Label Text="{Binding Usuario.Nombre, StringFormat='Reportado por: {0}'}" FontSize="14" TextColor="#3E2723" FontAttributes="Italic" />
+                            <BoxView HeightRequest="1" Color="#F5F0E6" />
+						    
+                            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding Fecha, StringFormat='Fecha: {0:dd/MM/yyyy}'}" FontSize="14" TextColor="#5D4037" />
+                                <Label Grid.Row="1" Grid.Column="0" Text="{Binding Usuario.Nombre, StringFormat='Por: {0}'}" FontSize="13" TextColor="#795548" FontAttributes="Italic" />
+                                <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" BackgroundColor="#FFF8F5" Stroke="#FFCCBC" StrokeThickness="1" Padding="10,5" VerticalOptions="Center">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Label Text="{Binding Estatus}" FontSize="13" FontAttributes="Bold" TextColor="#D84315" />
+                                </Border>
+                            </Grid>
                             
-                            <HorizontalStackLayout Spacing="10" Margin="0,10,0,0">
-                                <Button Text="📞 Contactar" BackgroundColor="#2E7D32" TextColor="White" Clicked="OnContactarClicked" CommandParameter="{Binding .}" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=IsAdmin}" CornerRadius="8" HeightRequest="40" />
-                                <Button Text="✔️ Atender" BackgroundColor="#1565C0" TextColor="White" Clicked="OnAtenderClicked" CommandParameter="{Binding .}" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=IsAdmin}" CornerRadius="8" HeightRequest="40" />
+                            <Label Text="{Binding Descripcion}" FontSize="14" TextColor="#3E2723" Margin="0,5,0,0" />
+                            
+                            <HorizontalStackLayout Spacing="10" Margin="0,15,0,0">
+                                <Button Text="📞 Contactar" 
+                                        BackgroundColor="#FFFFFF" 
+                                        TextColor="#2E7D32" 
+                                        BorderColor="#2E7D32"
+                                        BorderWidth="1"
+                                        Clicked="OnContactarClicked" 
+                                        CommandParameter="{Binding .}" 
+                                        IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=IsAdmin}" 
+                                        CornerRadius="12" 
+                                        HeightRequest="44"
+                                        FontSize="14"
+                                        FontAttributes="Bold" />
+                                        
+                                <Button Text="✔️ Atender" 
+                                        BackgroundColor="#1565C0" 
+                                        TextColor="#FFFFFF" 
+                                        Clicked="OnAtenderClicked" 
+                                        CommandParameter="{Binding .}" 
+                                        IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=IsAdmin}" 
+                                        CornerRadius="12" 
+                                        HeightRequest="44"
+                                        FontSize="14"
+                                        FontAttributes="Bold" />
                             </HorizontalStackLayout>
 					    </VerticalStackLayout>
 				    </Border>

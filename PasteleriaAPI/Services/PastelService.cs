@@ -26,8 +26,13 @@ namespace PasteleriaAPI.Services
 
 		public async Task<List<Pastel>> GetAllPastelFromDBAsync()
 		{
-			return await dbContext.Pasteles.Where(p => !p.IsPersonalizado).ToListAsync();
-
+			return await dbContext.Pasteles
+                .Include(p => p.Categoria)
+                .Include(p => p.Bizcocho)
+                .Include(p => p.Relleno)
+                .Include(p => p.Glaseado)
+                .Where(p => !p.IsPersonalizado)
+                .ToListAsync();
 		}
 
 		public async Task<List<CatCategoria>> GetAllCategoriasFromDBAsync()

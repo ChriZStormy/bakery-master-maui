@@ -2,29 +2,89 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PasteleriaMaui.Views.HistorialPedidosPage"
-             Title="Mis Pedidos">
+             Title="Mis Pedidos"
+             BackgroundColor="#F7F4EF">
 
     <Grid RowDefinitions="Auto, Auto, *">
-        <Grid Grid.Row="0" ColumnDefinitions="*, *" Margin="20,20,20,0" ColumnSpacing="10">
-            <Button x:Name="BtnNuevoPedido" Text="+ Realizar Pedido" BackgroundColor="#8B4513" TextColor="#FFF8DC" CornerRadius="8" HeightRequest="50" FontAttributes="Bold" Clicked="OnRealizarPedidoPersonalizadoClicked" Grid.Column="0"/>
-            <Button x:Name="BtnCalendario" Text="📅 Ver Calendario" BackgroundColor="#5C4033" TextColor="#FFF8DC" CornerRadius="8" HeightRequest="50" FontAttributes="Bold" Clicked="OnVerCalendarioClicked" Grid.Column="1" IsVisible="False"/>
+        <Grid Grid.Row="0" ColumnDefinitions="*, *" Margin="20,20,20,0" ColumnSpacing="15">
+            <Button x:Name="BtnNuevoPedido" 
+                    Text="+ Realizar Pedido" 
+                    BackgroundColor="#8B5E34" 
+                    TextColor="#FFFFFF" 
+                    CornerRadius="14" 
+                    HeightRequest="52" 
+                    FontAttributes="Bold" 
+                    FontSize="15"
+                    Clicked="OnRealizarPedidoPersonalizadoClicked" 
+                    Grid.Column="0">
+                <Button.Shadow>
+                    <Shadow Brush="#8B5E34" Offset="0,4" Radius="10" Opacity="0.15" />
+                </Button.Shadow>
+            </Button>
+            <Button x:Name="BtnCalendario" 
+                    Text="📅 Ver Calendario" 
+                    BackgroundColor="#FFFFFF" 
+                    TextColor="#8B5E34" 
+                    CornerRadius="14" 
+                    HeightRequest="52" 
+                    FontAttributes="Bold" 
+                    FontSize="15"
+                    Clicked="OnVerCalendarioClicked" 
+                    Grid.Column="1" 
+                    IsVisible="False">
+                <Button.Shadow>
+                    <Shadow Brush="#8B5E34" Offset="0,4" Radius="10" Opacity="0.08" />
+                </Button.Shadow>
+            </Button>
         </Grid>
-        <Label x:Name="LblLeyenda" Text="Pedidos que has realizado" FontSize="18" FontAttributes="Bold" TextColor="#3E2723" Margin="20,15,20,0" Grid.Row="1" />
+        <Label x:Name="LblLeyenda" Text="Pedidos que has realizado" FontSize="22" FontAttributes="Bold" TextColor="#3E2723" Margin="20,20,20,0" Grid.Row="1" />
+
+        <VerticalStackLayout x:Name="AdminTabsContainer" IsVisible="False" Margin="20,15,20,0" Grid.Row="1" Spacing="10">
+            <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                <HorizontalStackLayout Spacing="10">
+                    <Button x:Name="TabEnProceso" Text="En Proceso" Clicked="OnMainTabClicked" BackgroundColor="#8B5E34" TextColor="#FFFFFF" CornerRadius="20" HeightRequest="40" Padding="20,0" FontAttributes="Bold" />
+                    <Button x:Name="TabEntregados" Text="Entregados" Clicked="OnMainTabClicked" BackgroundColor="#FAF8F5" TextColor="#795548" CornerRadius="20" HeightRequest="40" Padding="20,0" FontAttributes="Bold" />
+                    <Button x:Name="TabCancelados" Text="Cancelados" Clicked="OnMainTabClicked" BackgroundColor="#FAF8F5" TextColor="#795548" CornerRadius="20" HeightRequest="40" Padding="20,0" FontAttributes="Bold" />
+                </HorizontalStackLayout>
+            </ScrollView>
+            
+            <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                <HorizontalStackLayout Spacing="10">
+                    <Button x:Name="SubTabPasteles" Text="Pasteles" Clicked="OnSubTabClicked" BackgroundColor="#5D4037" TextColor="#FFFFFF" CornerRadius="16" HeightRequest="32" FontSize="13" Padding="15,0" FontAttributes="Bold" />
+                    <Button x:Name="SubTabOtros" Text="Otros" Clicked="OnSubTabClicked" BackgroundColor="#F5F0E6" TextColor="#795548" CornerRadius="16" HeightRequest="32" FontSize="13" Padding="15,0" FontAttributes="Bold" />
+                </HorizontalStackLayout>
+            </ScrollView>
+        </VerticalStackLayout>
 
 	    <CollectionView ItemsSource="{Binding Pedidos}" Margin="20,15,20,0" SelectionMode="Single" SelectionChanged="OnPedidoSelected" Grid.Row="2">
 		<CollectionView.ItemTemplate>
 			<DataTemplate>
-				<Border StrokeShape="RoundRectangle 8" 
-                        Stroke="#D2B48C" 
-                        BackgroundColor="#FFF8DC" 
-                        Padding="15"
-                        Margin="0,0,0,10">
-					<VerticalStackLayout>
-                        <Label Text="{Binding Pastel.Nombre, StringFormat='Pastel: {0}'}" FontSize="18" FontAttributes="Bold" TextColor="#5C4033" />
-						<Label Text="{Binding Fecha, StringFormat='Fecha: {0:dd/MM/yyyy}'}" FontSize="14" TextColor="#4E342E" />
-                        <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}" FontSize="14" TextColor="#3E2723" />
-                        <Label Text="{Binding Estatus, StringFormat='Estatus: {0}'}" FontSize="14" TextColor="#E65100" FontAttributes="Bold" />
-                        <Label Text="{Binding Usuario.Nombre, StringFormat='Cliente: {0}'}" FontSize="14" TextColor="#3E2723" />
+				<Border Stroke="#EAE4DB" 
+                        StrokeThickness="1" 
+                        BackgroundColor="#FFFFFF" 
+                        Padding="20"
+                        Margin="0,0,0,15">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow Brush="#8B5E34" Offset="0,4" Radius="10" Opacity="0.06" />
+                    </Border.Shadow>
+					<VerticalStackLayout Spacing="6">
+                        <Label Text="{Binding Pastel.Nombre, StringFormat='{0}'}" FontSize="18" FontAttributes="Bold" TextColor="#3E2723" />
+                        <BoxView HeightRequest="1" Color="#F5F0E6" Margin="0,4" />
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto" RowSpacing="4">
+                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Fecha, StringFormat='Fecha: {0:dd/MM/yyyy}'}" FontSize="14" TextColor="#5D4037" />
+                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding Usuario.Nombre, StringFormat='Cliente: {0}'}" FontSize="14" TextColor="#795548" />
+                            <Label Grid.Row="2" Grid.Column="0" Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}" FontSize="14" TextColor="#795548" />
+                            
+                            <Border Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" BackgroundColor="#FFF8F5" Stroke="#FFCCBC" StrokeThickness="1" Padding="10,5" VerticalOptions="Center">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <Label Text="{Binding Estatus}" FontSize="13" TextColor="#D84315" FontAttributes="Bold" />
+                            </Border>
+                        </Grid>
 					</VerticalStackLayout>
 				</Border>
 			</DataTemplate>

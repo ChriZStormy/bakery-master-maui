@@ -1,0 +1,10 @@
+PARA: admin@pasteleria.com
+ASUNTO: Actualización de Estatus - Pedido #1113
+
+CUERPO:
+Hola Admin Master,
+
+Tu pedido con el Folio #1113 ha cambiado su estatus a: Cancelado.
+
+Saludos,
+Pasteleria App

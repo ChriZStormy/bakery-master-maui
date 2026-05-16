@@ -3,56 +3,117 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:PasteleriaMaui.ViewModels"
              x:Class="PasteleriaMaui.Views.EditarPastelPage"
-             Title="Editar Pastel">
+             Title="Editar Pastel"
+             BackgroundColor="#F7F4EF">
 
 	<ContentPage.BindingContext>
 		<viewmodels:EditarPastelViewModel />
 	</ContentPage.BindingContext>
 
-	<ContentPage.Background>
-		<SolidColorBrush Color="#F5F7FA" />
-	</ContentPage.Background>
-
 	<ScrollView>
-		<VerticalStackLayout Padding="30" Spacing="25">
+		<VerticalStackLayout Padding="20,20,20,40" Spacing="20">
 
-            <Label Text="Actualizar Datos" FontSize="22" FontAttributes="Bold" TextColor="#5C4033" Margin="0,0,0,10"/>
+            <Label Text="Actualizar Datos" FontSize="22" FontAttributes="Bold" TextColor="#3E2723" Margin="0,0,0,5" HorizontalOptions="Center"/>
 
-			<Border StrokeShape="RoundRectangle 12" Stroke="Transparent" BackgroundColor="#FFF8DC" Padding="20" Shadow="{Shadow Brush=Black, Offset='0,3', Opacity=0.1, Radius=5}">
-				<VerticalStackLayout Spacing="15">
-					<Label Text="Nombre" FontSize="14" FontAttributes="Bold" TextColor="#4E342E" />
-					<Entry Placeholder="ej. Pastel de Chocolate" Text="{Binding Nombre}" BackgroundColor="#FAEBD7" TextColor="#3E2723" PlaceholderColor="#8B4513" />
+			<Border Stroke="#EAE4DB" 
+                    StrokeThickness="1" 
+                    BackgroundColor="#FFFFFF" 
+                    Padding="25"
+                    Margin="0,5,0,0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow Brush="#8B5E34" Offset="0,6" Radius="15" Opacity="0.06" />
+                </Border.Shadow>
 
-					<Label Text="Tamaño" FontSize="14" FontAttributes="Bold" TextColor="#4E342E" />
-					<Picker Title="Selecciona el tamaño" ItemsSource="{Binding TamanioList}" SelectedItem="{Binding Tamanio}" BackgroundColor="#FAEBD7" TextColor="#3E2723" TitleColor="#8B4513" />
+				<VerticalStackLayout Spacing="16">
+                    
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Nombre" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
+                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <Entry Placeholder="ej. Pastel de Chocolate" Text="{Binding Nombre}" BackgroundColor="Transparent" TextColor="#3E2723" PlaceholderColor="#BCAAA4" VerticalOptions="Center"/>
+                        </Border>
+                    </VerticalStackLayout>
 
-                    <Label Text="Foto (URL)" FontSize="14" FontAttributes="Bold" TextColor="#4E342E" />
-					<Entry Placeholder="ej. http://foto.com/pastel.jpg" Text="{Binding FotoUrl}" BackgroundColor="#FAEBD7" TextColor="#3E2723" PlaceholderColor="#8B4513" />
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Tamaño" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
+                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <Picker Title="Selecciona el tamaño" ItemsSource="{Binding TamanioList}" SelectedItem="{Binding Tamanio}" BackgroundColor="Transparent" TextColor="#3E2723" TitleColor="#BCAAA4" VerticalOptions="Center" />
+                        </Border>
+                    </VerticalStackLayout>
 
-					<Label Text="Categoría" FontSize="14" FontAttributes="Bold" TextColor="#4E342E" />
-					<Picker Title="Selecciona la categoría" ItemsSource="{Binding Categorias}" ItemDisplayBinding="{Binding categoria}" SelectedItem="{Binding CategoriaSeleccionada}" BackgroundColor="#FAEBD7" TextColor="#3E2723" TitleColor="#8B4513" />
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Foto (URL)" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
+                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <Entry Placeholder="ej. http://foto.com/pastel.jpg" Text="{Binding FotoUrl}" BackgroundColor="Transparent" TextColor="#3E2723" PlaceholderColor="#BCAAA4" VerticalOptions="Center" />
+                        </Border>
+                    </VerticalStackLayout>
 
-					<Label Text="Bizcocho" FontSize="14" FontAttributes="Bold" TextColor="#4E342E" />
-					<Picker Title="Selecciona el bizcocho" ItemsSource="{Binding Bizcochos}" ItemDisplayBinding="{Binding Nombre}" SelectedItem="{Binding BizcochoSeleccionado}" BackgroundColor="#FAEBD7" TextColor="#3E2723" TitleColor="#8B4513" />
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Categoría" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
+                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <Picker Title="Selecciona la categoría" ItemsSource="{Binding Categorias}" ItemDisplayBinding="{Binding categoria}" SelectedItem="{Binding CategoriaSeleccionada}" BackgroundColor="Transparent" TextColor="#3E2723" TitleColor="#BCAAA4" VerticalOptions="Center" />
+                        </Border>
+                    </VerticalStackLayout>
 
-					<Label Text="Relleno" FontSize="14" FontAttributes="Bold" TextColor="#4E342E" />
-					<Picker Title="Selecciona el relleno" ItemsSource="{Binding Rellenos}" ItemDisplayBinding="{Binding Nombre}" SelectedItem="{Binding RellenoSeleccionado}" BackgroundColor="#FAEBD7" TextColor="#3E2723" TitleColor="#8B4513" />
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Bizcocho" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
+                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <Picker Title="Selecciona el bizcocho" ItemsSource="{Binding Bizcochos}" ItemDisplayBinding="{Binding Nombre}" SelectedItem="{Binding BizcochoSeleccionado}" BackgroundColor="Transparent" TextColor="#3E2723" TitleColor="#BCAAA4" VerticalOptions="Center" />
+                        </Border>
+                    </VerticalStackLayout>
 
-					<Label Text="Glaseado" FontSize="14" FontAttributes="Bold" TextColor="#4E342E" />
-					<Picker Title="Selecciona el glaseado" ItemsSource="{Binding Glaseados}" ItemDisplayBinding="{Binding Nombre}" SelectedItem="{Binding GlaseadoSeleccionado}" BackgroundColor="#FAEBD7" TextColor="#3E2723" TitleColor="#8B4513" />
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Relleno" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
+                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <Picker Title="Selecciona el relleno" ItemsSource="{Binding Rellenos}" ItemDisplayBinding="{Binding Nombre}" SelectedItem="{Binding RellenoSeleccionado}" BackgroundColor="Transparent" TextColor="#3E2723" TitleColor="#BCAAA4" VerticalOptions="Center" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Glaseado" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
+                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <Picker Title="Selecciona el glaseado" ItemsSource="{Binding Glaseados}" ItemDisplayBinding="{Binding Nombre}" SelectedItem="{Binding GlaseadoSeleccionado}" BackgroundColor="Transparent" TextColor="#3E2723" TitleColor="#BCAAA4" VerticalOptions="Center" />
+                        </Border>
+                    </VerticalStackLayout>
 				</VerticalStackLayout>
 			</Border>
 
 			<Button Text="Actualizar Pastel" 
                     Command="{Binding GuardarCommand}"
-                    HeightRequest="55"
-                    CornerRadius="27"
-                    BackgroundColor="#5C4033"
-                    TextColor="#FFF8DC"
+                    HeightRequest="54"
+                    CornerRadius="14"
+                    BackgroundColor="#8B5E34"
+                    TextColor="#FFFFFF"
                     FontAttributes="Bold"
                     FontSize="16"
-                    Margin="0,15,0,0"
-                    Shadow="{Shadow Brush=Black, Offset='0,5', Opacity=0.3, Radius=5}"/>
+                    Margin="0,10,0,0">
+                <Button.Shadow>
+                    <Shadow Brush="#8B5E34" Offset="0,6" Opacity="0.2" Radius="10" />
+                </Button.Shadow>
+            </Button>
 
 		</VerticalStackLayout>
 	</ScrollView>

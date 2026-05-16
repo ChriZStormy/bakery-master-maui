@@ -1,0 +1,10 @@
+PARA: a
+ASUNTO: Actualización de Estatus - Pedido #1119
+
+CUERPO:
+Hola a,
+
+Tu pedido con el Folio #1119 ha cambiado su estatus a: Cancelado.
+
+Saludos,
+Pasteleria App

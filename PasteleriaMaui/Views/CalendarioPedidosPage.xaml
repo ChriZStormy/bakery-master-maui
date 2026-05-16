@@ -3,11 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PasteleriaMaui.Views.CalendarioPedidosPage"
              Title="Calendario de Entregas"
-             BackgroundColor="#F5F7FA">
+             BackgroundColor="#F7F4EF">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15" x:Name="ContenedorCalendario">
-            <!-- Dynamically populated from C# -->
+        <VerticalStackLayout Padding="20,20,20,40" Spacing="20">
+            <Label Text="Próximas Entregas" FontSize="22" FontAttributes="Bold" TextColor="#3E2723" HorizontalOptions="Center" Margin="0,0,0,10"/>
+            <VerticalStackLayout Spacing="15" x:Name="ContenedorCalendario">
+                <!-- Dynamically populated from C# -->
+            </VerticalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
 

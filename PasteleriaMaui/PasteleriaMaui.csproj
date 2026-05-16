@@ -30,7 +30,7 @@
 		<MauiXamlInflator>SourceGen</MauiXamlInflator>
 
 		<!-- Display name -->
-		<ApplicationTitle>PasteleriaMaui</ApplicationTitle>
+		<ApplicationTitle>Dolce Vita Pastelería</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.pastelesmaui</ApplicationId>
@@ -50,11 +50,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<!-- App Icon - Logo de la Pastelería -->
+		<MauiIcon Include="Resources\AppIcon\appicon_logo.png" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Images\logo_pasteleria.png" Color="#F7F4EF" BaseSize="200,200" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />

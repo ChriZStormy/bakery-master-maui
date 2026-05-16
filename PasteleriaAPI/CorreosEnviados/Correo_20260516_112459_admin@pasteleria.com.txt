@@ -1,0 +1,10 @@
+PARA: admin@pasteleria.com
+ASUNTO: Actualización de Estatus - Pedido #1112
+
+CUERPO:
+Hola Admin Master,
+
+Tu pedido con el Folio #1112 ha cambiado su estatus a: Entregado.
+
+Saludos,
+Pasteleria App

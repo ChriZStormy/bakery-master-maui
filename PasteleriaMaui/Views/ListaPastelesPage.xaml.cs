@@ -30,4 +30,13 @@ public partial class ListaPastelesPage : ContentPage
 
         await _viewModel.CargarPasteles();
 	}
+
+    private async void OnExpandImageTapped(object sender, TappedEventArgs e)
+    {
+        var url = e.Parameter as string;
+        if (!string.IsNullOrWhiteSpace(url))
+        {
+            await Navigation.PushModalAsync(new ImagenLightboxPage(url), true);
+        }
+    }
 }
