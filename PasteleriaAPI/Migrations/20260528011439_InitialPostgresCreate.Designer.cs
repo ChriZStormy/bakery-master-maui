@@ -2,9 +2,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PasteleriaAPI.Data;
 
 #nullable disable
@@ -12,8 +12,8 @@ using PasteleriaAPI.Data;
 namespace PasteleriaAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260515225914_AddFechaEntregaPedido")]
-    partial class AddFechaEntregaPedido
+    [Migration("20260528011439_InitialPostgresCreate")]
+    partial class InitialPostgresCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,20 +21,20 @@ namespace PasteleriaAPI.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "10.0.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("PasteleriaAPI.Entities.Catalogos.CatBizcocho", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Nombre")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -87,13 +87,12 @@ namespace PasteleriaAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("categoria")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -151,12 +150,12 @@ namespace PasteleriaAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Nombre")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -204,12 +203,12 @@ namespace PasteleriaAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Nombre")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -262,21 +261,24 @@ namespace PasteleriaAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Descripcion")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
+
+                    b.Property<string>("Estatus")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("PastelId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -291,6 +293,7 @@ namespace PasteleriaAPI.Migrations
                         {
                             Id = 1,
                             Descripcion = "Pastel aplastado durante el transporte",
+                            Estatus = "Pendiente",
                             Fecha = new DateTime(2023, 10, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PastelId = 2,
                             UsuarioId = 2
@@ -299,6 +302,7 @@ namespace PasteleriaAPI.Migrations
                         {
                             Id = 2,
                             Descripcion = "Falta de decoración en el cheesecake",
+                            Estatus = "Pendiente",
                             Fecha = new DateTime(2023, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PastelId = 5,
                             UsuarioId = 2
@@ -307,6 +311,7 @@ namespace PasteleriaAPI.Migrations
                         {
                             Id = 103,
                             Descripcion = "El cliente reportó que el chocolate estaba muy amargo",
+                            Estatus = "Pendiente",
                             Fecha = new DateTime(2024, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PastelId = 106,
                             UsuarioId = 2
@@ -315,6 +320,7 @@ namespace PasteleriaAPI.Migrations
                         {
                             Id = 104,
                             Descripcion = "Flores de fondant derretidas por el calor",
+                            Estatus = "Pendiente",
                             Fecha = new DateTime(2023, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PastelId = 4,
                             UsuarioId = 2
@@ -323,6 +329,7 @@ namespace PasteleriaAPI.Migrations
                         {
                             Id = 105,
                             Descripcion = "La leche se derramó en la caja",
+                            Estatus = "Pendiente",
                             Fecha = new DateTime(2023, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PastelId = 6,
                             UsuarioId = 2
@@ -333,32 +340,35 @@ namespace PasteleriaAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BizcochoId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("CategoriaId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("FotoUrl")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("GlaseadoId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsPersonalizado")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("RellenoId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Tamanio")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -380,6 +390,7 @@ namespace PasteleriaAPI.Migrations
                             CategoriaId = 1,
                             FotoUrl = "https://images.unsplash.com/photo-1578985545062-69928b1d9587",
                             GlaseadoId = 3,
+                            IsPersonalizado = false,
                             Nombre = "Selva Negra",
                             RellenoId = 1,
                             Tamanio = "Grande"
@@ -391,6 +402,7 @@ namespace PasteleriaAPI.Migrations
                             CategoriaId = 2,
                             FotoUrl = "https://images.unsplash.com/photo-1557925923-33b251dc32b0",
                             GlaseadoId = 1,
+                            IsPersonalizado = false,
                             Nombre = "Pastel de Spiderman",
                             RellenoId = 2,
                             Tamanio = "Mediano"
@@ -402,6 +414,7 @@ namespace PasteleriaAPI.Migrations
                             CategoriaId = 4,
                             FotoUrl = "https://images.unsplash.com/photo-1535141192574-5d4897c12636",
                             GlaseadoId = 2,
+                            IsPersonalizado = false,
                             Nombre = "Rosca de Reyes",
                             RellenoId = 3,
                             Tamanio = "Grande"
@@ -413,6 +426,7 @@ namespace PasteleriaAPI.Migrations
                             CategoriaId = 3,
                             FotoUrl = "https://images.unsplash.com/photo-1535254973040-607b474cb50d",
                             GlaseadoId = 4,
+                            IsPersonalizado = false,
                             Nombre = "Pastel Nupcial Blanco",
                             RellenoId = 4,
                             Tamanio = "Extra Grande"
@@ -424,6 +438,7 @@ namespace PasteleriaAPI.Migrations
                             CategoriaId = 5,
                             FotoUrl = "https://images.unsplash.com/photo-1533134242443-d4fd215305ad",
                             GlaseadoId = 4,
+                            IsPersonalizado = false,
                             Nombre = "Cheesecake Keto",
                             RellenoId = 1,
                             Tamanio = "Chico"
@@ -435,6 +450,7 @@ namespace PasteleriaAPI.Migrations
                             CategoriaId = 4,
                             FotoUrl = "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3",
                             GlaseadoId = 7,
+                            IsPersonalizado = false,
                             Nombre = "Tres Leches",
                             RellenoId = 3,
                             Tamanio = "Mediano"
@@ -446,6 +462,7 @@ namespace PasteleriaAPI.Migrations
                             CategoriaId = 8,
                             FotoUrl = "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62",
                             GlaseadoId = 4,
+                            IsPersonalizado = false,
                             Nombre = "Pastel Vegano Zanahoria",
                             RellenoId = 4,
                             Tamanio = "Mediano"
@@ -457,6 +474,7 @@ namespace PasteleriaAPI.Migrations
                             CategoriaId = 9,
                             FotoUrl = "https://images.unsplash.com/photo-1562440499-64c9a111f713",
                             GlaseadoId = 1,
+                            IsPersonalizado = false,
                             Nombre = "Especial 50 Años",
                             RellenoId = 2,
                             Tamanio = "Grande"
@@ -468,6 +486,7 @@ namespace PasteleriaAPI.Migrations
                             CategoriaId = 1,
                             FotoUrl = "https://images.unsplash.com/photo-1550617931-e17a7b70dce2",
                             GlaseadoId = 3,
+                            IsPersonalizado = false,
                             Nombre = "Moka Intenso",
                             RellenoId = 4,
                             Tamanio = "Mediano"
@@ -479,6 +498,7 @@ namespace PasteleriaAPI.Migrations
                             CategoriaId = 2,
                             FotoUrl = "https://images.unsplash.com/photo-1616541823729-00fe0aacd32c",
                             GlaseadoId = 1,
+                            IsPersonalizado = false,
                             Nombre = "Unicornio Mágico",
                             RellenoId = 1,
                             Tamanio = "Grande"
@@ -490,6 +510,7 @@ namespace PasteleriaAPI.Migrations
                             CategoriaId = 1,
                             FotoUrl = "https://images.unsplash.com/photo-1519869325930-281384150729",
                             GlaseadoId = 5,
+                            IsPersonalizado = false,
                             Nombre = "Limón Cítrico",
                             RellenoId = 6,
                             Tamanio = "Chico"
@@ -501,6 +522,7 @@ namespace PasteleriaAPI.Migrations
                             CategoriaId = 1,
                             FotoUrl = "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62",
                             GlaseadoId = 3,
+                            IsPersonalizado = false,
                             Nombre = "Chocolate Extremo",
                             RellenoId = 4,
                             Tamanio = "Extra Grande"
@@ -511,27 +533,27 @@ namespace PasteleriaAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Cantidad")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Estatus")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("FechaEntrega")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("PastelId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -648,21 +670,21 @@ namespace PasteleriaAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Nombre")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Rol")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

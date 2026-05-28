@@ -8,9 +8,7 @@ namespace PasteleriaMaui.Services
     public class TransaccionesService
     {
         private readonly HttpClient _httpClient;
-        private readonly string _baseUrl = DeviceInfo.Platform == DevicePlatform.Android 
-            ? "http://10.0.2.2:5105/api" 
-            : "http://localhost:5105/api";
+        private readonly string _baseUrl = "https://dolcevita-guh8gshvd0dre8d3.mexicocentral-01.azurewebsites.net/";
 
         public TransaccionesService()
         {
@@ -21,7 +19,7 @@ namespace PasteleriaMaui.Services
         {
             try
             {
-                var url = $"{_baseUrl}/pedido" + (usuarioId.HasValue ? $"?usuarioId={usuarioId}" : "");
+                var url = $"{_baseUrl}api/pedido" + (usuarioId.HasValue ? $"?usuarioId={usuarioId}" : "");
                 return await _httpClient.GetFromJsonAsync<List<Pedido>>(url);
             }
             catch { return new List<Pedido>(); }
@@ -31,7 +29,7 @@ namespace PasteleriaMaui.Services
         {
             try
             {
-                var url = $"{_baseUrl}/merma" + (usuarioId.HasValue ? $"?usuarioId={usuarioId}" : "");
+                var url = $"{_baseUrl}api/merma" + (usuarioId.HasValue ? $"?usuarioId={usuarioId}" : "");
                 return await _httpClient.GetFromJsonAsync<List<Merma>>(url);
             }
             catch { return new List<Merma>(); }
@@ -46,7 +44,7 @@ namespace PasteleriaMaui.Services
         {
             try
             {
-                var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}/pedido", pedido, GetJsonOptions());
+                var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}api/pedido", pedido, GetJsonOptions());
                 return response.IsSuccessStatusCode;
             }
             catch { return false; }
@@ -57,7 +55,7 @@ namespace PasteleriaMaui.Services
             try
             {
                 var payload = new { Estatus = pedido.Estatus };
-                var response = await _httpClient.PutAsJsonAsync($"{_baseUrl}/pedido/{pedido.Id}", payload, GetJsonOptions());
+                var response = await _httpClient.PutAsJsonAsync($"{_baseUrl}api/pedido/{pedido.Id}", payload, GetJsonOptions());
                 if (response.IsSuccessStatusCode)
                 {
                     return (true, "Estatus actualizado correctamente.");
@@ -76,7 +74,7 @@ namespace PasteleriaMaui.Services
         {
             try
             {
-                var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}/merma", merma, GetJsonOptions());
+                var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}api/merma", merma, GetJsonOptions());
                 return response.IsSuccessStatusCode;
             }
             catch { return false; }
@@ -86,7 +84,7 @@ namespace PasteleriaMaui.Services
         {
             try
             {
-                var response = await _httpClient.PutAsJsonAsync($"{_baseUrl}/merma/{merma.Id}", merma, GetJsonOptions());
+                var response = await _httpClient.PutAsJsonAsync($"{_baseUrl}api/merma/{merma.Id}", merma, GetJsonOptions());
                 return response.IsSuccessStatusCode;
             }
             catch { return false; }

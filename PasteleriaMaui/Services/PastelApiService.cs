@@ -7,10 +7,7 @@ namespace PasteleriaMaui.Services
 	{
 		private readonly HttpClient _httpClient;
 
-		// URL base de la API adaptada según plataforma. localhost en Windows y 10.0.2.2 en Emulador Android.
-		private readonly string _baseUrl = DeviceInfo.Platform == DevicePlatform.Android 
-            ? "http://10.0.2.2:5105/api/pastel" 
-            : "http://localhost:5105/api/pastel";
+		private readonly string _baseUrl = "https://dolcevita-guh8gshvd0dre8d3.mexicocentral-01.azurewebsites.net/";
 
 		public PastelApiService()
 		{
@@ -21,7 +18,7 @@ namespace PasteleriaMaui.Services
 		{
 			try
 			{
-				var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}/nuevopastel", pastel);
+				var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}api/pastel/nuevopastel", pastel);
 				if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadFromJsonAsync<Pastel>();
@@ -37,24 +34,24 @@ namespace PasteleriaMaui.Services
 
         public async Task<List<CatBizcocho>> GetBizcochosAsync()
         {
-            try { return await _httpClient.GetFromJsonAsync<List<CatBizcocho>>($"{_baseUrl}/bizcochos"); } catch { return new List<CatBizcocho>(); }
+            try { return await _httpClient.GetFromJsonAsync<List<CatBizcocho>>($"{_baseUrl}api/pastel/bizcochos"); } catch { return new List<CatBizcocho>(); }
         }
 
         public async Task<List<CatRelleno>> GetRellenosAsync()
         {
-            try { return await _httpClient.GetFromJsonAsync<List<CatRelleno>>($"{_baseUrl}/rellenos"); } catch { return new List<CatRelleno>(); }
+            try { return await _httpClient.GetFromJsonAsync<List<CatRelleno>>($"{_baseUrl}api/pastel/rellenos"); } catch { return new List<CatRelleno>(); }
         }
 
         public async Task<List<CatGlaseado>> GetGlaseadosAsync()
         {
-            try { return await _httpClient.GetFromJsonAsync<List<CatGlaseado>>($"{_baseUrl}/glaseados"); } catch { return new List<CatGlaseado>(); }
+            try { return await _httpClient.GetFromJsonAsync<List<CatGlaseado>>($"{_baseUrl}api/pastel/glaseados"); } catch { return new List<CatGlaseado>(); }
         }
 
 		public async Task<List<Pastel>> GetPastelesAsync()
 		{
 			try
 			{
-				return await _httpClient.GetFromJsonAsync<List<Pastel>>($"{_baseUrl}/todospasteles");
+				return await _httpClient.GetFromJsonAsync<List<Pastel>>($"{_baseUrl}api/pastel/todospasteles");
 			}
 			catch (Exception ex)
 			{
@@ -67,7 +64,7 @@ namespace PasteleriaMaui.Services
 		{
 			try
 			{
-				return await _httpClient.GetFromJsonAsync<List<CatCategoria>>($"{_baseUrl}/todascategorias");
+				return await _httpClient.GetFromJsonAsync<List<CatCategoria>>($"{_baseUrl}api/pastel/todascategorias");
 			}
 			catch (Exception ex)
 			{
@@ -80,7 +77,7 @@ namespace PasteleriaMaui.Services
         {
             try
             {
-                var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}/nuevacategoria", categoria);
+                var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}api/pastel/nuevacategoria", categoria);
                 return response.IsSuccessStatusCode;
             }
             catch { return false; }
@@ -88,40 +85,40 @@ namespace PasteleriaMaui.Services
 
         public async Task<bool> EliminarCategoriaAsync(int id)
         {
-            try { return (await _httpClient.DeleteAsync($"{_baseUrl}/eliminarcategoria/{id}")).IsSuccessStatusCode; }
+            try { return (await _httpClient.DeleteAsync($"{_baseUrl}api/pastel/eliminarcategoria/{id}")).IsSuccessStatusCode; }
             catch { return false; }
         }
 
         public async Task<bool> RegistrarBizcochoAsync(CatBizcocho bizcocho)
         {
-            try { return (await _httpClient.PostAsJsonAsync($"{_baseUrl}/nuevobizcocho", bizcocho)).IsSuccessStatusCode; }
+            try { return (await _httpClient.PostAsJsonAsync($"{_baseUrl}api/pastel/nuevobizcocho", bizcocho)).IsSuccessStatusCode; }
             catch { return false; }
         }
         public async Task<bool> EliminarBizcochoAsync(int id)
         {
-            try { return (await _httpClient.DeleteAsync($"{_baseUrl}/eliminarbizcocho/{id}")).IsSuccessStatusCode; }
+            try { return (await _httpClient.DeleteAsync($"{_baseUrl}api/pastel/eliminarbizcocho/{id}")).IsSuccessStatusCode; }
             catch { return false; }
         }
 
         public async Task<bool> RegistrarRellenoAsync(CatRelleno relleno)
         {
-            try { return (await _httpClient.PostAsJsonAsync($"{_baseUrl}/nuevorelleno", relleno)).IsSuccessStatusCode; }
+            try { return (await _httpClient.PostAsJsonAsync($"{_baseUrl}api/pastel/nuevorelleno", relleno)).IsSuccessStatusCode; }
             catch { return false; }
         }
         public async Task<bool> EliminarRellenoAsync(int id)
         {
-            try { return (await _httpClient.DeleteAsync($"{_baseUrl}/eliminarrelleno/{id}")).IsSuccessStatusCode; }
+            try { return (await _httpClient.DeleteAsync($"{_baseUrl}api/pastel/eliminarrelleno/{id}")).IsSuccessStatusCode; }
             catch { return false; }
         }
 
         public async Task<bool> RegistrarGlaseadoAsync(CatGlaseado glaseado)
         {
-            try { return (await _httpClient.PostAsJsonAsync($"{_baseUrl}/nuevoglaseado", glaseado)).IsSuccessStatusCode; }
+            try { return (await _httpClient.PostAsJsonAsync($"{_baseUrl}api/pastel/nuevoglaseado", glaseado)).IsSuccessStatusCode; }
             catch { return false; }
         }
         public async Task<bool> EliminarGlaseadoAsync(int id)
         {
-            try { return (await _httpClient.DeleteAsync($"{_baseUrl}/eliminarglaseado/{id}")).IsSuccessStatusCode; }
+            try { return (await _httpClient.DeleteAsync($"{_baseUrl}api/pastel/eliminarglaseado/{id}")).IsSuccessStatusCode; }
             catch { return false; }
         }
 
@@ -129,7 +126,7 @@ namespace PasteleriaMaui.Services
 		{
 			try
 			{
-				var response = await _httpClient.PutAsJsonAsync($"{_baseUrl}/actualizarpastel", pastel);
+				var response = await _httpClient.PutAsJsonAsync($"{_baseUrl}api/pastel/actualizarpastel", pastel);
 				return response.IsSuccessStatusCode;
 			}
 			catch (Exception ex)
@@ -143,7 +140,7 @@ namespace PasteleriaMaui.Services
 		{
 			try
 			{
-				var response = await _httpClient.DeleteAsync($"{_baseUrl}/eliminarpastel/{id}");
+				var response = await _httpClient.DeleteAsync($"{_baseUrl}api/pastel/eliminarpastel/{id}");
 				return response.IsSuccessStatusCode;
 			}
 			catch (Exception ex)

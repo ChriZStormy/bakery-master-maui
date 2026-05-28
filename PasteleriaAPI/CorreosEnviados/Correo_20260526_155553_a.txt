@@ -1,0 +1,10 @@
+PARA: a
+ASUNTO: Actualización de Estatus - Pedido #1121
+
+CUERPO:
+Hola a,
+
+Tu pedido con el Folio #1121 ha cambiado su estatus a: Entregado.
+
+Saludos,
+Pasteleria App

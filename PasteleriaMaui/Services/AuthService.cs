@@ -6,9 +6,7 @@ namespace PasteleriaMaui.Services
     public class AuthService
     {
         private readonly HttpClient _httpClient;
-        private readonly string _baseUrl = DeviceInfo.Platform == DevicePlatform.Android 
-            ? "http://10.0.2.2:5105/api/auth" 
-            : "http://localhost:5105/api/auth";
+        private readonly string _baseUrl = "https://dolcevita-guh8gshvd0dre8d3.mexicocentral-01.azurewebsites.net/";
 
         public AuthService()
         {
@@ -21,7 +19,7 @@ namespace PasteleriaMaui.Services
             var json = System.Text.Json.JsonSerializer.Serialize(credenciales);
             var payload = new PasteleriaMaui.Helpers.EncryptedPayload { Data = PasteleriaMaui.Helpers.CryptoHelper.Encrypt(json) };
 
-            var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}/login", payload);
+            var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}api/auth/login", payload);
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadFromJsonAsync<Usuario>();
@@ -34,7 +32,7 @@ namespace PasteleriaMaui.Services
             var json = System.Text.Json.JsonSerializer.Serialize(nuevoUsuario);
             var payload = new PasteleriaMaui.Helpers.EncryptedPayload { Data = PasteleriaMaui.Helpers.CryptoHelper.Encrypt(json) };
 
-            var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}/register", payload);
+            var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}api/auth/register", payload);
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadFromJsonAsync<Usuario>();
