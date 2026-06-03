@@ -71,5 +71,3 @@ La solución contiene dos proyectos principales:
     *   Abre `PasteleriaApp.sln` en Visual Studio.
     *   Para ejecutar ambos proyectos simultáneamente, puedes configurar Visual Studio para "Proyectos de inicio múltiples" e iniciar ambos (`PasteleriaAPI` y `PasteleriaMaui`).
 
-## 📝 Licencia
-Este proyecto se distribuye bajo los términos especificados en el repositorio.
