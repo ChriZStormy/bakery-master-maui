@@ -12,6 +12,7 @@ namespace PasteleriaMaui.Views
             InitializeComponent();
             _authService = new AuthService();
         }
+        
 
         private async void OnRegisterClicked(object sender, EventArgs e)
         {
@@ -20,6 +21,7 @@ namespace PasteleriaMaui.Views
                 await DisplayAlert("Error", "Llena todos los campos", "OK");
                 return;
             }
+
 
             var emailRegex = new System.Text.RegularExpressions.Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
             var passRegex = new System.Text.RegularExpressions.Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
@@ -35,6 +37,7 @@ namespace PasteleriaMaui.Views
                 return;
             }
 
+
             var nuevoUsuario = new Usuario
             {
                 Nombre = NombreEntry.Text,
@@ -42,6 +45,7 @@ namespace PasteleriaMaui.Views
                 Password = PasswordEntry.Text,
                 Rol = RolPicker.SelectedItem.ToString()
             };
+
 
             var user = await _authService.RegisterAsync(nuevoUsuario);
             if (user != null)
@@ -55,10 +59,12 @@ namespace PasteleriaMaui.Views
             }
         }
 
+
         private void OnBackClicked(object sender, EventArgs e)
         {
             Application.Current.MainPage = new LoginPage();
         }
+
 
         private void OnTogglePasswordVisibilityClicked(object sender, EventArgs e)
         {

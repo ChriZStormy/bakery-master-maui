@@ -17,12 +17,14 @@ public partial class RegistrarPedidoPage : ContentPage
         }
     }
 
+
 	public RegistrarPedidoPage()
 	{
 		InitializeComponent();
         PickerFechaEntrega.MinimumDate = DateTime.Today;
         PickerFechaEntrega.Date = DateTime.Today.AddDays(2);
 	}
+
 
     private async void OnGuardarClicked(object sender, EventArgs e)
     {
@@ -32,9 +34,13 @@ public partial class RegistrarPedidoPage : ContentPage
         {
             await DisplayAlert("Error", "La cantidad debe ser mayor a cero.", "OK");
             return;
+
         }
 
+
+
         var transacciones = new TransaccionesService();
+
         var nuevoPedido = new Pedido
         {
             PastelId = PastelAComprar.Id,
@@ -43,7 +49,10 @@ public partial class RegistrarPedidoPage : ContentPage
             FechaEntrega = (DateTime)PickerFechaEntrega.Date
         };
 
+
+
         var success = await transacciones.CrearPedidoAsync(nuevoPedido);
+
         if (success)
         {
             await DisplayAlert("Éxito", "Tu pedido ha sido creado. Puedes verlo en el historial.", "OK");
@@ -53,5 +62,8 @@ public partial class RegistrarPedidoPage : ContentPage
         {
             await DisplayAlert("Error", "Hubo un problema al crear tu pedido.", "OK");
         }
+
+
+        
     }
 }
