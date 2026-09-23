@@ -17,6 +17,9 @@ namespace PasteleriaAPI.Controllers
         }
 
         [HttpPost("login")]
+
+        // Se recibe el payload encriptado desde el frontend por seguridad. 
+        // Luego se desencripta para validar las credenciales contra la base de datos.  
         public async Task<ActionResult<Usuario>> Login([FromBody] PasteleriaAPI.Helpers.EncryptedPayload payload)
         {
             try 
@@ -39,6 +42,9 @@ namespace PasteleriaAPI.Controllers
                 var json = PasteleriaAPI.Helpers.CryptoHelper.Decrypt(payload.Data);
                 var nuevoUsuario = System.Text.Json.JsonSerializer.Deserialize<Usuario>(json, new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
+                // Validaciones por expresiones regulares (Regex) para asegurar que 
+                // el formato del correo sea válido y la contraseña sea lo suficientemente segura.
+                
                 // Backend Regex Validations
                 var emailRegex = new System.Text.RegularExpressions.Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
                 var passRegex = new System.Text.RegularExpressions.Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");

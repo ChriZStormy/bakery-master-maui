@@ -59,6 +59,9 @@ namespace PasteleriaAPI.Controllers
             await _context.SaveChangesAsync();
 
             // Trigger Email Notification
+            // Notificación automática: Si el estatus del pedido cambia con éxito en la base de datos, 
+            // se dispara un correo electrónico al cliente utilizando el servicio IEmailService.
+            
             if (pedido.Usuario != null && !string.IsNullOrWhiteSpace(pedido.Usuario.Email))
             {
                 var subject = $"Actualización de Estatus - Pedido #{pedido.Id}";
