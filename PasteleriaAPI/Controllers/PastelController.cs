@@ -22,6 +22,9 @@ namespace PasteleriaAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Pastel>>> GetAllPasteles()
         {
+            // Delegamos la obtención de los datos a la capa de servicios (IPastelService) 
+            // para mantener el controlador limpio y separar la lógica de acceso a datos.
+
             var pasteles = await pastelSercvice.GetAllPastelesAsync();
 
 
@@ -112,6 +115,9 @@ namespace PasteleriaAPI.Controllers
         }
 
         [HttpPost("nuevobizcocho")]
+
+        // Endpoint para administradores. Inyectamos directamente el ApplicationDbContext 
+        // para agregar rápidamente un nuevo elemento al catálogo dinámico de bizcochos.
         public async Task<ActionResult<CatBizcocho>> SetBizcocho([FromBody] CatBizcocho bizcocho, [FromServices] ApplicationDbContext db)
         {
             db.CatBizcochos.Add(bizcocho);
