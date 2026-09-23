@@ -9,7 +9,7 @@
 
 Aplicación integral para la gestión de una pastelería. El proyecto consta de un backend desarrollado con ASP.NET Core (Web API) y un cliente multiplataforma desarrollado con .NET MAUI utilizando el patrón estricto MVVM.
 
-## 🚀 Características Principales
+## 🚀 Características Principales 
 
 *   **Gestión de Pasteles**: Operaciones CRUD completas (Crear, Leer, Actualizar, Eliminar) para el menú de pasteles, integrando selectores en tiempo real.
 *   **Pedidos y Estatus**: Registro del historial de pedidos, reporte de mermas y sistema de actualización de estatus sin bloqueos por validación de objetos profundos (implementación de DTOs).
