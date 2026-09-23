@@ -2,7 +2,7 @@ namespace PasteleriaMaui.Models
 {
 	public class Pastel
 	{
-		public int Id { get; set; }
+		public int Id { get; set; } 
 		public int CategoriaId { get; set; }
         public CatCategoria Categoria { get; set; }
 
