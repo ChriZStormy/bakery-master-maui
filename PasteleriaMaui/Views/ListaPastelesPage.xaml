@@ -115,7 +115,7 @@
 
                             <!-- Botón de Acción -->
                             <Button Grid.Column="2" 
-                                    Text="Pedir ya" 
+                                    Text="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.BotonAccionTexto}" 
                                     HeightRequest="40" 
                                     Padding="20,0" 
                                     BackgroundColor="#8B5E34" 

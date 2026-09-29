@@ -22,6 +22,7 @@ namespace PasteleriaMaui.Views
             {
                 BotonCatalogos.IsVisible = false;
                 BotonMermas.IsVisible = true;
+                BotonMermas.Text = "Reclamos";
                 BotonGestiones.Text = "Menú";
                 BotonPedidos.Text = "Realizar pedido";
             }
@@ -29,6 +30,7 @@ namespace PasteleriaMaui.Views
             {
                 BotonCatalogos.IsVisible = true;
                 BotonMermas.IsVisible = true;
+                BotonMermas.Text = "Reportes de Mermas";
                 BotonGestiones.Text = "Gestión de Pasteles";
                 BotonPedidos.Text = "Pedidos";
             }
@@ -78,6 +80,8 @@ namespace PasteleriaMaui.Views
         private void OnSalirClicked(object sender, EventArgs e)
         {
             AppSession.CurrentUser = null;
+            AppSession.Token = null;
+            SecureStorage.Remove("jwt_token");
             Application.Current.MainPage = new LoginPage();
         }
 	}

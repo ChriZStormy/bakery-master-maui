@@ -99,7 +99,7 @@ namespace PasteleriaMaui.ViewModels
 			}
 			else
 			{
-				await Application.Current.MainPage.DisplayAlert("Error", "No se pudo conectar con la API.", "OK");
+				if (!AppSession.HasAuthError) { await Application.Current.MainPage.DisplayAlert("Error", "No se pudo conectar con la API.", "OK"); } AppSession.HasAuthError = false;
 			}
 		}
 

@@ -26,7 +26,24 @@ namespace PasteleriaAPI.Controllers
 
                 var user = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == credenciales.Email && u.Password == credenciales.Password);
                 if (user == null) return Unauthorized("Credenciales incorrectas");
-                return Ok(user);
+                
+                var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+                var key = System.Text.Encoding.UTF8.GetBytes("P@steleriaS3cr3tK3y1234567890123");
+                var tokenDescriptor = new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
+                {
+                    Subject = new System.Security.Claims.ClaimsIdentity(new[]
+                    {
+                        new System.Security.Claims.Claim("id", user.Id.ToString()),
+                        new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, user.Nombre),
+                        new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Role, user.Rol)
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(7),
+                    SigningCredentials = new Microsoft.IdentityModel.Tokens.SigningCredentials(new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(key), Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                var tokenString = tokenHandler.WriteToken(token);
+
+                return Ok(new { Token = tokenString, Usuario = user });
             }
             catch { return BadRequest("Invalid Payload"); }
         }
@@ -55,7 +72,24 @@ namespace PasteleriaAPI.Controllers
 
                 _context.Usuarios.Add(nuevoUsuario);
                 await _context.SaveChangesAsync();
-                return Ok(nuevoUsuario);
+                
+                var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+                var key = System.Text.Encoding.UTF8.GetBytes("P@steleriaS3cr3tK3y1234567890123");
+                var tokenDescriptor = new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
+                {
+                    Subject = new System.Security.Claims.ClaimsIdentity(new[]
+                    {
+                        new System.Security.Claims.Claim("id", nuevoUsuario.Id.ToString()),
+                        new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, nuevoUsuario.Nombre),
+                        new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Role, nuevoUsuario.Rol)
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(7),
+                    SigningCredentials = new Microsoft.IdentityModel.Tokens.SigningCredentials(new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(key), Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                var tokenString = tokenHandler.WriteToken(token);
+
+                return Ok(new { Token = tokenString, Usuario = nuevoUsuario });
             }
             catch { return BadRequest("Invalid Payload"); }
         }

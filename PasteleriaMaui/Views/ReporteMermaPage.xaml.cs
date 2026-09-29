@@ -33,12 +33,14 @@ public partial class ReporteMermaPage : ContentPage
         int? filterId = null;
         if (AppSession.CurrentUser != null && AppSession.CurrentUser.Rol == "Admin")
         {
-            FormularioMerma.IsVisible = false; 
+            FormularioMerma.IsVisible = false;
+            this.Title = "Reportes de Mermas";
         }
         else 
         {
             FormularioMerma.IsVisible = true;
             filterId = AppSession.CurrentUser?.Id;
+            this.Title = "Mis Reclamos";
         }
 
         var mermasApi = await _transaccionesService.GetMermasAsync(filterId);

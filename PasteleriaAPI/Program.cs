@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using PasteleriaAPI.Data;
 using PasteleriaAPI.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +16,8 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddCors(options => { options.AddPolicy("AllowAll", policy => { policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); }); });
 
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IPastelService, PastelService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
@@ -27,6 +29,25 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
     });
 });
 
+
+
+// Add JWT Auth
+var jwtKey = builder.Configuration["Jwt:Key"] ?? "P@steleriaS3cr3tK3y1234567890123";
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+
 var app = builder.Build();
 
 app.UseCors("AllowAll");
@@ -37,8 +58,9 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection(); // Comentado para permitir llamadas HTTP desde emulador Android
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

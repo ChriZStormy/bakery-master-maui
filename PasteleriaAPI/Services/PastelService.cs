@@ -71,6 +71,11 @@ namespace PasteleriaAPI.Services
 
 		public async Task<Pastel> SetPastelAsync(Pastel pastel)
 		{
+            pastel.Categoria = null;
+            pastel.Bizcocho = null;
+            pastel.Relleno = null;
+            pastel.Glaseado = null;
+
 			await dbContext.Pasteles.AddAsync(pastel);
 			var nuevoPastelGuardado = await dbContext.SaveChangesAsync();
 			return nuevoPastelGuardado > 0 ? pastel : null;

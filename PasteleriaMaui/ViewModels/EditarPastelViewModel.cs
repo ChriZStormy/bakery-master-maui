@@ -153,7 +153,7 @@ namespace PasteleriaMaui.ViewModels
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "No se pudo actualizar el pastel.", "OK");
+                if (!AppSession.HasAuthError) { await Application.Current.MainPage.DisplayAlert("Error", "No se pudo actualizar el pastel.", "OK"); } AppSession.HasAuthError = false;
             }
         }
 
@@ -164,3 +164,4 @@ namespace PasteleriaMaui.ViewModels
         }
     }
 }
+

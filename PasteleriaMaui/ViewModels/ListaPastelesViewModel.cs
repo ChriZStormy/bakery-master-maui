@@ -24,6 +24,8 @@ namespace PasteleriaMaui.ViewModels
         public ICommand RegistrarNuevoCommand { get; }
 
         public bool IsAdmin => AppSession.CurrentUser?.Rol == "Admin";
+        public bool IsCliente => AppSession.CurrentUser?.Rol == "Cliente";
+        public string BotonAccionTexto => IsAdmin ? "Detalles" : "Pedir ya";
 
         public ListaPastelesViewModel()
         {
@@ -68,3 +70,4 @@ namespace PasteleriaMaui.ViewModels
         }
     }
 }
+

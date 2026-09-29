@@ -57,7 +57,7 @@ namespace PasteleriaMaui.ViewModels
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert("Error", $"No se pudo actualizar el estatus.\nDetalle: {resultado.Mensaje}", "OK");
+                if (!AppSession.HasAuthError) { await Application.Current.MainPage.DisplayAlert("Error", $"No se pudo actualizar el estatus.\nDetalle: {resultado.Mensaje}", "OK"); } AppSession.HasAuthError = false;
             }
         }
 
@@ -68,3 +68,5 @@ namespace PasteleriaMaui.ViewModels
         }
     }
 }
+
+

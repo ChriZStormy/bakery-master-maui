@@ -20,6 +20,20 @@ namespace PasteleriaMaui.ViewModels
             {
                 _pastelSeleccionado = value;
                 OnPropertyChanged();
+                if (_pastelSeleccionado != null && _pastelSeleccionado.Categoria == null)
+                {
+                    _ = CargarDetallesCompletosAsync(_pastelSeleccionado.Id);
+                }
+            }
+        }
+
+        private async Task CargarDetallesCompletosAsync(int id)
+        {
+            var completo = await _apiService.GetPastelByIdAsync(id);
+            if (completo != null)
+            {
+                _pastelSeleccionado = completo;
+                OnPropertyChanged(nameof(PastelSeleccionado));
             }
         }
 
@@ -65,7 +79,7 @@ namespace PasteleriaMaui.ViewModels
                 }
                 else
                 {
-                    await Application.Current.MainPage.DisplayAlert("Error", "No se pudo eliminar el pastel.", "OK");
+                    if (!AppSession.HasAuthError) { await Application.Current.MainPage.DisplayAlert("Error", "No se pudo eliminar el pastel.", "OK"); } AppSession.HasAuthError = false;
                 }
             }
         }
@@ -93,3 +107,4 @@ namespace PasteleriaMaui.ViewModels
         }
     }
 }
+

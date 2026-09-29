@@ -3,14 +3,26 @@ using PasteleriaMaui.Models;
 
 namespace PasteleriaMaui.Services
 {
+    public class AuthResponse
+    {
+        public string Token { get; set; }
+        public Usuario Usuario { get; set; }
+    }
+
     public class AuthService
     {
         private readonly HttpClient _httpClient;
-        private readonly string _baseUrl = "https://dolcevita-guh8gshvd0dre8d3.mexicocentral-01.azurewebsites.net/";
+#if ANDROID
+        private readonly string _baseUrl = "http://10.0.2.2:5105/";
+#else
+        private readonly string _baseUrl = "http://127.0.0.1:5105/";
+#endif
 
         public AuthService()
         {
-            _httpClient = new HttpClient();
+            var handler = MauiProgram.GetHttpClientHandler();
+            var authHandler = new AuthHttpHandler(handler);
+            _httpClient = new HttpClient(authHandler);
         }
 
         public async Task<Usuario> LoginAsync(string email, string password)
@@ -22,7 +34,13 @@ namespace PasteleriaMaui.Services
             var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}api/auth/login", payload);
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadFromJsonAsync<Usuario>();
+                var authResult = await response.Content.ReadFromJsonAsync<AuthResponse>();
+                if (authResult != null)
+                {
+                    await SecureStorage.SetAsync("jwt_token", authResult.Token);
+                    AppSession.Token = authResult.Token;
+                    return authResult.Usuario;
+                }
             }
             return null;
         }
@@ -35,7 +53,13 @@ namespace PasteleriaMaui.Services
             var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}api/auth/register", payload);
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadFromJsonAsync<Usuario>();
+                var authResult = await response.Content.ReadFromJsonAsync<AuthResponse>();
+                if (authResult != null)
+                {
+                    await SecureStorage.SetAsync("jwt_token", authResult.Token);
+                    AppSession.Token = authResult.Token;
+                    return authResult.Usuario;
+                }
             }
             return null;
         }

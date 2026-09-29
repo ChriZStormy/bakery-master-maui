@@ -105,7 +105,7 @@ namespace PasteleriaMaui.ViewModels
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "No se pudo registrar tu pastel.", "OK");
+                if (!AppSession.HasAuthError) { await Application.Current.MainPage.DisplayAlert("Error", "No se pudo registrar tu pastel.", "OK"); } AppSession.HasAuthError = false;
             }
         }
 
@@ -116,3 +116,5 @@ namespace PasteleriaMaui.ViewModels
         }
     }
 }
+
+

@@ -32,6 +32,11 @@ namespace PasteleriaAPI.Controllers
         {
             merma.Fecha = DateTime.Now;
             merma.Estatus = "Pendiente";
+
+            // Evitar re-inserción de propiedades de navegación anidadas
+            merma.Pastel = null;
+            merma.Usuario = null;
+
             _context.Mermas.Add(merma);
             await _context.SaveChangesAsync();
             return Ok(merma);

@@ -19,6 +19,20 @@ namespace PasteleriaAPI.Controllers
             this.pastelSercvice = pastelSercvice;
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Pastel>> GetPastelById(int id, [FromServices] ApplicationDbContext db)
+        {
+            var pastel = await db.Pasteles
+                .Include(p => p.Categoria)
+                .Include(p => p.Bizcocho)
+                .Include(p => p.Relleno)
+                .Include(p => p.Glaseado)
+                .FirstOrDefaultAsync(p => p.Id == id);
+            
+            if (pastel == null) return NotFound();
+            return Ok(pastel);
+        }
+
         [HttpGet]
         public async Task<ActionResult<List<Pastel>>> GetAllPasteles()
         {
@@ -36,6 +50,7 @@ namespace PasteleriaAPI.Controllers
             }
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
         [HttpPost("nuevacategoria")]
         public async Task<ActionResult<CatCategoria>> SetCategoria([FromBody] CatCategoria categoria)
         {
@@ -51,6 +66,7 @@ namespace PasteleriaAPI.Controllers
 
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
         [HttpPost("nuevopastel")]
         public async Task<ActionResult<Pastel>> SetPastel([FromBody] Pastel pastel)
         {
@@ -93,6 +109,7 @@ namespace PasteleriaAPI.Controllers
             }
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
         [HttpDelete("eliminarcategoria/{id}")]
         public async Task<ActionResult<bool>> DeleteCategoria(int id, [FromServices] ApplicationDbContext db)
         {
@@ -103,6 +120,7 @@ namespace PasteleriaAPI.Controllers
             return Ok(true);
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
         [HttpPut("actualizarcategoria")]
         public async Task<ActionResult<CatCategoria>> UpdateCategoria([FromBody] CatCategoria categoria, [FromServices] ApplicationDbContext db)
         {
@@ -111,6 +129,7 @@ namespace PasteleriaAPI.Controllers
             return Ok(categoria);
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
         [HttpPost("nuevobizcocho")]
         public async Task<ActionResult<CatBizcocho>> SetBizcocho([FromBody] CatBizcocho bizcocho, [FromServices] ApplicationDbContext db)
         {
@@ -119,6 +138,7 @@ namespace PasteleriaAPI.Controllers
             return Ok(bizcocho);
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
         [HttpDelete("eliminarbizcocho/{id}")]
         public async Task<ActionResult<bool>> DeleteBizcocho(int id, [FromServices] ApplicationDbContext db)
         {
@@ -129,6 +149,7 @@ namespace PasteleriaAPI.Controllers
             return Ok(true);
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
         [HttpPut("actualizarbizcocho")]
         public async Task<ActionResult<CatBizcocho>> UpdateBizcocho([FromBody] CatBizcocho bizcocho, [FromServices] ApplicationDbContext db)
         {
@@ -137,6 +158,7 @@ namespace PasteleriaAPI.Controllers
             return Ok(bizcocho);
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
         [HttpPost("nuevorelleno")]
         public async Task<ActionResult<CatRelleno>> SetRelleno([FromBody] CatRelleno relleno, [FromServices] ApplicationDbContext db)
         {
@@ -145,6 +167,7 @@ namespace PasteleriaAPI.Controllers
             return Ok(relleno);
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
         [HttpDelete("eliminarrelleno/{id}")]
         public async Task<ActionResult<bool>> DeleteRelleno(int id, [FromServices] ApplicationDbContext db)
         {
@@ -155,6 +178,7 @@ namespace PasteleriaAPI.Controllers
             return Ok(true);
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
         [HttpPut("actualizarrelleno")]
         public async Task<ActionResult<CatRelleno>> UpdateRelleno([FromBody] CatRelleno relleno, [FromServices] ApplicationDbContext db)
         {
@@ -163,6 +187,7 @@ namespace PasteleriaAPI.Controllers
             return Ok(relleno);
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
         [HttpPost("nuevoglaseado")]
         public async Task<ActionResult<CatGlaseado>> SetGlaseado([FromBody] CatGlaseado glaseado, [FromServices] ApplicationDbContext db)
         {
@@ -171,6 +196,7 @@ namespace PasteleriaAPI.Controllers
             return Ok(glaseado);
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
         [HttpDelete("eliminarglaseado/{id}")]
         public async Task<ActionResult<bool>> DeleteGlaseado(int id, [FromServices] ApplicationDbContext db)
         {
@@ -181,6 +207,7 @@ namespace PasteleriaAPI.Controllers
             return Ok(true);
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
         [HttpPut("actualizarglaseado")]
         public async Task<ActionResult<CatGlaseado>> UpdateGlaseado([FromBody] CatGlaseado glaseado, [FromServices] ApplicationDbContext db)
         {
@@ -189,6 +216,7 @@ namespace PasteleriaAPI.Controllers
             return Ok(glaseado);
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
         [HttpDelete("eliminarpastel/{id}")]
         public async Task<ActionResult<bool>> DeletePastel(int id)
         {
@@ -203,7 +231,7 @@ namespace PasteleriaAPI.Controllers
             }
         }
 
-
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
         [HttpPut("actualizarpastel")]
         public async Task<ActionResult<Pastel>> UpdatePastel([FromBody] Pastel pastel)
         {

@@ -16,10 +16,22 @@ namespace PasteleriaMaui
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();
+        }
+
+        public static HttpClientHandler GetHttpClientHandler()
+        {
+            var handler = new HttpClientHandler();
+
+#if DEBUG
+            // Permitir conexiones HTTP sin certificado en desarrollo
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+#endif
+
+            return handler;
         }
     }
 }

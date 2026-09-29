@@ -23,15 +23,22 @@ namespace PasteleriaMaui.Views
                 return;
             }
 
-            var user = await _authService.LoginAsync(email, password);
-            if (user != null)
+            try
             {
-                AppSession.CurrentUser = user;
-                Application.Current.MainPage = new AppShell();
+                var user = await _authService.LoginAsync(email, password);
+                if (user != null)
+                {
+                    AppSession.CurrentUser = user;
+                    Application.Current.MainPage = new AppShell();
+                }
+                else
+                {
+                    await DisplayAlert("Error", "Credenciales incorrectas", "OK");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                await DisplayAlert("Error", "Credenciales incorrectas", "OK");
+                await DisplayAlert("Error de Conexión", "No se pudo conectar al servidor de la API. Asegúrate de que PasteleriaAPI esté corriendo. Detalle: " + ex.Message, "OK");
             }
         }
 

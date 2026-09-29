@@ -39,6 +39,11 @@ namespace PasteleriaAPI.Controllers
         {
             pedido.Fecha = DateTime.Now;
             pedido.Estatus = "Pendiente";
+            
+            // Evitar re-inserción de propiedades de navegación anidadas
+            pedido.Pastel = null;
+            pedido.Usuario = null;
+
             _context.Pedidos.Add(pedido);
             await _context.SaveChangesAsync();
             return Ok(pedido);
