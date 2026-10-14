@@ -32,15 +32,38 @@
                         </Border>
                     </VerticalStackLayout>
 
-                    <VerticalStackLayout Spacing="6">
-                        <Label Text="Fecha deseada de Entrega" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
-                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="12" />
-                            </Border.StrokeShape>
-                            <DatePicker x:Name="PickerFechaEntrega" Format="dd/MM/yyyy" TextColor="#3E2723" BackgroundColor="Transparent" VerticalOptions="Center"/>
-                        </Border>
-                    </VerticalStackLayout>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+                        <VerticalStackLayout Spacing="6" Grid.Column="0">
+                            <Label Text="Fecha deseada de Entrega" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
+                            <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <DatePicker x:Name="PickerFechaEntrega" Format="dd/MM/yyyy" TextColor="#3E2723" BackgroundColor="Transparent" VerticalOptions="Center"/>
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="6" Grid.Column="1">
+                            <Label Text="Hora deseada (⏰)" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
+                            <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <TimePicker x:Name="PickerHoraEntrega" Time="14:00:00" Format="HH:mm" TextColor="#3E2723" BackgroundColor="Transparent" VerticalOptions="Center"/>
+                            </Border>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <Border Stroke="#8B5E34" StrokeThickness="1" BackgroundColor="#FAF8F5" Padding="15" Margin="0,5,0,0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Resumen de Compra" FontSize="14" FontAttributes="Bold" TextColor="#8B5E34" />
+                            <Label x:Name="LblTotalEstimado" Text="Total a pagar: Calculando..." FontSize="16" FontAttributes="Bold" TextColor="#2E7D32" />
+                            <Label Text="* Se enviará automáticamente tu comprobante con el folio y desglose a tu correo electrónico." FontSize="11" TextColor="#795548" />
+                        </VerticalStackLayout>
+                    </Border>
 				</VerticalStackLayout>
 			</Border>
 

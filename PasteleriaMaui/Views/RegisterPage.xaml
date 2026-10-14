@@ -120,6 +120,7 @@
                                 VerticalOptions="Center">
                             <Picker.Items>
                                 <x:String>Cliente</x:String>
+                                <x:String>Repostero</x:String>
                                 <x:String>Admin</x:String>
                             </Picker.Items>
                         </Picker>

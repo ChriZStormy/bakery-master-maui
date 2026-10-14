@@ -74,7 +74,8 @@ namespace PasteleriaAPI.Data
             );
             modelBuilder.Entity<Usuario>().HasData(
                 new Usuario { Id = 1, Nombre = "Admin Master", Email = "admin@pasteleria.com", Password = "admin", Rol = "Admin" },
-                new Usuario { Id = 2, Nombre = "Cliente Juan", Email = "cliente@correo.com", Password = "123", Rol = "Cliente" }
+                new Usuario { Id = 2, Nombre = "Cliente Juan", Email = "cliente@correo.com", Password = "123", Rol = "Cliente" },
+                new Usuario { Id = 3, Nombre = "Chef Repostero Carlos", Email = "repostero@pasteleria.com", Password = "123", Rol = "Repostero" }
             );
 
             modelBuilder.Entity<Pedido>().HasData(

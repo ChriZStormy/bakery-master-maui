@@ -6,12 +6,12 @@ namespace PasteleriaAPI.Services
 {
     public interface IEmailService
     {
-        Task SendEmailAsync(string toEmail, string subject, string body);
+        Task SendEmailAsync(string toEmail, string subject, string body, string? htmlBody = null);
     }
 
     public class EmailService : IEmailService
     {
-        public async Task SendEmailAsync(string toEmail, string subject, string body)
+        public async Task SendEmailAsync(string toEmail, string subject, string body, string? htmlBody = null)
         {
             try
             {
@@ -20,18 +20,31 @@ namespace PasteleriaAPI.Services
                 message.To.Add(new MailboxAddress("", toEmail));
                 message.Subject = subject;
 
-                message.Body = new TextPart("plain")
+                var builder = new BodyBuilder();
+                builder.TextBody = body;
+                if (!string.IsNullOrWhiteSpace(htmlBody))
                 {
-                    Text = body
-                };
+                    builder.HtmlBody = htmlBody;
+                }
+                message.Body = builder.ToMessageBody();
 
                 // 1. SIMULACIÓN: Guardar el correo en una carpeta local para verificar que funciona
                 var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "CorreosEnviados");
                 if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
                 
-                var filePath = Path.Combine(folderPath, $"Correo_{DateTime.Now:yyyyMMdd_HHmmss}_{toEmail}.txt");
-                await File.WriteAllTextAsync(filePath, $"PARA: {toEmail}\nASUNTO: {subject}\n\nCUERPO:\n{body}");
-                Console.WriteLine($"[EXITO] Correo simulado guardado en: {filePath}");
+                var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                var cleanEmail = toEmail.Replace("@", "_at_").Replace(".", "_");
+                
+                var txtFilePath = Path.Combine(folderPath, $"Correo_{timestamp}_{cleanEmail}.txt");
+                await File.WriteAllTextAsync(txtFilePath, $"PARA: {toEmail}\nASUNTO: {subject}\n\nCUERPO:\n{body}");
+                Console.WriteLine($"[EXITO] Correo simulado guardado en: {txtFilePath}");
+
+                if (!string.IsNullOrWhiteSpace(htmlBody))
+                {
+                    var htmlFilePath = Path.Combine(folderPath, $"Correo_{timestamp}_{cleanEmail}.html");
+                    await File.WriteAllTextAsync(htmlFilePath, htmlBody);
+                    Console.WriteLine($"[EXITO] Vista previa HTML guardada en: {htmlFilePath}");
+                }
 
                 // 2. PRODUCCIÓN: Envío Real (Requiere credenciales reales)
                 /*

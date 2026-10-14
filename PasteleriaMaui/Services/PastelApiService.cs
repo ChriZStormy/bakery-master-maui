@@ -6,8 +6,7 @@ namespace PasteleriaMaui.Services
 	public class PastelApiService
 	{
 		private readonly HttpClient _httpClient;
-
-		private readonly string _baseUrl = "https://dolcevita-guh8gshvd0dre8d3.mexicocentral-01.azurewebsites.net/";
+		private string _baseUrl => PasteleriaMaui.Helpers.ApiConfig.BaseUrl;
 
 		public PastelApiService()
 		{

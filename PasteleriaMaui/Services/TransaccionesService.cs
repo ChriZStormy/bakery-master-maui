@@ -8,7 +8,7 @@ namespace PasteleriaMaui.Services
     public class TransaccionesService
     {
         private readonly HttpClient _httpClient;
-        private readonly string _baseUrl = "https://dolcevita-guh8gshvd0dre8d3.mexicocentral-01.azurewebsites.net/";
+        private string BaseUrl => PasteleriaMaui.Helpers.ApiConfig.BaseUrl;
 
         public TransaccionesService()
         {
@@ -19,7 +19,7 @@ namespace PasteleriaMaui.Services
         {
             try
             {
-                var url = $"{_baseUrl}api/pedido" + (usuarioId.HasValue ? $"?usuarioId={usuarioId}" : "");
+                var url = $"{BaseUrl}api/pedido" + (usuarioId.HasValue ? $"?usuarioId={usuarioId}" : "");
                 return await _httpClient.GetFromJsonAsync<List<Pedido>>(url);
             }
             catch { return new List<Pedido>(); }
@@ -29,7 +29,7 @@ namespace PasteleriaMaui.Services
         {
             try
             {
-                var url = $"{_baseUrl}api/merma" + (usuarioId.HasValue ? $"?usuarioId={usuarioId}" : "");
+                var url = $"{BaseUrl}api/merma" + (usuarioId.HasValue ? $"?usuarioId={usuarioId}" : "");
                 return await _httpClient.GetFromJsonAsync<List<Merma>>(url);
             }
             catch { return new List<Merma>(); }
@@ -44,18 +44,18 @@ namespace PasteleriaMaui.Services
         {
             try
             {
-                var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}api/pedido", pedido, GetJsonOptions());
+                var response = await _httpClient.PostAsJsonAsync($"{BaseUrl}api/pedido", pedido, GetJsonOptions());
                 return response.IsSuccessStatusCode;
             }
             catch { return false; }
         }
 
-        public async Task<(bool Exito, string Mensaje)> ActualizarPedidoAsync(Pedido pedido)
+        public async Task<(bool Exito, string Mensaje)> ActualizarEstatusPedidoAsync(int pedidoId, string nuevoEstatus)
         {
             try
             {
-                var payload = new { Estatus = pedido.Estatus };
-                var response = await _httpClient.PutAsJsonAsync($"{_baseUrl}api/pedido/{pedido.Id}", payload, GetJsonOptions());
+                var payload = new { Estatus = nuevoEstatus };
+                var response = await _httpClient.PutAsJsonAsync($"{BaseUrl}api/pedido/{pedidoId}", payload, GetJsonOptions());
                 if (response.IsSuccessStatusCode)
                 {
                     return (true, "Estatus actualizado correctamente.");
@@ -70,11 +70,16 @@ namespace PasteleriaMaui.Services
             }
         }
 
+        public async Task<(bool Exito, string Mensaje)> ActualizarPedidoAsync(Pedido pedido)
+        {
+            return await ActualizarEstatusPedidoAsync(pedido.Id, pedido.Estatus);
+        }
+
         public async Task<bool> CrearMermaAsync(Merma merma)
         {
             try
             {
-                var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}api/merma", merma, GetJsonOptions());
+                var response = await _httpClient.PostAsJsonAsync($"{BaseUrl}api/merma", merma, GetJsonOptions());
                 return response.IsSuccessStatusCode;
             }
             catch { return false; }
@@ -84,7 +89,7 @@ namespace PasteleriaMaui.Services
         {
             try
             {
-                var response = await _httpClient.PutAsJsonAsync($"{_baseUrl}api/merma/{merma.Id}", merma, GetJsonOptions());
+                var response = await _httpClient.PutAsJsonAsync($"{BaseUrl}api/merma/{merma.Id}", merma, GetJsonOptions());
                 return response.IsSuccessStatusCode;
             }
             catch { return false; }
