@@ -21,6 +21,7 @@ namespace PasteleriaMaui.ViewModels
         public string Tamanio { get; set; }
         public string FotoUrl { get; set; }
         public DateTime FechaEntrega { get; set; } = DateTime.Today.AddDays(2);
+        public TimeSpan HoraEntrega { get; set; } = new TimeSpan(14, 0, 0);
         public DateTime FechaMinima => DateTime.Today;
         public string Cantidad { get; set; } = "1";
 
@@ -84,12 +85,15 @@ namespace PasteleriaMaui.ViewModels
             var pastelCreado = await _pastelService.RegistrarPastelAsync(nuevoPastel);
             if (pastelCreado != null)
             {
+                var fechaHoraFinal = FechaEntrega.Date + HoraEntrega;
+
                 var nuevoPedido = new Pedido
                 {
                     PastelId = pastelCreado.Id,
-                    UsuarioId = AppSession.CurrentUser.Id,
+                    UsuarioId = AppSession.CurrentUser?.Id ?? 2,
                     Cantidad = qty,
-                    FechaEntrega = FechaEntrega
+                    FechaEntrega = fechaHoraFinal,
+                    Estatus = "Pendiente"
                 };
 
                 var exito = await _transaccionesService.CrearPedidoAsync(nuevoPedido);

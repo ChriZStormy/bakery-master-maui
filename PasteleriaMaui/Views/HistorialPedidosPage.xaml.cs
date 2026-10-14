@@ -8,91 +8,111 @@ public partial class HistorialPedidosPage : ContentPage
 {
     private readonly TransaccionesService _transaccionesService;
     private List<Pedido> _todosLosPedidos = new();
-    private string _currentMainTab = "En Proceso";
-    private string _currentSubTab = "Pasteles";
+    private string _currentTab = "Pendientes / Cocina";
 
     public ObservableCollection<Pedido> Pedidos { get; set; } = new ObservableCollection<Pedido>();
 
-	public HistorialPedidosPage()
-	{
-		InitializeComponent();
+    public HistorialPedidosPage()
+    {
+        InitializeComponent();
         _transaccionesService = new TransaccionesService();
         BindingContext = this;
-	}
+    }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        
+        await CargarPedidos();
+    }
+
+    private async Task CargarPedidos()
+    {
+        var rol = AppSession.CurrentUser?.Rol;
         int? filterId = null;
-        if (AppSession.CurrentUser != null && AppSession.CurrentUser.Rol == "Cliente")
+
+        if (rol == "Cliente")
         {
-            filterId = AppSession.CurrentUser.Id;
+            filterId = AppSession.CurrentUser?.Id;
             BtnNuevoPedido.IsVisible = true;
             BtnCalendario.IsVisible = false;
             LblLeyenda.IsVisible = true;
-            this.Title = "Realizar pedido";
+            LblLeyenda.Text = "Pedidos que has realizado";
+            this.Title = "Mis Pedidos";
+            TabsContainer.IsVisible = false;
         }
-        else 
+        else if (rol == "Repostero" || rol == "Empleado/Repostero")
         {
             BtnNuevoPedido.IsVisible = false;
             BtnCalendario.IsVisible = true;
-            LblLeyenda.IsVisible = false;
+            LblLeyenda.IsVisible = true;
+            LblLeyenda.Text = "Taller de Repostería - Comanda de Cocina";
+            this.Title = "Comanda de Cocina";
+            TabsContainer.IsVisible = true;
+        }
+        else // Admin
+        {
+            BtnNuevoPedido.IsVisible = false;
+            BtnCalendario.IsVisible = true;
+            LblLeyenda.IsVisible = true;
+            LblLeyenda.Text = "Gestión de Pedidos";
             this.Title = "Historial de Pedidos";
+            TabsContainer.IsVisible = true;
         }
 
         var pedidos = await _transaccionesService.GetPedidosAsync(filterId);
-        
-        _todosLosPedidos = pedidos.ToList();
-        
-        if (AppSession.CurrentUser != null && AppSession.CurrentUser.Rol == "Admin")
+        _todosLosPedidos = pedidos?.ToList() ?? new List<Pedido>();
+
+        if (rol == "Cliente")
         {
-            AdminTabsContainer.IsVisible = true;
-            FiltrarPedidosAdmin();
-        }
-        else
-        {
-            AdminTabsContainer.IsVisible = false;
+            // Para cliente: ordenados con los más recientes primero
             Pedidos.Clear();
-            foreach (var p in _todosLosPedidos)
+            foreach (var p in _todosLosPedidos.OrderByDescending(p => p.Fecha))
             {
                 Pedidos.Add(p);
             }
         }
+        else
+        {
+            FiltrarYOrdenarPedidos();
+        }
     }
 
-    private void FiltrarPedidosAdmin()
+    private void FiltrarYOrdenarPedidos()
     {
         var filtrados = _todosLosPedidos.AsEnumerable();
 
-        // Main Tab Filter
-        if (_currentMainTab == "En Proceso")
+        if (_currentTab == "Pendientes / Cocina" || _currentTab == "En Proceso")
         {
-            filtrados = filtrados.Where(p => p.Estatus == "Pendiente" || p.Estatus == "En Proceso");
+            // HU-07 Escenario 1: Pedidos pendientes y en elaboración ordenados cronológicamente por hora de entrega
+            filtrados = filtrados
+                .Where(p => p.Estatus == "Pendiente" || p.Estatus == "En Preparación" || p.Estatus == "En Proceso")
+                .OrderBy(p => p.FechaEntrega); // Orden cronológico por hora de entrega requerida
         }
-        else if (_currentMainTab == "Entregados")
+        else if (_currentTab == "Listos para entrega")
         {
-            filtrados = filtrados.Where(p => p.Estatus == "Entregado" || p.Estatus == "Entregados");
+            filtrados = filtrados
+                .Where(p => p.Estatus == "Listo para entrega")
+                .OrderBy(p => p.FechaEntrega);
         }
-        else if (_currentMainTab == "Cancelados")
+        else if (_currentTab == "Entregados")
         {
-            filtrados = filtrados.Where(p => p.Estatus == "Cancelado" || p.Estatus == "Cancelados");
+            filtrados = filtrados
+                .Where(p => p.Estatus == "Entregado" || p.Estatus == "Entregados")
+                .OrderByDescending(p => p.Fecha);
         }
-
-        // Sub Tab Filter
-        if (_currentSubTab == "Pasteles")
+        else if (_currentTab == "Cancelados")
         {
-            filtrados = filtrados.Where(p => p.Pastel != null);
+            filtrados = filtrados
+                .Where(p => p.Estatus == "Cancelado" || p.Estatus == "Cancelados")
+                .OrderByDescending(p => p.Fecha);
         }
-        else if (_currentSubTab == "Otros")
+        else // "Todos"
         {
-            filtrados = Enumerable.Empty<Pedido>(); // No hay otros productos de momento
+            filtrados = filtrados.OrderBy(p => p.FechaEntrega);
         }
-
-        var filtradosOrdenados = filtrados.OrderByDescending(p => p.Fecha);
 
         Pedidos.Clear();
-        foreach (var p in filtradosOrdenados)
+        foreach (var p in filtrados)
         {
             Pedidos.Add(p);
         }
@@ -102,38 +122,73 @@ public partial class HistorialPedidosPage : ContentPage
 
     private void ActualizarEstiloTabs()
     {
-        TabEnProceso.BackgroundColor = _currentMainTab == "En Proceso" ? Color.FromArgb("#8B4513") : Color.FromArgb("#DEB887");
-        TabEnProceso.TextColor = _currentMainTab == "En Proceso" ? Colors.White : Colors.Black;
+        ActualizarBotonTab(TabEnProceso, _currentTab == "Pendientes / Cocina" || _currentTab == "En Proceso");
+        ActualizarBotonTab(TabListos, _currentTab == "Listos para entrega");
+        ActualizarBotonTab(TabEntregados, _currentTab == "Entregados");
+        ActualizarBotonTab(TabCancelados, _currentTab == "Cancelados");
+        ActualizarBotonTab(TabTodos, _currentTab == "Todos");
+    }
 
-        TabEntregados.BackgroundColor = _currentMainTab == "Entregados" ? Color.FromArgb("#8B4513") : Color.FromArgb("#DEB887");
-        TabEntregados.TextColor = _currentMainTab == "Entregados" ? Colors.White : Colors.Black;
-
-        TabCancelados.BackgroundColor = _currentMainTab == "Cancelados" ? Color.FromArgb("#8B4513") : Color.FromArgb("#DEB887");
-        TabCancelados.TextColor = _currentMainTab == "Cancelados" ? Colors.White : Colors.Black;
-
-        SubTabPasteles.BackgroundColor = _currentSubTab == "Pasteles" ? Color.FromArgb("#5C4033") : Color.FromArgb("#D2B48C");
-        SubTabPasteles.TextColor = _currentSubTab == "Pasteles" ? Colors.White : Colors.Black;
-
-        SubTabOtros.BackgroundColor = _currentSubTab == "Otros" ? Color.FromArgb("#5C4033") : Color.FromArgb("#D2B48C");
-        SubTabOtros.TextColor = _currentSubTab == "Otros" ? Colors.White : Colors.Black;
+    private void ActualizarBotonTab(Button btn, bool activo)
+    {
+        if (btn == null) return;
+        btn.BackgroundColor = activo ? Color.FromArgb("#8B5E34") : Color.FromArgb("#FAF8F5");
+        btn.TextColor = activo ? Colors.White : Color.FromArgb("#795548");
     }
 
     private void OnMainTabClicked(object sender, EventArgs e)
     {
         if (sender is Button btn)
         {
-            _currentMainTab = btn.Text;
-            FiltrarPedidosAdmin();
+            _currentTab = btn.Text;
+            FiltrarYOrdenarPedidos();
         }
     }
 
-    private void OnSubTabClicked(object sender, EventArgs e)
+    private async void OnIniciarElaboracionRapidaClicked(object sender, EventArgs e)
     {
-        if (sender is Button btn)
+        if ((sender as Button)?.BindingContext is Pedido pedido)
         {
-            _currentSubTab = btn.Text;
-            FiltrarPedidosAdmin();
+            bool confirmar = await DisplayAlert("Taller de Repostería", $"¿Iniciar elaboración del pedido #{pedido.Id} ({pedido.Pastel?.Nombre})?", "Iniciar", "Cancelar");
+            if (!confirmar) return;
+
+            var resultado = await _transaccionesService.ActualizarEstatusPedidoAsync(pedido.Id, "En Preparación");
+            if (resultado.Exito)
+            {
+                await DisplayAlert("Fase de Producción Actualizada", $"El pedido #{pedido.Id} pasó a 'En Preparación'. Se envió el correo de notificación al cliente.", "OK");
+                await CargarPedidos();
+            }
+            else
+            {
+                await DisplayAlert("Error", resultado.Mensaje, "OK");
+            }
         }
+    }
+
+    private async void OnFinalizarMontajeRapidoClicked(object sender, EventArgs e)
+    {
+        if ((sender as Button)?.BindingContext is Pedido pedido)
+        {
+            bool confirmar = await DisplayAlert("Taller de Repostería", $"¿Finalizar montaje y marcar como 'Listo para entrega' el pedido #{pedido.Id}?", "Finalizar", "Cancelar");
+            if (!confirmar) return;
+
+            var resultado = await _transaccionesService.ActualizarEstatusPedidoAsync(pedido.Id, "Listo para entrega");
+            if (resultado.Exito)
+            {
+                await DisplayAlert("Pedido Terminado", $"El pedido #{pedido.Id} está 'Listo para entrega'. Se disparó el correo notificando al cliente que su producto ya está disponible para recolección o va en ruta.", "OK");
+                await CargarPedidos();
+            }
+            else
+            {
+                await DisplayAlert("Error", resultado.Mensaje, "OK");
+            }
+        }
+    }
+
+    private async void OnRefrescarViewRefreshing(object sender, EventArgs e)
+    {
+        await CargarPedidos();
+        RefrescarView.IsRefreshing = false;
     }
 
     private async void OnRealizarPedidoPersonalizadoClicked(object sender, EventArgs e)
@@ -152,7 +207,10 @@ public partial class HistorialPedidosPage : ContentPage
         {
             await Shell.Current.Navigation.PushAsync(new DetallePedidoPage(pedidoSeleccionado));
             // Deselect to allow clicking again
-            ((CollectionView)sender).SelectedItem = null;
+            if (sender is CollectionView cv)
+            {
+                cv.SelectedItem = null;
+            }
         }
     }
 }
