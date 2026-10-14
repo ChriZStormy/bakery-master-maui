@@ -34,6 +34,21 @@ namespace PasteleriaAPI.Controllers
             return await query.ToListAsync();
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Pedido>> GetPedido(int id)
+        {
+            var pedido = await _context.Pedidos
+                .Include(p => p.Pastel).ThenInclude(p => p.Bizcocho)
+                .Include(p => p.Pastel).ThenInclude(p => p.Relleno)
+                .Include(p => p.Pastel).ThenInclude(p => p.Glaseado)
+                .Include(p => p.Pastel).ThenInclude(p => p.Categoria)
+                .Include(p => p.Usuario)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (pedido == null) return NotFound();
+            return Ok(pedido);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Pedido>> CrearPedido([FromBody] Pedido pedido)
         {

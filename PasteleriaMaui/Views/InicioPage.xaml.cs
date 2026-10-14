@@ -24,7 +24,7 @@ namespace PasteleriaMaui.Views
                 BotonMermas.IsVisible = true;
                 BotonMermas.Text = "Reclamos";
                 BotonGestiones.Text = "Menú";
-                BotonPedidos.Text = "Realizar pedido";
+                BotonPedidos.Text = "Mis Pedidos";
             }
             else
             {
