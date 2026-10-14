@@ -2,16 +2,120 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PasteleriaMaui.Views.DetallePedidoPage"
-             Title="Detalle del Pedido"
+             Title="Seguimiento de Pedido"
              BackgroundColor="#F7F4EF">
 
     <ScrollView>
         <VerticalStackLayout Padding="20,20,20,40" Spacing="20">
+
+            <!-- TARJETA DE SEGUIMIENTO EN TIEMPO REAL (HISTORIA DE CLIENTE / SCRUM) -->
+            <Border Stroke="#8B5E34" 
+                    StrokeThickness="1.5" 
+                    BackgroundColor="#FFFFFF" 
+                    Padding="20"
+                    Margin="0,5,0,0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow Brush="#8B5E34" Offset="0,4" Radius="12" Opacity="0.1" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="15">
+                    <Grid ColumnDefinitions="*, Auto">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                            <Label Text="Seguimiento en Tiempo Real" FontSize="18" FontAttributes="Bold" TextColor="#3E2723" />
+                            <Label Text="{Binding FolioFormateado}" FontSize="14" FontAttributes="Bold" TextColor="#8B5E34" />
+                        </VerticalStackLayout>
+                        <Button Grid.Column="1" 
+                                Text="🔄 Actualizar" 
+                                Command="{Binding RefrescarEstadoCommand}"
+                                BackgroundColor="#FAF8F5" 
+                                TextColor="#8B5E34" 
+                                CornerRadius="10" 
+                                HeightRequest="36" 
+                                FontSize="12" 
+                                FontAttributes="Bold" 
+                                Padding="12,0"/>
+                    </Grid>
+
+                    <!-- Estado actual destacado -->
+                    <Border BackgroundColor="#FFF8F5" Stroke="#FFCCBC" StrokeThickness="1" Padding="14,10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                            <Label Text="{Binding IconoEstatusActual}" FontSize="24" VerticalOptions="Center" />
+                            <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                                <Label Text="{Binding TituloEstatusActual}" FontSize="15" FontAttributes="Bold" TextColor="#D84315" />
+                                <Label Text="{Binding DescripcionEstatusActual}" FontSize="12" TextColor="#5D4037" LineBreakMode="WordWrap" />
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
+                    </Border>
+
+                    <!-- Barra de avance gráfica -->
+                    <ProgressBar Progress="{Binding ProgresoPorcentaje}" ProgressColor="#8B5E34" HeightRequest="6" Margin="0,5" />
+
+                    <!-- Fases de avance con iconos, textos y fechas -->
+                    <Grid ColumnDefinitions="*, *, *, *" Margin="0,5,0,0">
+                        <!-- Fase 1: Recibido -->
+                        <VerticalStackLayout Grid.Column="0" Spacing="4" HorizontalOptions="Center">
+                            <Border WidthRequest="36" HeightRequest="36" StrokeThickness="0" BackgroundColor="{Binding Fase1BgColor}">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="18" />
+                                </Border.StrokeShape>
+                                <Label Text="{Binding Fase1Icono}" FontSize="13" TextColor="{Binding Fase1TextColor}" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Border>
+                            <Label Text="Recibido" FontSize="10" FontAttributes="Bold" TextColor="{Binding Fase1TextColor}" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                            <Label Text="{Binding Fase1Fecha}" FontSize="9" TextColor="#795548" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                        </VerticalStackLayout>
+
+                        <!-- Fase 2: En Preparación/Horneado -->
+                        <VerticalStackLayout Grid.Column="1" Spacing="4" HorizontalOptions="Center">
+                            <Border WidthRequest="36" HeightRequest="36" StrokeThickness="0" BackgroundColor="{Binding Fase2BgColor}">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="18" />
+                                </Border.StrokeShape>
+                                <Label Text="{Binding Fase2Icono}" FontSize="13" TextColor="{Binding Fase2TextColor}" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Border>
+                            <Label Text="En Horneado" FontSize="10" FontAttributes="Bold" TextColor="{Binding Fase2TextColor}" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                            <Label Text="{Binding Fase2Fecha}" FontSize="9" TextColor="#795548" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                        </VerticalStackLayout>
+
+                        <!-- Fase 3: Decorado/Listo para entrega -->
+                        <VerticalStackLayout Grid.Column="2" Spacing="4" HorizontalOptions="Center">
+                            <Border WidthRequest="36" HeightRequest="36" StrokeThickness="0" BackgroundColor="{Binding Fase3BgColor}">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="18" />
+                                </Border.StrokeShape>
+                                <Label Text="{Binding Fase3Icono}" FontSize="13" TextColor="{Binding Fase3TextColor}" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Border>
+                            <Label Text="Listo/Decorado" FontSize="10" FontAttributes="Bold" TextColor="{Binding Fase3TextColor}" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                            <Label Text="{Binding Fase3Fecha}" FontSize="9" TextColor="#795548" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                        </VerticalStackLayout>
+
+                        <!-- Fase 4: Entregado -->
+                        <VerticalStackLayout Grid.Column="3" Spacing="4" HorizontalOptions="Center">
+                            <Border WidthRequest="36" HeightRequest="36" StrokeThickness="0" BackgroundColor="{Binding Fase4BgColor}">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="18" />
+                                </Border.StrokeShape>
+                                <Label Text="{Binding Fase4Icono}" FontSize="13" TextColor="{Binding Fase4TextColor}" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Border>
+                            <Label Text="Entregado" FontSize="10" FontAttributes="Bold" TextColor="{Binding Fase4TextColor}" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                            <Label Text="{Binding Fase4Fecha}" FontSize="9" TextColor="#795548" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <Label Text="{Binding UltimaActualizacionTexto}" FontSize="11" TextColor="#8D6E63" HorizontalOptions="Center" HorizontalTextAlignment="Center" Margin="0,5,0,0"/>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- DETALLES DE INFORMACIÓN DEL PEDIDO -->
             <Border Stroke="#EAE4DB" 
                     StrokeThickness="1" 
                     BackgroundColor="#FFFFFF" 
-                    Padding="25"
-                    Margin="0,10,0,0">
+                    Padding="25">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="20" />
                 </Border.StrokeShape>
@@ -22,9 +126,9 @@
                 <VerticalStackLayout Spacing="12">
                     <Label Text="Información del Pedido" FontSize="20" FontAttributes="Bold" TextColor="#3E2723" Margin="0,0,0,10" HorizontalOptions="Center"/>
                     
-                    <Label Text="{Binding Pedido.Id, StringFormat='Folio: #{0}'}" FontSize="15" FontAttributes="Bold" TextColor="#8B5E34" />
+                    <Label Text="{Binding FolioFormateado, StringFormat='Folio: {0}'}" FontSize="15" FontAttributes="Bold" TextColor="#8B5E34" />
                     <Label Text="{Binding Pedido.Fecha, StringFormat='Fecha de creación: {0:dd/MM/yyyy HH:mm}'}" FontSize="15" TextColor="#5D4037" />
-                    <Label Text="{Binding Pedido.FechaEntrega, StringFormat='Fecha de entrega: {0:dd/MM/yyyy}'}" FontSize="15" FontAttributes="Bold" TextColor="#3E2723" />
+                    <Label Text="{Binding Pedido.FechaEntrega, StringFormat='Fecha de entrega programada: {0:dd/MM/yyyy}'}" FontSize="15" FontAttributes="Bold" TextColor="#3E2723" />
                     <Label Text="{Binding Pedido.Estatus, StringFormat='Estatus Actual: {0}'}" FontSize="15" FontAttributes="Bold" TextColor="#D84315" />
                     <Label Text="{Binding Pedido.Cantidad, StringFormat='Cantidad Solicitada: {0} unidad(es)'}" FontSize="15" TextColor="#5D4037" />
                     
@@ -92,6 +196,7 @@
                 </VerticalStackLayout>
             </Border>
 
+            <!-- PANEL DE ACTUALIZACIÓN (ADMIN / REPOSTERO) -->
             <Border IsVisible="{Binding IsAdmin}"
                     Stroke="#EAE4DB" 
                     StrokeThickness="1" 
@@ -102,7 +207,7 @@
                     <RoundRectangle CornerRadius="16" />
                 </Border.StrokeShape>
                 <VerticalStackLayout Spacing="15">
-                    <Label Text="Actualizar Estatus (Admin)" FontSize="16" FontAttributes="Bold" TextColor="#3E2723" HorizontalOptions="Center"/>
+                    <Label Text="Actualizar Estatus (Admin / Repostería)" FontSize="16" FontAttributes="Bold" TextColor="#3E2723" HorizontalOptions="Center"/>
                     
                     <Border Stroke="#D7CCC8" 
                             StrokeThickness="1" 
@@ -118,8 +223,11 @@
                                 BackgroundColor="Transparent"
                                 VerticalOptions="Center">
                             <Picker.Items>
+                                <x:String>Recibido</x:String>
                                 <x:String>Pendiente</x:String>
+                                <x:String>En Preparación/Horneado</x:String>
                                 <x:String>En Proceso</x:String>
+                                <x:String>Decorado/Listo para entrega</x:String>
                                 <x:String>Entregado</x:String>
                                 <x:String>Cancelado</x:String>
                             </Picker.Items>

@@ -31,7 +31,7 @@ public partial class HistorialPedidosPage : ContentPage
             BtnNuevoPedido.IsVisible = true;
             BtnCalendario.IsVisible = false;
             LblLeyenda.IsVisible = true;
-            this.Title = "Realizar pedido";
+            this.Title = "Mis Pedidos";
         }
         else 
         {

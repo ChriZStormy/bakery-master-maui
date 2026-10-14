@@ -52,12 +52,31 @@ namespace PasteleriaMaui.Services
             return new JsonSerializerOptions { ReferenceHandler = ReferenceHandler.IgnoreCycles };
         }
 
+        public async Task<Pedido?> GetPedidoByIdAsync(int id)
+        {
+            try
+            {
+                var url = $"{_baseUrl}api/pedido/{id}";
+                return await _httpClient.GetFromJsonAsync<Pedido>(url);
+            }
+            catch { return null; }
+        }
+
         public async Task<bool> CrearPedidoAsync(Pedido pedido)
         {
             try
             {
                 var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}api/pedido", pedido, GetJsonOptions());
-                return response.IsSuccessStatusCode;
+                if (response.IsSuccessStatusCode)
+                {
+                    var creado = await response.Content.ReadFromJsonAsync<Pedido>(GetJsonOptions());
+                    if (creado != null)
+                    {
+                        pedido.Id = creado.Id;
+                    }
+                    return true;
+                }
+                return false;
             }
              catch { return false; }
         }

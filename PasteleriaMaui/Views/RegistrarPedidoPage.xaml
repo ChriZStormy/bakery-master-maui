@@ -2,12 +2,12 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PasteleriaMaui.Views.RegistrarPedidoPage"
-             Title="Registrar Pedido"
+             Title="Programación de Pedido"
              BackgroundColor="#F7F4EF">
 
 	<ScrollView>
 		<VerticalStackLayout Padding="20,20,20,40" Spacing="25">
-            <Label Text="Detalles del Pedido" FontSize="22" FontAttributes="Bold" TextColor="#3E2723" Margin="0,0,0,5" HorizontalOptions="Center"/>
+            <Label Text="Programar Entrega / Recolección" FontSize="22" FontAttributes="Bold" TextColor="#3E2723" Margin="0,0,0,5" HorizontalOptions="Center"/>
 
 			<Border Stroke="#EAE4DB" 
                     StrokeThickness="1" 
@@ -21,7 +21,24 @@
                     <Shadow Brush="#8B5E34" Offset="0,6" Radius="15" Opacity="0.06" />
                 </Border.Shadow>
 
-				<VerticalStackLayout Spacing="20">
+				<VerticalStackLayout Spacing="18">
+                    <!-- Modalidad de entrega/recolección -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Modalidad del Servicio" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
+                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <Picker x:Name="PickerModalidad" Title="Selecciona la modalidad" TextColor="#3E2723" TitleColor="#BCAAA4" VerticalOptions="Center">
+                                <Picker.Items>
+                                    <x:String>Entrega a domicilio</x:String>
+                                    <x:String>Recogida en sucursal</x:String>
+                                </Picker.Items>
+                            </Picker>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Cantidad -->
                     <VerticalStackLayout Spacing="6">
                         <Label Text="Cantidad de Pasteles" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
                         <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
@@ -32,19 +49,39 @@
                         </Border>
                     </VerticalStackLayout>
 
+                    <!-- Fecha de Entrega con validación de 48h -->
                     <VerticalStackLayout Spacing="6">
-                        <Label Text="Fecha deseada de Entrega" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
+                        <Label Text="Fecha de Entrega / Recolección" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
                         <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="12" />
                             </Border.StrokeShape>
                             <DatePicker x:Name="PickerFechaEntrega" Format="dd/MM/yyyy" TextColor="#3E2723" BackgroundColor="Transparent" VerticalOptions="Center"/>
                         </Border>
+                        <Label Text="* Requiere al menos 48 horas de anticipación artesanal." FontSize="11" TextColor="#8D6E63" Margin="4,2,0,0" />
+                    </VerticalStackLayout>
+
+                    <!-- Franja Horaria -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Franja Horaria" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
+                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <Picker x:Name="PickerFranjaHoraria" Title="Selecciona un horario" TextColor="#3E2723" TitleColor="#BCAAA4" VerticalOptions="Center">
+                                <Picker.Items>
+                                    <x:String>Mañana (09:00 - 12:00)</x:String>
+                                    <x:String>Mediodía (12:00 - 15:00)</x:String>
+                                    <x:String>Tarde (15:00 - 18:00)</x:String>
+                                    <x:String>Noche (18:00 - 20:00)</x:String>
+                                </Picker.Items>
+                            </Picker>
+                        </Border>
                     </VerticalStackLayout>
 				</VerticalStackLayout>
 			</Border>
 
-			<Button Text="Confirmar Pedido" 
+			<Button Text="Confirmar Orden de Compra" 
                     Margin="0,10,0,0" 
                     HeightRequest="54"
                     CornerRadius="14"
