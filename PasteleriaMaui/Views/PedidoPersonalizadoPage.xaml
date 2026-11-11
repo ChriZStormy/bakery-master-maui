@@ -1,108 +1,363 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:PasteleriaMaui.ViewModels"
+             xmlns:models="clr-namespace:PasteleriaMaui.Models"
              x:Class="PasteleriaMaui.Views.PedidoPersonalizadoPage"
-             Title="Arma tu Pastel"
+             x:DataType="viewmodels:PedidoPersonalizadoViewModel"
+             Title="Estudio de Creación"
              BackgroundColor="#F7F4EF">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20,20,20,40" Spacing="20">
-            <Label Text="Creación Personalizada" FontSize="22" FontAttributes="Bold" TextColor="#3E2723" HorizontalOptions="Center" Margin="0,0,0,5"/>
+        <VerticalStackLayout Padding="20,15,20,40" Spacing="20">
+            <!-- Título y subtítulo -->
+            <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                <Label Text="🎨 Arma tu Pastel en Vivo" 
+                       FontSize="22" 
+                       FontAttributes="Bold" 
+                       TextColor="#3E2723" 
+                       HorizontalOptions="Center"/>
+                <Label Text="Desliza los ingredientes y mira cómo toma forma tu creación en tiempo real" 
+                       FontSize="13" 
+                       TextColor="#795548" 
+                       HorizontalTextAlignment="Center" 
+                       HorizontalOptions="Center"/>
+            </VerticalStackLayout>
 
+            <!-- LIVE CAKE PREVIEW CANVAS (GRID MODULAR EN TIEMPO REAL) -->
+            <Border Stroke="#8B5E34" 
+                    StrokeThickness="1.5" 
+                    BackgroundColor="#FFFFFF" 
+                    Padding="15"
+                    Margin="0,5,0,10">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="24" />
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow Brush="#8B5E34" Offset="0,8" Radius="20" Opacity="0.14" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="12" HorizontalOptions="Center">
+                    <Label Text="Previsualización de Capas" 
+                           FontSize="12" 
+                           FontAttributes="Bold" 
+                           TextColor="#A1887F" 
+                           HorizontalOptions="Center" 
+                           CharacterSpacing="1"/>
+
+                    <!-- Grid de superposición exacta (Isometric Avatar Stacking) -->
+                    <Grid WidthRequest="280" HeightRequest="280" HorizontalOptions="Center" VerticalOptions="Center">
+                        <!-- Capa Base: Bizcocho -->
+                        <Image Source="{Binding BizcochoPreviewUrl}"
+                               Aspect="AspectFit"
+                               HorizontalOptions="Fill"
+                               VerticalOptions="Fill" />
+
+                        <!-- Capa Intermedia: Relleno -->
+                        <Image Source="{Binding RellenoPreviewUrl}"
+                               Aspect="AspectFit"
+                               HorizontalOptions="Fill"
+                               VerticalOptions="Fill" />
+
+                        <!-- Capa Superior: Glaseado / Cubierta -->
+                        <Image Source="{Binding GlaseadoPreviewUrl}"
+                               Aspect="AspectFit"
+                               HorizontalOptions="Fill"
+                               VerticalOptions="Fill" />
+                    </Grid>
+
+                    <!-- Chip de Resumen de Ingredientes -->
+                    <Border BackgroundColor="#FAF8F5" Stroke="#EAE4DB" StrokeThickness="1" Padding="14,8" HorizontalOptions="Center">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Label Text="{Binding ResumenSeleccion}" 
+                               FontSize="12" 
+                               FontAttributes="Bold" 
+                               TextColor="#5D4037" 
+                               HorizontalOptions="Center" 
+                               HorizontalTextAlignment="Center"/>
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- 1. SELECTOR VISUAL DE BIZCOCHOS (COLLECTIONVIEW HORIZONTAL) -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="🍰 1. Elige tu Bizcocho (Base)" FontSize="15" FontAttributes="Bold" TextColor="#3E2723" Margin="4,0,0,0"/>
+                <CollectionView ItemsSource="{Binding Bizcochos}"
+                                SelectedItem="{Binding BizcochoSeleccionado, Mode=TwoWay}"
+                                SelectionMode="Single"
+                                HeightRequest="150">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Horizontal" ItemSpacing="12" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:CatBizcocho">
+                            <Border Stroke="#EAE4DB" 
+                                    StrokeThickness="1.5" 
+                                    BackgroundColor="#FFFFFF" 
+                                    WidthRequest="115" 
+                                    HeightRequest="145" 
+                                    Padding="8">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="16" />
+                                </Border.StrokeShape>
+                                <Border.Shadow>
+                                    <Shadow Brush="#8B5E34" Offset="0,3" Radius="6" Opacity="0.08" />
+                                </Border.Shadow>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:PedidoPersonalizadoViewModel}}, Path=SeleccionarBizcochoCommand}"
+                                                          CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                                <VerticalStackLayout Spacing="6" VerticalOptions="Center" HorizontalOptions="Center">
+                                    <Image Source="{Binding ImagenUrl}" 
+                                           WidthRequest="75" 
+                                           HeightRequest="75" 
+                                           Aspect="AspectFit" 
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="{Binding Nombre}" 
+                                           FontSize="12" 
+                                           FontAttributes="Bold" 
+                                           TextColor="#3E2723" 
+                                           HorizontalTextAlignment="Center" 
+                                           MaxLines="2" 
+                                           LineBreakMode="TailTruncation"/>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+
+            <!-- 2. SELECTOR VISUAL DE RELLENOS (COLLECTIONVIEW HORIZONTAL) -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="🍓 2. Elige tu Relleno (Medio)" FontSize="15" FontAttributes="Bold" TextColor="#3E2723" Margin="4,0,0,0"/>
+                <CollectionView ItemsSource="{Binding Rellenos}"
+                                SelectedItem="{Binding RellenoSeleccionado, Mode=TwoWay}"
+                                SelectionMode="Single"
+                                HeightRequest="150">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Horizontal" ItemSpacing="12" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:CatRelleno">
+                            <Border Stroke="#EAE4DB" 
+                                    StrokeThickness="1.5" 
+                                    BackgroundColor="#FFFFFF" 
+                                    WidthRequest="115" 
+                                    HeightRequest="145" 
+                                    Padding="8">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="16" />
+                                </Border.StrokeShape>
+                                <Border.Shadow>
+                                    <Shadow Brush="#8B5E34" Offset="0,3" Radius="6" Opacity="0.08" />
+                                </Border.Shadow>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:PedidoPersonalizadoViewModel}}, Path=SeleccionarRellenoCommand}"
+                                                          CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                                <VerticalStackLayout Spacing="6" VerticalOptions="Center" HorizontalOptions="Center">
+                                    <Image Source="{Binding ImagenUrl}" 
+                                           WidthRequest="75" 
+                                           HeightRequest="75" 
+                                           Aspect="AspectFit" 
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="{Binding Nombre}" 
+                                           FontSize="12" 
+                                           FontAttributes="Bold" 
+                                           TextColor="#3E2723" 
+                                           HorizontalTextAlignment="Center" 
+                                           MaxLines="2" 
+                                           LineBreakMode="TailTruncation"/>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+
+            <!-- 3. SELECTOR VISUAL DE GLASEADOS (COLLECTIONVIEW HORIZONTAL) -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="🧁 3. Elige tu Glaseado o Cobertura (Corona)" FontSize="15" FontAttributes="Bold" TextColor="#3E2723" Margin="4,0,0,0"/>
+                <CollectionView ItemsSource="{Binding Glaseados}"
+                                SelectedItem="{Binding GlaseadoSeleccionado, Mode=TwoWay}"
+                                SelectionMode="Single"
+                                HeightRequest="150">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Horizontal" ItemSpacing="12" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:CatGlaseado">
+                            <Border Stroke="#EAE4DB" 
+                                    StrokeThickness="1.5" 
+                                    BackgroundColor="#FFFFFF" 
+                                    WidthRequest="115" 
+                                    HeightRequest="145" 
+                                    Padding="8">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="16" />
+                                </Border.StrokeShape>
+                                <Border.Shadow>
+                                    <Shadow Brush="#8B5E34" Offset="0,3" Radius="6" Opacity="0.08" />
+                                </Border.Shadow>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:PedidoPersonalizadoViewModel}}, Path=SeleccionarGlaseadoCommand}"
+                                                          CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                                <VerticalStackLayout Spacing="6" VerticalOptions="Center" HorizontalOptions="Center">
+                                    <Image Source="{Binding ImagenUrl}" 
+                                           WidthRequest="75" 
+                                           HeightRequest="75" 
+                                           Aspect="AspectFit" 
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="{Binding Nombre}" 
+                                           FontSize="12" 
+                                           FontAttributes="Bold" 
+                                           TextColor="#3E2723" 
+                                           HorizontalTextAlignment="Center" 
+                                           MaxLines="2" 
+                                           LineBreakMode="TailTruncation"/>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+
+            <!-- 4. PERSONALIZACIÓN Y DECORACIÓN (MENSAJE + FOTO FILEPICKER) -->
             <Border Stroke="#EAE4DB" 
                     StrokeThickness="1" 
                     BackgroundColor="#FFFFFF" 
-                    Padding="25"
+                    Padding="20"
                     Margin="0,5,0,0">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="20" />
                 </Border.StrokeShape>
                 <Border.Shadow>
-                    <Shadow Brush="#8B5E34" Offset="0,6" Radius="15" Opacity="0.06" />
+                    <Shadow Brush="#8B5E34" Offset="0,4" Radius="12" Opacity="0.06" />
                 </Border.Shadow>
 
                 <VerticalStackLayout Spacing="16">
+                    <Label Text="✨ Detalles de Personalización" FontSize="16" FontAttributes="Bold" TextColor="#3E2723" />
+
+                    <!-- Nombre de la Creación -->
                     <VerticalStackLayout Spacing="6">
-                        <Label Text="Nombre de tu creación" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
-                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
+                        <Label Text="Nombre de tu diseño" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
+                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="50" Padding="15,0">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="12" />
                             </Border.StrokeShape>
-                            <Entry Placeholder="Ponle un nombre a tu pastel" Text="{Binding Nombre}" BackgroundColor="Transparent" TextColor="#3E2723" PlaceholderColor="#BCAAA4" VerticalOptions="Center"/>
+                            <Entry Placeholder="Ponle un nombre único a tu pastel" 
+                                   Text="{Binding Nombre}" 
+                                   BackgroundColor="Transparent" 
+                                   TextColor="#3E2723" 
+                                   PlaceholderColor="#BCAAA4" 
+                                   VerticalOptions="Center"/>
                         </Border>
                     </VerticalStackLayout>
 
+                    <!-- Mensaje en el Pastel (Editor) -->
                     <VerticalStackLayout Spacing="6">
-                        <Label Text="Tamaño" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
-                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
+                        <Label Text="✍️ Mensaje o Dedicatoria en el pastel" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
+                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" Padding="15,10">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="12" />
                             </Border.StrokeShape>
-                            <Picker Title="Selecciona el tamaño" SelectedItem="{Binding Tamanio}" BackgroundColor="Transparent" TextColor="#3E2723" TitleColor="#BCAAA4" VerticalOptions="Center">
-                                <Picker.Items>
-                                    <x:String>Chico</x:String>
-                                    <x:String>Mediano</x:String>
-                                    <x:String>Grande</x:String>
-                                    <x:String>Extra Grande</x:String>
-                                </Picker.Items>
-                            </Picker>
+                            <Editor Placeholder="Ej. ¡Feliz Cumpleaños Mariana! Te deseamos lo mejor con mucho amor..." 
+                                    Text="{Binding Mensaje}" 
+                                    MaxLength="120" 
+                                    HeightRequest="75" 
+                                    AutoSize="TextChanges" 
+                                    BackgroundColor="Transparent" 
+                                    TextColor="#3E2723" 
+                                    PlaceholderColor="#BCAAA4" />
                         </Border>
                     </VerticalStackLayout>
 
+                    <!-- Foto de Referencia de Decoración (FilePicker) -->
                     <VerticalStackLayout Spacing="6">
-                        <Label Text="Bizcocho" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
-                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
+                        <Label Text="📷 Foto de referencia para el repostero" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
+                        <Button Text="📁 Seleccionar Foto de Decoración" 
+                                Command="{Binding SeleccionarDecoracionCommand}"
+                                BackgroundColor="#FAF8F5"
+                                TextColor="#5D4037"
+                                BorderColor="#D7CCC8"
+                                BorderWidth="1.5"
+                                CornerRadius="12"
+                                HeightRequest="48"
+                                FontSize="13"
+                                FontAttributes="Bold">
+                            <Button.Shadow>
+                                <Shadow Brush="#8B5E34" Offset="0,2" Radius="4" Opacity="0.05" />
+                            </Button.Shadow>
+                        </Button>
+
+                        <!-- Thumbnail de la foto seleccionada -->
+                        <Border IsVisible="{Binding TieneDecoracion}"
+                                Stroke="#E0D7CD"
+                                StrokeThickness="1"
+                                BackgroundColor="#FAF8F5"
+                                Padding="12"
+                                Margin="0,4,0,0">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="12" />
                             </Border.StrokeShape>
-                            <Picker Title="Selecciona el bizcocho" ItemsSource="{Binding Bizcochos}" ItemDisplayBinding="{Binding Nombre}" SelectedItem="{Binding BizcochoSeleccionado}" BackgroundColor="Transparent" TextColor="#3E2723" TitleColor="#BCAAA4" VerticalOptions="Center" />
+                            <VerticalStackLayout Spacing="6" HorizontalOptions="Center">
+                                <Image Source="{Binding ImagenDecoracion}" 
+                                       HeightRequest="130" 
+                                       Aspect="AspectFit" 
+                                       HorizontalOptions="Center" />
+                                <Label Text="{Binding NombreArchivoDecoracion}" 
+                                       FontSize="11" 
+                                       TextColor="#8D6E63" 
+                                       HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
                         </Border>
                     </VerticalStackLayout>
 
-                    <VerticalStackLayout Spacing="6">
-                        <Label Text="Relleno" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
-                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="12" />
-                            </Border.StrokeShape>
-                            <Picker Title="Selecciona el relleno" ItemsSource="{Binding Rellenos}" ItemDisplayBinding="{Binding Nombre}" SelectedItem="{Binding RellenoSeleccionado}" BackgroundColor="Transparent" TextColor="#3E2723" TitleColor="#BCAAA4" VerticalOptions="Center" />
-                        </Border>
-                    </VerticalStackLayout>
-
-                    <VerticalStackLayout Spacing="6">
-                        <Label Text="Glaseado" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
-                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="12" />
-                            </Border.StrokeShape>
-                            <Picker Title="Selecciona el glaseado" ItemsSource="{Binding Glaseados}" ItemDisplayBinding="{Binding Nombre}" SelectedItem="{Binding GlaseadoSeleccionado}" BackgroundColor="Transparent" TextColor="#3E2723" TitleColor="#BCAAA4" VerticalOptions="Center" />
-                        </Border>
-                    </VerticalStackLayout>
-
-                    <VerticalStackLayout Spacing="6">
-                        <Label Text="Categoría" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
-                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="12" />
-                            </Border.StrokeShape>
-                            <Picker Title="Selecciona la categoría" ItemsSource="{Binding Categorias}" ItemDisplayBinding="{Binding categoria}" SelectedItem="{Binding CategoriaSeleccionada}" BackgroundColor="Transparent" TextColor="#3E2723" TitleColor="#BCAAA4" VerticalOptions="Center" />
-                        </Border>
-                    </VerticalStackLayout>
-
-                    <VerticalStackLayout Spacing="6">
-                        <Label Text="Foto del diseño (URL)" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
-                        <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="12" />
-                            </Border.StrokeShape>
-                            <Entry Placeholder="http://ejemplo.com/foto.jpg" Text="{Binding FotoUrl}" BackgroundColor="Transparent" TextColor="#3E2723" PlaceholderColor="#BCAAA4" VerticalOptions="Center" />
-                        </Border>
-                    </VerticalStackLayout>
-
-                    <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+                    <!-- Tamaño y Categoría -->
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
                         <VerticalStackLayout Spacing="6" Grid.Column="0">
-                            <Label Text="Fecha Entrega" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
-                            <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
+                            <Label Text="Tamaño" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
+                            <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="50" Padding="12,0">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <Picker Title="Tamaño" SelectedItem="{Binding Tamanio}" BackgroundColor="Transparent" TextColor="#3E2723" TitleColor="#BCAAA4" VerticalOptions="Center">
+                                    <Picker.Items>
+                                        <x:String>Chico</x:String>
+                                        <x:String>Mediano</x:String>
+                                        <x:String>Grande</x:String>
+                                        <x:String>Extra Grande</x:String>
+                                    </Picker.Items>
+                                </Picker>
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="6" Grid.Column="1">
+                            <Label Text="Categoría" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
+                            <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="50" Padding="12,0">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <Picker Title="Selecciona una categoría" 
+                                        ItemsSource="{Binding Categorias}" 
+                                        ItemDisplayBinding="{Binding categoria, x:DataType='models:CatCategoria'}" 
+                                        SelectedItem="{Binding CategoriaSeleccionada}" 
+                                        BackgroundColor="Transparent" 
+                                        TextColor="#3E2723" 
+                                        TitleColor="#BCAAA4" 
+                                        VerticalOptions="Center" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <!-- Fecha y Cantidad -->
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Spacing="6" Grid.Column="0">
+                            <Label Text="Fecha de Entrega" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
+                            <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="50" Padding="12,0">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="12" />
                                 </Border.StrokeShape>
@@ -112,7 +367,7 @@
 
                         <VerticalStackLayout Spacing="6" Grid.Column="1">
                             <Label Text="Cantidad" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
-                            <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="52" Padding="15,0">
+                            <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="50" Padding="12,0">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="12" />
                                 </Border.StrokeShape>
@@ -123,17 +378,18 @@
                 </VerticalStackLayout>
             </Border>
 
-            <Button Text="Realizar Pedido" 
+            <!-- BOTÓN PRINCIPAL DE ORDEN -->
+            <Button Text="🍰 Confirmar y Crear Pedido Personalizado" 
                     BackgroundColor="#8B5E34" 
                     TextColor="#FFFFFF" 
                     FontAttributes="Bold" 
-                    CornerRadius="14" 
-                    HeightRequest="54" 
+                    CornerRadius="16" 
+                    HeightRequest="56" 
                     FontSize="16"
-                    Margin="0,10,0,0" 
+                    Margin="0,10,0,10" 
                     Command="{Binding GuardarPedidoCommand}">
                 <Button.Shadow>
-                    <Shadow Brush="#8B5E34" Offset="0,6" Radius="10" Opacity="0.2" />
+                    <Shadow Brush="#8B5E34" Offset="0,6" Radius="12" Opacity="0.25" />
                 </Button.Shadow>
             </Button>
         </VerticalStackLayout>

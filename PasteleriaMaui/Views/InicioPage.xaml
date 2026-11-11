@@ -13,7 +13,23 @@
                        FontAttributes="Bold" 
                        TextColor="#3E2723" 
                        HorizontalOptions="Center" 
-                       Margin="0,0,0,30" />
+                       Margin="0,0,0,20" />
+
+                <!-- BOTÓN PRINCIPAL HU-03: ESTUDIO DE PERSONALIZACIÓN DE PASTELES -->
+                <Button x:Name="BotonPersonalizar" 
+                        Text="🎂 ¡Arma tu Pastel en Vivo! (Estudio Creativo)" 
+                        HeightRequest="65" 
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        CornerRadius="16"
+                        BackgroundColor="#8B5E34" 
+                        TextColor="#FFFFFF"
+                        Margin="0,0,0,10"
+                        Clicked="OnPersonalizarClicked">
+                    <Button.Shadow>
+                        <Shadow Brush="#8B5E34" Offset="0,6" Radius="14" Opacity="0.25" />
+                    </Button.Shadow>
+                </Button>
 
                 <Button x:Name="BotonGestiones" 
                         Text="Gestión de Pasteles" 
@@ -21,7 +37,7 @@
                         FontSize="16"
                         FontAttributes="Bold"
                         CornerRadius="14"
-                        BackgroundColor="#FFFFFF"
+                        BackgroundColor="#FFFFFF" 
                         TextColor="#3E2723"
                         Clicked="OnPastelesClicked">
                     <Button.Shadow>
@@ -35,9 +51,23 @@
                         FontSize="16"
                         FontAttributes="Bold"
                         CornerRadius="14"
-                        BackgroundColor="#FFFFFF"
+                        BackgroundColor="#FFFFFF" 
                         TextColor="#3E2723"
                         Clicked="OnPedidosClicked">
+                    <Button.Shadow>
+                        <Shadow Brush="#8B5E34" Offset="0,4" Radius="10" Opacity="0.08" />
+                    </Button.Shadow>
+                </Button>
+
+                <Button x:Name="BotonComandas" 
+                        Text="👨‍🍳 Comanda de Cocina" 
+                        HeightRequest="60" 
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        CornerRadius="14"
+                        BackgroundColor="#FFFFFF" 
+                        TextColor="#3E2723"
+                        Clicked="OnComandasClicked">
                     <Button.Shadow>
                         <Shadow Brush="#8B5E34" Offset="0,4" Radius="10" Opacity="0.08" />
                     </Button.Shadow>
@@ -49,7 +79,7 @@
                         FontSize="16"
                         FontAttributes="Bold"
                         CornerRadius="14"
-                        BackgroundColor="#FFFFFF"
+                        BackgroundColor="#FFFFFF" 
                         TextColor="#3E2723"
                         Clicked="OnReportesClicked">
                     <Button.Shadow>
@@ -63,9 +93,23 @@
                         FontSize="16"
                         FontAttributes="Bold"
                         CornerRadius="14"
-                        BackgroundColor="#FFFFFF"
+                        BackgroundColor="#FFFFFF" 
                         TextColor="#3E2723"
                         Clicked="OnCatalogosClicked">
+                    <Button.Shadow>
+                        <Shadow Brush="#8B5E34" Offset="0,4" Radius="10" Opacity="0.08" />
+                    </Button.Shadow>
+                </Button>
+
+                <Button x:Name="BotonUsuarios" 
+                        Text="Gestión de Usuarios" 
+                        HeightRequest="60" 
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        CornerRadius="14"
+                        BackgroundColor="#FFFFFF" 
+                        TextColor="#3E2723"
+                        Clicked="OnUsuariosClicked">
                     <Button.Shadow>
                         <Shadow Brush="#8B5E34" Offset="0,4" Radius="10" Opacity="0.08" />
                     </Button.Shadow>
@@ -89,26 +133,6 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <!-- DEBUG BUTTON: remove before release -->
-        <!-- Mantenemos su funcionalidad y posición, pero con un borde redondeado más moderno -->
-        <Button x:Name="BtnDebugRol"
-                Text="🔄 DEBUG"
-                BackgroundColor="#FF9800"
-                TextColor="#FFFFFF"
-                FontSize="11"
-                FontAttributes="Bold"
-                CornerRadius="19"
-                HeightRequest="38"
-                WidthRequest="95"
-                Opacity="0.9"
-                HorizontalOptions="End"
-                VerticalOptions="Start"
-                Margin="0,15,15,0"
-                Clicked="OnDebugRolClicked">
-            <Button.Shadow>
-                <Shadow Brush="#FF9800" Offset="0,4" Radius="8" Opacity="0.2" />
-            </Button.Shadow>
-        </Button>
     </Grid>
 
 </ContentPage>

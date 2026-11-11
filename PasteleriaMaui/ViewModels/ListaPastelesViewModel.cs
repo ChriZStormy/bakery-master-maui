@@ -39,10 +39,14 @@ namespace PasteleriaMaui.ViewModels
 
         public async Task CargarPasteles()
         {
-            var pastelesApi = await _apiService.GetPastelesAsync();
+            // Filtro por rol: Si es cliente, solo solicitar y cargar pasteles activos
+            bool soloActivos = !IsAdmin;
+            var pastelesApi = await _apiService.GetPastelesAsync(soloActivos);
             Pasteles.Clear();
             foreach (var v in pastelesApi)
             {
+                // Seguridad adicional del lado cliente: Si no es Admin, nunca mostrar dados de baja
+                if (!IsAdmin && !v.Activo) continue;
                 Pasteles.Add(v);
             }
         }
@@ -52,7 +56,7 @@ namespace PasteleriaMaui.ViewModels
             await Shell.Current.GoToAsync(nameof(RegistrarPastelPage));
         }
 
-        private async Task VerDetalle(Pastel pastel)
+        private async Task VerDetalle(Pastel? pastel)
         {
             if (pastel == null) return;
             
@@ -64,10 +68,9 @@ namespace PasteleriaMaui.ViewModels
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
-

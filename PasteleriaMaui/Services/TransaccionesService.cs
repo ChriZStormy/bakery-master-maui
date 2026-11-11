@@ -19,32 +19,26 @@ namespace PasteleriaMaui.Services
             var handler = MauiProgram.GetHttpClientHandler();
             var authHandler = new AuthHttpHandler(handler);
             _httpClient = new HttpClient(authHandler);
-            
-            var token = AppSession.Token;
-            if (!string.IsNullOrEmpty(token))
-            {
-                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-            }
         }
 
-        public async Task<List<Pedido>> GetPedidosAsync(int? usuarioId)
+        public async Task<List<Pedido>> GetPedidosAsync(string? usuarioId = null)
         {
             try
             {
-                var url = $"{_baseUrl}api/pedido" + (usuarioId.HasValue ? $"?usuarioId={usuarioId}" : "");
+                var url = $"{_baseUrl}api/pedido" + (!string.IsNullOrEmpty(usuarioId) ? $"?usuarioId={usuarioId}" : "");
                 return await _httpClient.GetFromJsonAsync<List<Pedido>>(url);
             }
-             catch { return new List<Pedido>(); }
+            catch { return new List<Pedido>(); }
         }
 
-        public async Task<List<Merma>> GetMermasAsync(int? usuarioId)
+        public async Task<List<Merma>> GetMermasAsync(string? usuarioId = null)
         {
             try
             {
-                var url = $"{_baseUrl}api/merma" + (usuarioId.HasValue ? $"?usuarioId={usuarioId}" : "");
+                var url = $"{_baseUrl}api/merma" + (!string.IsNullOrEmpty(usuarioId) ? $"?usuarioId={usuarioId}" : "");
                 return await _httpClient.GetFromJsonAsync<List<Merma>>(url);
             }
-             catch { return new List<Merma>(); }
+            catch { return new List<Merma>(); }
         }
 
         private JsonSerializerOptions GetJsonOptions()
@@ -52,22 +46,56 @@ namespace PasteleriaMaui.Services
             return new JsonSerializerOptions { ReferenceHandler = ReferenceHandler.IgnoreCycles };
         }
 
-        public async Task<bool> CrearPedidoAsync(Pedido pedido)
+        public async Task<(bool Exito, Pedido? PedidoCreado)> RegistrarPedidoAsync(Pedido pedido)
         {
             try
             {
                 var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}api/pedido", pedido, GetJsonOptions());
-                return response.IsSuccessStatusCode;
+                if (response.IsSuccessStatusCode)
+                {
+                    var creado = await response.Content.ReadFromJsonAsync<Pedido>(GetJsonOptions());
+                    return (true, creado ?? pedido);
+                }
+                return (false, null);
             }
-             catch { return false; }
+            catch
+            {
+                return (false, null);
+            }
+        }
+
+        public async Task<bool> CrearPedidoAsync(Pedido pedido)
+        {
+            var res = await RegistrarPedidoAsync(pedido);
+            return res.Exito;
         }
 
         public async Task<(bool Exito, string Mensaje)> ActualizarPedidoAsync(Pedido pedido)
         {
             try
             {
-                var payload = new { Estatus = pedido.Estatus };
+                var payload = new { Estatus = pedido.Estatus, Notas = pedido.Notas };
                 var response = await _httpClient.PutAsJsonAsync($"{_baseUrl}api/pedido/{pedido.Id}", payload, GetJsonOptions());
+                if (response.IsSuccessStatusCode)
+                {
+                    return (true, "Estatus actualizado correctamente.");
+                }
+                
+                var error = await response.Content.ReadAsStringAsync();
+                return (false, $"Error {response.StatusCode}: {error}");
+            }
+            catch (Exception ex) 
+            { 
+                return (false, $"Excepción: {ex.Message}"); 
+            }
+        }
+
+        public async Task<(bool Exito, string Mensaje)> ActualizarEstatusPedidoAsync(int id, string nuevoEstatus, string? notas = null)
+        {
+            try
+            {
+                var payload = new { Estatus = nuevoEstatus, Notas = notas };
+                var response = await _httpClient.PutAsJsonAsync($"{_baseUrl}api/pedido/{id}", payload, GetJsonOptions());
                 if (response.IsSuccessStatusCode)
                 {
                     return (true, "Estatus actualizado correctamente.");
@@ -89,7 +117,7 @@ namespace PasteleriaMaui.Services
                 var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}api/merma", merma, GetJsonOptions());
                 return response.IsSuccessStatusCode;
             }
-             catch { return false; }
+            catch { return false; }
         }
 
         public async Task<bool> ActualizarMermaAsync(Merma merma)
@@ -99,7 +127,7 @@ namespace PasteleriaMaui.Services
                 var response = await _httpClient.PutAsJsonAsync($"{_baseUrl}api/merma/{merma.Id}", merma, GetJsonOptions());
                 return response.IsSuccessStatusCode;
             }
-             catch { return false; }
+            catch { return false; }
         }
     }
 }

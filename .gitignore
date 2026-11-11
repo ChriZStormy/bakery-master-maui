@@ -361,3 +361,15 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# SQLite database files
+*.db
+*.db-shm
+*.db-wal
+
+
+# Secrets and local development configuration
+**/appsettings.Development.json
+appsettings.Development.json
+**/appsettings.json
+appsettings.json

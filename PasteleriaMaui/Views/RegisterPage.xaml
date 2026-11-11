@@ -103,27 +103,6 @@
                         </Grid>
                     </Border>
 
-                    <!-- Contenedor del Selector de Rol (Picker) -->
-                    <Border Stroke="#D7CCC8" 
-                            StrokeThickness="1" 
-                            BackgroundColor="#FAF8F5" 
-                            HeightRequest="52"
-                            Padding="15,0">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="12" />
-                        </Border.StrokeShape>
-                        <Picker x:Name="RolPicker" 
-                                Title="Selecciona tu Rol" 
-                                BackgroundColor="Transparent" 
-                                TextColor="#3E2723" 
-                                TitleColor="#A1887F"
-                                VerticalOptions="Center">
-                            <Picker.Items>
-                                <x:String>Cliente</x:String>
-                                <x:String>Admin</x:String>
-                            </Picker.Items>
-                        </Picker>
-                    </Border>
 
                     <!-- Botón Principal -->
                     <Button Text="Registrarse" 

@@ -141,7 +141,8 @@ namespace PasteleriaMaui.ViewModels
                 CategoriaId = this.CategoriaSeleccionada.Id,
                 BizcochoId = this.BizcochoSeleccionado.Id,
                 RellenoId = this.RellenoSeleccionado.Id,
-                GlaseadoId = this.GlaseadoSeleccionado.Id
+                GlaseadoId = this.GlaseadoSeleccionado.Id,
+                Activo = this.PastelAEditar.Activo
             };
 
             bool exito = await _apiService.ActualizarPastelAsync(pastelEditado);
@@ -164,4 +165,3 @@ namespace PasteleriaMaui.ViewModels
         }
     }
 }
-

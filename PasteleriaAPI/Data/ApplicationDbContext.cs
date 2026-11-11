@@ -1,16 +1,17 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PasteleriaAPI.Entities;
 using PasteleriaAPI.Entities.Catalogos;
 
 namespace PasteleriaAPI.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
+        }
 
-		}
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
@@ -27,35 +28,35 @@ namespace PasteleriaAPI.Data
             );
 
             modelBuilder.Entity<CatBizcocho>().HasData(
-                new CatBizcocho { Id = 1, Nombre = "Vainilla" },
-                new CatBizcocho { Id = 2, Nombre = "Chocolate" },
-                new CatBizcocho { Id = 3, Nombre = "Red Velvet" },
-                new CatBizcocho { Id = 4, Nombre = "Zanahoria" },
-                new CatBizcocho { Id = 5, Nombre = "Mármol" },
-                new CatBizcocho { Id = 6, Nombre = "Limón" },
-                new CatBizcocho { Id = 7, Nombre = "Naranja" },
-                new CatBizcocho { Id = 8, Nombre = "Esponja" }
+                new CatBizcocho { Id = 1, Nombre = "Vainilla", ImagenUrl = "bizcocho_vainilla.png" },
+                new CatBizcocho { Id = 2, Nombre = "Chocolate", ImagenUrl = "bizcocho_chocolate.png" },
+                new CatBizcocho { Id = 3, Nombre = "Red Velvet", ImagenUrl = "bizcocho_red_velvet.png" },
+                new CatBizcocho { Id = 4, Nombre = "Zanahoria", ImagenUrl = "bizcocho_zanahoria.png" },
+                new CatBizcocho { Id = 5, Nombre = "Mármol", ImagenUrl = "bizcocho_marmol.png" },
+                new CatBizcocho { Id = 6, Nombre = "Limón", ImagenUrl = "bizcocho_limon.png" },
+                new CatBizcocho { Id = 7, Nombre = "Naranja", ImagenUrl = "bizcocho_naranja.png" },
+                new CatBizcocho { Id = 8, Nombre = "Esponja", ImagenUrl = "bizcocho_esponja.png" }
             );
 
             modelBuilder.Entity<CatRelleno>().HasData(
-                new CatRelleno { Id = 1, Nombre = "Fresa" },
-                new CatRelleno { Id = 2, Nombre = "Cajeta" },
-                new CatRelleno { Id = 3, Nombre = "Crema Pastelera" },
-                new CatRelleno { Id = 4, Nombre = "Nutella" },
-                new CatRelleno { Id = 5, Nombre = "Mermelada de Frambuesa" },
-                new CatRelleno { Id = 6, Nombre = "Crema de Limón" },
-                new CatRelleno { Id = 7, Nombre = "Durazno" },
-                new CatRelleno { Id = 8, Nombre = "Frutos Rojos" }
+                new CatRelleno { Id = 1, Nombre = "Fresa", ImagenUrl = "relleno_fresa.png" },
+                new CatRelleno { Id = 2, Nombre = "Cajeta", ImagenUrl = "relleno_cajeta.png" },
+                new CatRelleno { Id = 3, Nombre = "Crema Pastelera", ImagenUrl = "relleno_crema_pastelera.png" },
+                new CatRelleno { Id = 4, Nombre = "Nutella", ImagenUrl = "relleno_nutella.png" },
+                new CatRelleno { Id = 5, Nombre = "Mermelada de Frambuesa", ImagenUrl = "relleno_mermelada_frambuesa.png" },
+                new CatRelleno { Id = 6, Nombre = "Crema de Limón", ImagenUrl = "relleno_crema_limon.png" },
+                new CatRelleno { Id = 7, Nombre = "Durazno", ImagenUrl = "relleno_durazno.png" },
+                new CatRelleno { Id = 8, Nombre = "Frutos Rojos", ImagenUrl = "relleno_frutos_rojos.png" }
             );
 
             modelBuilder.Entity<CatGlaseado>().HasData(
-                new CatGlaseado { Id = 1, Nombre = "Fondant" },
-                new CatGlaseado { Id = 2, Nombre = "Crema de Mantequilla" },
-                new CatGlaseado { Id = 3, Nombre = "Ganache de Chocolate" },
-                new CatGlaseado { Id = 4, Nombre = "Queso Crema" },
-                new CatGlaseado { Id = 5, Nombre = "Merengue Italiano" },
-                new CatGlaseado { Id = 6, Nombre = "Espejo de Chocolate" },
-                new CatGlaseado { Id = 7, Nombre = "Chantilly" }
+                new CatGlaseado { Id = 1, Nombre = "Fondant", ImagenUrl = "glaseado_fondant.png" },
+                new CatGlaseado { Id = 2, Nombre = "Crema de Mantequilla", ImagenUrl = "glaseado_crema_mantequilla.png" },
+                new CatGlaseado { Id = 3, Nombre = "Ganache de Chocolate", ImagenUrl = "glaseado_ganache_chocolate.png" },
+                new CatGlaseado { Id = 4, Nombre = "Queso Crema", ImagenUrl = "glaseado_queso_crema.png" },
+                new CatGlaseado { Id = 5, Nombre = "Merengue Italiano", ImagenUrl = "glaseado_merengue_italiano.png" },
+                new CatGlaseado { Id = 6, Nombre = "Espejo de Chocolate", ImagenUrl = "glaseado_espejo_chocolate.png" },
+                new CatGlaseado { Id = 7, Nombre = "Chantilly", ImagenUrl = "glaseado_chantilly.png" }
             );
 
             modelBuilder.Entity<Pastel>().HasData(
@@ -72,31 +73,6 @@ namespace PasteleriaAPI.Data
                 new Pastel { Id = 105, Nombre = "Limón Cítrico", BizcochoId = 6, RellenoId = 6, GlaseadoId = 5, Tamanio = "Chico", CategoriaId = 1, FotoUrl = "https://images.unsplash.com/photo-1519869325930-281384150729" },
                 new Pastel { Id = 106, Nombre = "Chocolate Extremo", BizcochoId = 2, RellenoId = 4, GlaseadoId = 3, Tamanio = "Extra Grande", CategoriaId = 1, FotoUrl = "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62" }
             );
-            modelBuilder.Entity<Usuario>().HasData(
-                new Usuario { Id = 1, Nombre = "Admin Master", Email = "admin@pasteleria.com", Password = "admin", Rol = "Admin" },
-                new Usuario { Id = 2, Nombre = "Cliente Juan", Email = "cliente@correo.com", Password = "123", Rol = "Cliente" }
-            );
-
-            modelBuilder.Entity<Pedido>().HasData(
-                new Pedido { Id = 1, PastelId = 1, UsuarioId = 2, Fecha = new DateTime(2023, 10, 1), Cantidad = 2, Estatus = "Entregado" },
-                new Pedido { Id = 2, PastelId = 3, UsuarioId = 2, Fecha = new DateTime(2023, 10, 5), Cantidad = 1, Estatus = "En Proceso" },
-                new Pedido { Id = 3, PastelId = 6, UsuarioId = 2, Fecha = new DateTime(2023, 10, 10), Cantidad = 5, Estatus = "Pendiente" },
-                new Pedido { Id = 104, PastelId = 4, UsuarioId = 2, Fecha = new DateTime(2023, 11, 15), Cantidad = 1, Estatus = "Entregado" },
-                new Pedido { Id = 105, PastelId = 101, UsuarioId = 2, Fecha = new DateTime(2023, 11, 20), Cantidad = 3, Estatus = "Pendiente" },
-                new Pedido { Id = 106, PastelId = 2, UsuarioId = 2, Fecha = new DateTime(2023, 12, 02), Cantidad = 1, Estatus = "Cancelado" },
-                new Pedido { Id = 107, PastelId = 104, UsuarioId = 2, Fecha = new DateTime(2023, 12, 12), Cantidad = 2, Estatus = "Entregado" },
-                new Pedido { Id = 108, PastelId = 102, UsuarioId = 2, Fecha = new DateTime(2024, 01, 10), Cantidad = 1, Estatus = "En Proceso" },
-                new Pedido { Id = 109, PastelId = 106, UsuarioId = 2, Fecha = new DateTime(2024, 02, 14), Cantidad = 4, Estatus = "Pendiente" },
-                new Pedido { Id = 110, PastelId = 5, UsuarioId = 2, Fecha = new DateTime(2024, 03, 01), Cantidad = 2, Estatus = "Entregado" }
-            );
-
-            modelBuilder.Entity<Merma>().HasData(
-                new Merma { Id = 1, PastelId = 2, UsuarioId = 2, Fecha = new DateTime(2023, 10, 2), Descripcion = "Pastel aplastado durante el transporte" },
-                new Merma { Id = 2, PastelId = 5, UsuarioId = 2, Fecha = new DateTime(2023, 10, 6), Descripcion = "Falta de decoración en el cheesecake" },
-                new Merma { Id = 103, PastelId = 106, UsuarioId = 2, Fecha = new DateTime(2024, 02, 15), Descripcion = "El cliente reportó que el chocolate estaba muy amargo" },
-                new Merma { Id = 104, PastelId = 4, UsuarioId = 2, Fecha = new DateTime(2023, 11, 16), Descripcion = "Flores de fondant derretidas por el calor" },
-                new Merma { Id = 105, PastelId = 6, UsuarioId = 2, Fecha = new DateTime(2023, 10, 11), Descripcion = "La leche se derramó en la caja" }
-            );
         }
 
         public DbSet<CatCategoria> CatCategorias { get; set; }
@@ -104,7 +80,6 @@ namespace PasteleriaAPI.Data
         public DbSet<CatRelleno> CatRellenos { get; set; }
         public DbSet<CatGlaseado> CatGlaseados { get; set; }
         public DbSet<Pastel> Pasteles { get; set; }
-        public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }
         public DbSet<Merma> Mermas { get; set; }
     }

@@ -1,5 +1,5 @@
 using System.Net;
-using Microsoft.Maui.Controls;
+using System.Net.Http.Headers;
 
 namespace PasteleriaMaui.Services
 {
@@ -11,6 +11,12 @@ namespace PasteleriaMaui.Services
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            // Automatically inject Bearer token on every outgoing request
+            if (!string.IsNullOrEmpty(AppSession.Token))
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", AppSession.Token);
+            }
+
             var response = await base.SendAsync(request, cancellationToken);
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
@@ -18,9 +24,11 @@ namespace PasteleriaMaui.Services
                 AppSession.HasAuthError = true;
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
-                    await Application.Current.MainPage.DisplayAlert("Sesi髇 Expirada", "Tu sesi髇 ha caducado. Por favor, inicia sesi髇 nuevamente.", "OK");
-                    AppSession.CurrentUser = null;
-                    AppSession.Token = null;
+                    await Application.Current.MainPage.DisplayAlert(
+                        "Sesi贸n Expirada",
+                        "Tu sesi贸n ha caducado. Por favor, inicia sesi贸n nuevamente.",
+                        "OK");
+                    AppSession.Clear();
                     SecureStorage.Remove("jwt_token");
                     Application.Current.MainPage = new Views.LoginPage();
                 });
@@ -30,7 +38,10 @@ namespace PasteleriaMaui.Services
                 AppSession.HasAuthError = true;
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
-                    await Application.Current.MainPage.DisplayAlert("Acceso Denegado", "No tienes permisos de administrador para realizar esta acci髇.", "OK");
+                    await Application.Current.MainPage.DisplayAlert(
+                        "Acceso Denegado",
+                        "No tienes permisos de administrador para realizar esta acci贸n.",
+                        "OK");
                 });
             }
 

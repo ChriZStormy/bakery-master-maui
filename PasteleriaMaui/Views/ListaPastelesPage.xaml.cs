@@ -31,6 +31,11 @@ public partial class ListaPastelesPage : ContentPage
         await _viewModel.CargarPasteles();
 	}
 
+    private async void OnCrearPersonalizadoClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(PedidoPersonalizadoPage));
+    }
+
     private async void OnExpandImageTapped(object sender, TappedEventArgs e)
     {
         var url = e.Parameter as string;

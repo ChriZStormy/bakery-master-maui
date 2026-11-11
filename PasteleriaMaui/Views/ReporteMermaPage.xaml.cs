@@ -30,7 +30,7 @@ public partial class ReporteMermaPage : ContentPage
 
     private async Task CargarDatos()
     {
-        int? filterId = null;
+        string? filterId = null;
         if (AppSession.CurrentUser != null && AppSession.CurrentUser.Rol == "Admin")
         {
             FormularioMerma.IsVisible = false;

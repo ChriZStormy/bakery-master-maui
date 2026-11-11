@@ -1,4 +1,3 @@
-
 using Microsoft.Maui.Controls;
 
 namespace PasteleriaMaui.Views
@@ -21,39 +20,37 @@ namespace PasteleriaMaui.Views
             if (AppSession.CurrentUser != null && AppSession.CurrentUser.Rol == "Cliente")
             {
                 BotonCatalogos.IsVisible = false;
+                BotonUsuarios.IsVisible = false;
+                BotonComandas.IsVisible = false;
                 BotonMermas.IsVisible = true;
                 BotonMermas.Text = "Reclamos";
-                BotonGestiones.Text = "Menú";
-                BotonPedidos.Text = "Realizar pedido";
+                BotonGestiones.Text = "Menú de Pasteles";
+                BotonPedidos.Text = "Mis Pedidos";
+            }
+            else if (AppSession.CurrentUser != null && (AppSession.CurrentUser.Rol == "Repostero" || AppSession.CurrentUser.Rol == "Empleado"))
+            {
+                BotonCatalogos.IsVisible = false;
+                BotonUsuarios.IsVisible = false;
+                BotonComandas.IsVisible = true;
+                BotonMermas.IsVisible = true;
+                BotonMermas.Text = "Reportes de Mermas";
+                BotonGestiones.Text = "Gestión de Pasteles";
+                BotonPedidos.Text = "Historial de Pedidos";
             }
             else
             {
                 BotonCatalogos.IsVisible = true;
+                BotonUsuarios.IsVisible = true;
+                BotonComandas.IsVisible = true;
                 BotonMermas.IsVisible = true;
                 BotonMermas.Text = "Reportes de Mermas";
                 BotonGestiones.Text = "Gestión de Pasteles";
                 BotonPedidos.Text = "Pedidos";
             }
-            // Update debug button label
-            var rol = AppSession.CurrentUser?.Rol ?? "?";
-            BtnDebugRol.Text = $"🔄 {rol}";
         }
-
-        private void OnDebugRolClicked(object sender, EventArgs e)
+        private async void OnPersonalizarClicked(object sender, EventArgs e)
         {
-            if (AppSession.CurrentUser == null) return;
-
-            if (AppSession.CurrentUser.Rol == "Admin")
-            {
-                AppSession.CurrentUser.Rol = "Cliente";
-                AppSession.CurrentUser.Nombre = "Cliente Juan (Debug)";
-            }
-            else
-            {
-                AppSession.CurrentUser.Rol = "Admin";
-                AppSession.CurrentUser.Nombre = "Admin Master (Debug)";
-            }
-            ActualizarVistaPorRol();
+            await Shell.Current.GoToAsync(nameof(PedidoPersonalizadoPage));
         }
 		private async void OnPastelesClicked(object sender, EventArgs e)
 		{
@@ -77,10 +74,29 @@ namespace PasteleriaMaui.Views
 			await Shell.Current.GoToAsync(nameof(CatalogosPage));
 		}
 
+        private async void OnUsuariosClicked(object sender, EventArgs e)
+        {
+            if (AppSession.CurrentUser != null && AppSession.CurrentUser.Rol == "Cliente")
+            {
+                await DisplayAlert("Acceso Denegado", "Solo los administradores pueden gestionar usuarios.", "OK");
+                return;
+            }
+            await Shell.Current.GoToAsync(nameof(GestionUsuariosPage));
+        }
+
+        private async void OnComandasClicked(object sender, EventArgs e)
+        {
+            if (AppSession.CurrentUser != null && AppSession.CurrentUser.Rol == "Cliente")
+            {
+                await DisplayAlert("Acceso Denegado", "Solo el personal de repostería y administración puede acceder a la comanda.", "OK");
+                return;
+            }
+            await Shell.Current.GoToAsync(nameof(ComandaPage));
+        }
+
         private void OnSalirClicked(object sender, EventArgs e)
         {
-            AppSession.CurrentUser = null;
-            AppSession.Token = null;
+            AppSession.Clear();
             SecureStorage.Remove("jwt_token");
             Application.Current.MainPage = new LoginPage();
         }

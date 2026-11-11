@@ -17,11 +17,212 @@ namespace PasteleriaAPI.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("PasteleriaAPI.Entities.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nombre")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
             modelBuilder.Entity("PasteleriaAPI.Entities.Catalogos.CatBizcocho", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ImagenUrl")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Nombre")
                         .HasColumnType("TEXT");
@@ -34,41 +235,49 @@ namespace PasteleriaAPI.Migrations
                         new
                         {
                             Id = 1,
+                            ImagenUrl = "bizcocho_vainilla.png",
                             Nombre = "Vainilla"
                         },
                         new
                         {
                             Id = 2,
+                            ImagenUrl = "bizcocho_chocolate.png",
                             Nombre = "Chocolate"
                         },
                         new
                         {
                             Id = 3,
+                            ImagenUrl = "bizcocho_red_velvet.png",
                             Nombre = "Red Velvet"
                         },
                         new
                         {
                             Id = 4,
+                            ImagenUrl = "bizcocho_zanahoria.png",
                             Nombre = "Zanahoria"
                         },
                         new
                         {
                             Id = 5,
+                            ImagenUrl = "bizcocho_marmol.png",
                             Nombre = "Mármol"
                         },
                         new
                         {
                             Id = 6,
+                            ImagenUrl = "bizcocho_limon.png",
                             Nombre = "Limón"
                         },
                         new
                         {
                             Id = 7,
+                            ImagenUrl = "bizcocho_naranja.png",
                             Nombre = "Naranja"
                         },
                         new
                         {
                             Id = 8,
+                            ImagenUrl = "bizcocho_esponja.png",
                             Nombre = "Esponja"
                         });
                 });
@@ -140,6 +349,9 @@ namespace PasteleriaAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ImagenUrl")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Nombre")
                         .HasColumnType("TEXT");
 
@@ -151,36 +363,43 @@ namespace PasteleriaAPI.Migrations
                         new
                         {
                             Id = 1,
+                            ImagenUrl = "glaseado_fondant.png",
                             Nombre = "Fondant"
                         },
                         new
                         {
                             Id = 2,
+                            ImagenUrl = "glaseado_crema_mantequilla.png",
                             Nombre = "Crema de Mantequilla"
                         },
                         new
                         {
                             Id = 3,
+                            ImagenUrl = "glaseado_ganache_chocolate.png",
                             Nombre = "Ganache de Chocolate"
                         },
                         new
                         {
                             Id = 4,
+                            ImagenUrl = "glaseado_queso_crema.png",
                             Nombre = "Queso Crema"
                         },
                         new
                         {
                             Id = 5,
+                            ImagenUrl = "glaseado_merengue_italiano.png",
                             Nombre = "Merengue Italiano"
                         },
                         new
                         {
                             Id = 6,
+                            ImagenUrl = "glaseado_espejo_chocolate.png",
                             Nombre = "Espejo de Chocolate"
                         },
                         new
                         {
                             Id = 7,
+                            ImagenUrl = "glaseado_chantilly.png",
                             Nombre = "Chantilly"
                         });
                 });
@@ -190,6 +409,9 @@ namespace PasteleriaAPI.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ImagenUrl")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Nombre")
                         .HasColumnType("TEXT");
@@ -202,41 +424,49 @@ namespace PasteleriaAPI.Migrations
                         new
                         {
                             Id = 1,
+                            ImagenUrl = "relleno_fresa.png",
                             Nombre = "Fresa"
                         },
                         new
                         {
                             Id = 2,
+                            ImagenUrl = "relleno_cajeta.png",
                             Nombre = "Cajeta"
                         },
                         new
                         {
                             Id = 3,
+                            ImagenUrl = "relleno_crema_pastelera.png",
                             Nombre = "Crema Pastelera"
                         },
                         new
                         {
                             Id = 4,
+                            ImagenUrl = "relleno_nutella.png",
                             Nombre = "Nutella"
                         },
                         new
                         {
                             Id = 5,
+                            ImagenUrl = "relleno_mermelada_frambuesa.png",
                             Nombre = "Mermelada de Frambuesa"
                         },
                         new
                         {
                             Id = 6,
+                            ImagenUrl = "relleno_crema_limon.png",
                             Nombre = "Crema de Limón"
                         },
                         new
                         {
                             Id = 7,
+                            ImagenUrl = "relleno_durazno.png",
                             Nombre = "Durazno"
                         },
                         new
                         {
                             Id = 8,
+                            ImagenUrl = "relleno_frutos_rojos.png",
                             Nombre = "Frutos Rojos"
                         });
                 });
@@ -259,8 +489,8 @@ namespace PasteleriaAPI.Migrations
                     b.Property<int>("PastelId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -269,59 +499,15 @@ namespace PasteleriaAPI.Migrations
                     b.HasIndex("UsuarioId");
 
                     b.ToTable("Mermas");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Descripcion = "Pastel aplastado durante el transporte",
-                            Estatus = "Pendiente",
-                            Fecha = new DateTime(2023, 10, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 2,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Descripcion = "Falta de decoración en el cheesecake",
-                            Estatus = "Pendiente",
-                            Fecha = new DateTime(2023, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 5,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 103,
-                            Descripcion = "El cliente reportó que el chocolate estaba muy amargo",
-                            Estatus = "Pendiente",
-                            Fecha = new DateTime(2024, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 106,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 104,
-                            Descripcion = "Flores de fondant derretidas por el calor",
-                            Estatus = "Pendiente",
-                            Fecha = new DateTime(2023, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 4,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 105,
-                            Descripcion = "La leche se derramó en la caja",
-                            Estatus = "Pendiente",
-                            Fecha = new DateTime(2023, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 6,
-                            UsuarioId = 2
-                        });
                 });
 
             modelBuilder.Entity("PasteleriaAPI.Entities.Pastel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Activo")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("BizcochoId")
@@ -336,8 +522,14 @@ namespace PasteleriaAPI.Migrations
                     b.Property<int>("GlaseadoId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ImagenDecoracion")
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("IsPersonalizado")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Mensaje")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -366,6 +558,7 @@ namespace PasteleriaAPI.Migrations
                         new
                         {
                             Id = 1,
+                            Activo = true,
                             BizcochoId = 2,
                             CategoriaId = 1,
                             FotoUrl = "https://images.unsplash.com/photo-1578985545062-69928b1d9587",
@@ -378,6 +571,7 @@ namespace PasteleriaAPI.Migrations
                         new
                         {
                             Id = 2,
+                            Activo = true,
                             BizcochoId = 1,
                             CategoriaId = 2,
                             FotoUrl = "https://images.unsplash.com/photo-1557925923-33b251dc32b0",
@@ -390,6 +584,7 @@ namespace PasteleriaAPI.Migrations
                         new
                         {
                             Id = 3,
+                            Activo = true,
                             BizcochoId = 1,
                             CategoriaId = 4,
                             FotoUrl = "https://images.unsplash.com/photo-1535141192574-5d4897c12636",
@@ -402,6 +597,7 @@ namespace PasteleriaAPI.Migrations
                         new
                         {
                             Id = 4,
+                            Activo = true,
                             BizcochoId = 3,
                             CategoriaId = 3,
                             FotoUrl = "https://images.unsplash.com/photo-1535254973040-607b474cb50d",
@@ -414,6 +610,7 @@ namespace PasteleriaAPI.Migrations
                         new
                         {
                             Id = 5,
+                            Activo = true,
                             BizcochoId = 1,
                             CategoriaId = 5,
                             FotoUrl = "https://images.unsplash.com/photo-1533134242443-d4fd215305ad",
@@ -426,6 +623,7 @@ namespace PasteleriaAPI.Migrations
                         new
                         {
                             Id = 6,
+                            Activo = true,
                             BizcochoId = 8,
                             CategoriaId = 4,
                             FotoUrl = "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3",
@@ -438,6 +636,7 @@ namespace PasteleriaAPI.Migrations
                         new
                         {
                             Id = 101,
+                            Activo = true,
                             BizcochoId = 4,
                             CategoriaId = 8,
                             FotoUrl = "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62",
@@ -450,6 +649,7 @@ namespace PasteleriaAPI.Migrations
                         new
                         {
                             Id = 102,
+                            Activo = true,
                             BizcochoId = 5,
                             CategoriaId = 9,
                             FotoUrl = "https://images.unsplash.com/photo-1562440499-64c9a111f713",
@@ -462,6 +662,7 @@ namespace PasteleriaAPI.Migrations
                         new
                         {
                             Id = 103,
+                            Activo = true,
                             BizcochoId = 2,
                             CategoriaId = 1,
                             FotoUrl = "https://images.unsplash.com/photo-1550617931-e17a7b70dce2",
@@ -474,6 +675,7 @@ namespace PasteleriaAPI.Migrations
                         new
                         {
                             Id = 104,
+                            Activo = true,
                             BizcochoId = 1,
                             CategoriaId = 2,
                             FotoUrl = "https://images.unsplash.com/photo-1616541823729-00fe0aacd32c",
@@ -486,6 +688,7 @@ namespace PasteleriaAPI.Migrations
                         new
                         {
                             Id = 105,
+                            Activo = true,
                             BizcochoId = 6,
                             CategoriaId = 1,
                             FotoUrl = "https://images.unsplash.com/photo-1519869325930-281384150729",
@@ -498,6 +701,7 @@ namespace PasteleriaAPI.Migrations
                         new
                         {
                             Id = 106,
+                            Activo = true,
                             BizcochoId = 2,
                             CategoriaId = 1,
                             FotoUrl = "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62",
@@ -518,6 +722,9 @@ namespace PasteleriaAPI.Migrations
                     b.Property<int>("Cantidad")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Direccion")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Estatus")
                         .HasColumnType("TEXT");
 
@@ -527,11 +734,29 @@ namespace PasteleriaAPI.Migrations
                     b.Property<DateTime>("FechaEntrega")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("HoraEntrega")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ImagenDecoracion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Mensaje")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ModalidadEntrega")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Notas")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("PastelId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("INTEGER");
+                    b.Property<decimal>("Total")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -540,149 +765,57 @@ namespace PasteleriaAPI.Migrations
                     b.HasIndex("UsuarioId");
 
                     b.ToTable("Pedidos");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Cantidad = 2,
-                            Estatus = "Entregado",
-                            Fecha = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaEntrega = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 1,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Cantidad = 1,
-                            Estatus = "En Proceso",
-                            Fecha = new DateTime(2023, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaEntrega = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 3,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Cantidad = 5,
-                            Estatus = "Pendiente",
-                            Fecha = new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaEntrega = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 6,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 104,
-                            Cantidad = 1,
-                            Estatus = "Entregado",
-                            Fecha = new DateTime(2023, 11, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaEntrega = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 4,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 105,
-                            Cantidad = 3,
-                            Estatus = "Pendiente",
-                            Fecha = new DateTime(2023, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaEntrega = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 101,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 106,
-                            Cantidad = 1,
-                            Estatus = "Cancelado",
-                            Fecha = new DateTime(2023, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaEntrega = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 2,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 107,
-                            Cantidad = 2,
-                            Estatus = "Entregado",
-                            Fecha = new DateTime(2023, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaEntrega = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 104,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 108,
-                            Cantidad = 1,
-                            Estatus = "En Proceso",
-                            Fecha = new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaEntrega = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 102,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 109,
-                            Cantidad = 4,
-                            Estatus = "Pendiente",
-                            Fecha = new DateTime(2024, 2, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaEntrega = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 106,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 110,
-                            Cantidad = 2,
-                            Estatus = "Entregado",
-                            Fecha = new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaEntrega = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 5,
-                            UsuarioId = 2
-                        });
                 });
 
-            modelBuilder.Entity("PasteleriaAPI.Entities.Usuario", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Property<string>("Email")
-                        .HasColumnType("TEXT");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("PasteleriaAPI.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Property<string>("Nombre")
-                        .HasColumnType("TEXT");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("PasteleriaAPI.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Property<string>("Password")
-                        .HasColumnType("TEXT");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<string>("Rol")
-                        .HasColumnType("TEXT");
+                    b.HasOne("PasteleriaAPI.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Usuarios");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "admin@pasteleria.com",
-                            Nombre = "Admin Master",
-                            Password = "admin",
-                            Rol = "Admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "cliente@correo.com",
-                            Nombre = "Cliente Juan",
-                            Password = "123",
-                            Rol = "Cliente"
-                        });
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("PasteleriaAPI.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PasteleriaAPI.Entities.Merma", b =>
@@ -693,11 +826,9 @@ namespace PasteleriaAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PasteleriaAPI.Entities.Usuario", "Usuario")
+                    b.HasOne("PasteleriaAPI.Entities.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
 
                     b.Navigation("Pastel");
 
@@ -747,11 +878,9 @@ namespace PasteleriaAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PasteleriaAPI.Entities.Usuario", "Usuario")
+                    b.HasOne("PasteleriaAPI.Entities.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
 
                     b.Navigation("Pastel");
 

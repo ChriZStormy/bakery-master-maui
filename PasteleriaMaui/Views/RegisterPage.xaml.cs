@@ -15,7 +15,11 @@ namespace PasteleriaMaui.Views
 
         private async void OnRegisterClicked(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(NombreEntry.Text) || string.IsNullOrWhiteSpace(EmailEntry.Text) || string.IsNullOrWhiteSpace(PasswordEntry.Text) || RolPicker.SelectedItem == null)
+            var nombre = NombreEntry.Text;
+            var email = EmailEntry.Text;
+            var password = PasswordEntry.Text;
+
+            if (string.IsNullOrWhiteSpace(nombre) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             {
                 await DisplayAlert("Error", "Llena todos los campos", "OK");
                 return;
@@ -24,30 +28,22 @@ namespace PasteleriaMaui.Views
             var emailRegex = new System.Text.RegularExpressions.Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
             var passRegex = new System.Text.RegularExpressions.Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
             
-            if (!emailRegex.IsMatch(EmailEntry.Text))
+            if (!emailRegex.IsMatch(email))
             {
                 await DisplayAlert("Error", "Formato de correo inválido", "OK");
                 return;
             }
-            if (!passRegex.IsMatch(PasswordEntry.Text))
+            if (!passRegex.IsMatch(password))
             {
                 await DisplayAlert("Error", "La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial", "OK");
                 return;
             }
 
-            var nuevoUsuario = new Usuario
-            {
-                Nombre = NombreEntry.Text,
-                Email = EmailEntry.Text,
-                Password = PasswordEntry.Text,
-                Rol = RolPicker.SelectedItem.ToString()
-            };
-
-            var user = await _authService.RegisterAsync(nuevoUsuario);
+            var user = await _authService.RegisterAsync(nombre, email, password);
             if (user != null)
             {
-                await DisplayAlert("Éxito", "Usuario creado. Ahora inicia sesión.", "OK");
-                Application.Current.MainPage = new LoginPage();
+                AppSession.CurrentUser = user;
+                Application.Current.MainPage = new AppShell();
             }
             else
             {

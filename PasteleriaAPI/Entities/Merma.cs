@@ -5,12 +5,12 @@ namespace PasteleriaAPI.Entities
     {
         public int Id { get; set; }
         public int PastelId { get; set; }
-        public int UsuarioId { get; set; }
+        public string? UsuarioId { get; set; }
         public DateTime Fecha { get; set; }
         public string? Descripcion { get; set; }
         public string? Estatus { get; set; } = "Pendiente";
         
         public Pastel? Pastel { get; set; }
-        public Usuario? Usuario { get; set; }
+        public ApplicationUser? Usuario { get; set; }
     }
 }

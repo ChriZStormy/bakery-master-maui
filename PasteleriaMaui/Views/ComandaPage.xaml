@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:PasteleriaMaui.ViewModels"
+             x:Class="PasteleriaMaui.Views.ComandaPage"
+             x:DataType="viewmodels:ComandaViewModel"
+             Title="Comanda de Cocina"
+             BackgroundColor="#F7F4EF">
+
+    <Grid RowDefinitions="Auto, Auto, *">
+        <!-- BARRA SUPERIOR / ENCABEZADO KDS -->
+        <Grid Grid.Row="0" Margin="20,15,20,5" ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto">
+            <VerticalStackLayout Grid.Column="0" Spacing="2">
+                <Label Text="👨‍🍳 Comanda de Producción" 
+                       FontSize="22" 
+                       FontAttributes="Bold" 
+                       TextColor="#3E2723" />
+                <Label Text="Control de fases y ficha técnica en cocina" 
+                       FontSize="13" 
+                       TextColor="#795548" />
+            </VerticalStackLayout>
+
+            <!-- Indicador SignalR KDS en vivo -->
+            <Border Grid.Column="1" 
+                    BackgroundColor="#FAF8F5" 
+                    Stroke="#EAE4DB" 
+                    StrokeThickness="1" 
+                    HeightRequest="36" 
+                    Padding="12,0" 
+                    VerticalOptions="Center">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="18" />
+                </Border.StrokeShape>
+                <Label Text="{Binding EstadoConexionTexto}" 
+                       TextColor="{Binding EstadoConexionColor}" 
+                       FontSize="12" 
+                       FontAttributes="Bold" 
+                       VerticalOptions="Center" />
+            </Border>
+        </Grid>
+
+        <!-- PESTAÑAS DE FILTRO POR FASE DE PRODUCCIÓN -->
+        <ScrollView Grid.Row="1" Orientation="Horizontal" HorizontalScrollBarVisibility="Never" Margin="0,10,0,10">
+            <HorizontalStackLayout Spacing="8" Padding="20,0">
+                <!-- Todas -->
+                <Button Text="Todas"
+                        Command="{Binding CambiarFiltroCommand}" 
+                        CommandParameter="Todas"
+                        BackgroundColor="{Binding TabTodasBg}" 
+                        TextColor="{Binding TabTodasText}" 
+                        CornerRadius="18" 
+                        HeightRequest="38" 
+                        Padding="16,0" 
+                        FontSize="13"
+                        FontAttributes="Bold" />
+
+                <!-- En Espera -->
+                <Button Text="⏳ En Espera" 
+                        Command="{Binding CambiarFiltroCommand}" 
+                        CommandParameter="En Espera"
+                        BackgroundColor="{Binding TabEsperaBg}" 
+                        TextColor="{Binding TabEsperaText}" 
+                        CornerRadius="18" 
+                        HeightRequest="38" 
+                        Padding="16,0" 
+                        FontSize="13"
+                        FontAttributes="Bold" />
+
+                <!-- Horneado -->
+                <Button Text="🔥 Horneado" 
+                        Command="{Binding CambiarFiltroCommand}" 
+                        CommandParameter="Horneado"
+                        BackgroundColor="{Binding TabHorneadoBg}" 
+                        TextColor="{Binding TabHorneadoText}" 
+                        CornerRadius="18" 
+                        HeightRequest="38" 
+                        Padding="16,0" 
+                        FontSize="13"
+                        FontAttributes="Bold" />
+
+                <!-- Decoración -->
+                <Button Text="🎨 Decoración" 
+                        Command="{Binding CambiarFiltroCommand}" 
+                        CommandParameter="Decoración"
+                        BackgroundColor="{Binding TabDecoracionBg}" 
+                        TextColor="{Binding TabDecoracionText}" 
+                        CornerRadius="18" 
+                        HeightRequest="38" 
+                        Padding="16,0" 
+                        FontSize="13"
+                        FontAttributes="Bold" />
+
+                <!-- Listos -->
+                <Button Text="✅ Listos" 
+                        Command="{Binding CambiarFiltroCommand}" 
+                        CommandParameter="Listo"
+                        BackgroundColor="{Binding TabListosBg}" 
+                        TextColor="{Binding TabListosText}" 
+                        CornerRadius="18" 
+                        HeightRequest="38" 
+                        Padding="16,0" 
+                        FontSize="13"
+                        FontAttributes="Bold" />
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <!-- LISTA REACTIVA DE COMANDAS -->
+        <RefreshView Grid.Row="2" 
+                     IsRefreshing="{Binding IsRefreshing}" 
+                     Command="{Binding RecargarComandasCommand}" 
+                     RefreshColor="#8B5E34">
+            <CollectionView ItemsSource="{Binding ComandasExhibidas}" 
+                            Margin="20,0,20,15" 
+                            SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="15" />
+                </CollectionView.ItemsLayout>
+
+                <!-- Vista vacía -->
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout Spacing="15" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,60,0,0">
+                        <Label Text="🎂" FontSize="60" HorizontalOptions="Center" />
+                        <Label Text="No hay pasteles en esta fase" 
+                               FontSize="18" 
+                               FontAttributes="Bold" 
+                               TextColor="#5D4037" 
+                               HorizontalOptions="Center" />
+                        <Label Text="Desliza hacia abajo para refrescar o selecciona otra fase." 
+                               FontSize="14" 
+                               TextColor="#8D6E63" 
+                               HorizontalOptions="Center" 
+                               HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+
+                <!-- Plantilla de Comanda / Tarjeta de Producción -->
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="viewmodels:ComandaItemViewModel">
+                        <Border BackgroundColor="#FFFFFF" 
+                                Stroke="#E8DFD8" 
+                                StrokeThickness="1" 
+                                Padding="16">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="16" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow Brush="#3E2723" Offset="0,4" Radius="10" Opacity="0.08" />
+                            </Border.Shadow>
+
+                            <VerticalStackLayout Spacing="12">
+                                <!-- Encabezado de la Tarjeta -->
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                        <Label Text="{Binding FolioTexto}" 
+                                               FontSize="17" 
+                                               FontAttributes="Bold" 
+                                               TextColor="#3E2723" />
+                                        <Label Text="{Binding ClienteNombre, StringFormat='👤 Cliente: {0}'}" 
+                                               FontSize="13" 
+                                               TextColor="#6D4C41" />
+                                    </VerticalStackLayout>
+
+                                    <!-- Badge de Estatus -->
+                                    <Border Grid.Column="1" 
+                                            BackgroundColor="{Binding BadgeColor}" 
+                                            StrokeThickness="0" 
+                                            Padding="10,4" 
+                                            VerticalOptions="Start">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="12" />
+                                        </Border.StrokeShape>
+                                        <Label Text="{Binding FaseActualIcono}" 
+                                               TextColor="{Binding BadgeTextColor}" 
+                                               FontSize="12" 
+                                               FontAttributes="Bold" />
+                                    </Border>
+                                </Grid>
+
+                                <!-- Información de Entrega y Modalidad -->
+                                <Border BackgroundColor="#FAF8F5" Stroke="#EAE4DB" StrokeThickness="1" Padding="10,8">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="10" />
+                                    </Border.StrokeShape>
+                                    <VerticalStackLayout Spacing="4">
+                                        <Label Text="{Binding FechaHoraTexto, StringFormat='📅 Entrega: {0}'}" 
+                                               FontSize="12" 
+                                               FontAttributes="Bold" 
+                                               TextColor="#4E342E" />
+                                        <Label Text="{Binding ModalidadTexto}" 
+                                               FontSize="12" 
+                                               TextColor="#6D4C41" />
+                                    </VerticalStackLayout>
+                                </Border>
+
+                                <!-- FICHA TÉCNICA DE REPOSTERÍA -->
+                                <Border BackgroundColor="#FFFBF7" Stroke="#F0E6DD" StrokeThickness="1" Padding="12">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <VerticalStackLayout Spacing="8">
+                                        <!-- Título del Pastel y Tamaño -->
+                                        <Grid ColumnDefinitions="*, Auto">
+                                            <Label Grid.Column="0" 
+                                                   Text="{Binding PastelNombre}" 
+                                                   FontSize="15" 
+                                                   FontAttributes="Bold" 
+                                                   TextColor="#3E2723" />
+                                            <Label Grid.Column="1" 
+                                                   Text="{Binding Cantidad, StringFormat='Cant: {0}'}" 
+                                                   FontSize="13" 
+                                                   FontAttributes="Bold" 
+                                                   TextColor="#8B5E34" />
+                                        </Grid>
+
+                                        <Label Text="{Binding Tamanio, StringFormat='Tamaño: {0}'}" 
+                                               FontSize="12" 
+                                               TextColor="#795548" />
+
+                                        <!-- Ingredientes Clave -->
+                                        <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="Auto, *" RowSpacing="4" ColumnSpacing="6">
+                                            <Label Grid.Row="0" Grid.Column="0" Text="🍞 Bizcocho:" FontSize="13" FontAttributes="Bold" TextColor="#5D4037" />
+                                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding BizcochoNombre}" FontSize="13" TextColor="#3E2723" />
+
+                                            <Label Grid.Row="1" Grid.Column="0" Text="🍓 Relleno:" FontSize="13" FontAttributes="Bold" TextColor="#5D4037" />
+                                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding RellenoNombre}" FontSize="13" TextColor="#3E2723" />
+
+                                            <Label Grid.Row="2" Grid.Column="0" Text="🧁 Glaseado:" FontSize="13" FontAttributes="Bold" TextColor="#5D4037" />
+                                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding GlaseadoNombre}" FontSize="13" TextColor="#3E2723" />
+                                        </Grid>
+
+                                        <!-- Mensaje Personalizado si existe -->
+                                        <Border IsVisible="{Binding TieneMensaje}" 
+                                                BackgroundColor="#FFF8E1" 
+                                                Stroke="#FFE082" 
+                                                StrokeThickness="1" 
+                                                Padding="8,6">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="8" />
+                                            </Border.StrokeShape>
+                                            <HorizontalStackLayout Spacing="6" VerticalOptions="Center">
+                                                <Label Text="✍️" FontSize="14" VerticalOptions="Center" />
+                                                <Label Text="{Binding Mensaje, StringFormat='Dedicatoria: &quot;{0}&quot;'}" 
+                                                       FontSize="12" 
+                                                       FontAttributes="Italic" 
+                                                       TextColor="#E65100" 
+                                                       VerticalOptions="Center" />
+                                            </HorizontalStackLayout>
+                                        </Border>
+
+                                        <!-- Referencia visual de decoración si existe -->
+                                        <Border IsVisible="{Binding TieneImagenDecoracion}"
+                                                BackgroundColor="#FFFFFF"
+                                                Stroke="#ECEFF1"
+                                                StrokeThickness="1"
+                                                Padding="8">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="8" />
+                                            </Border.StrokeShape>
+                                            <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                                                <Image Source="{Binding ImagenDecoracion}" 
+                                                       HeightRequest="45" 
+                                                       WidthRequest="45" 
+                                                       Aspect="AspectFit" />
+                                                <Label Text="{Binding ImagenDecoracion, StringFormat='Decoración elegida: {0}'}" 
+                                                       FontSize="11" 
+                                                       TextColor="#546E7A" 
+                                                       VerticalOptions="Center" />
+                                            </HorizontalStackLayout>
+                                        </Border>
+
+                                        <!-- Notas Técnicas de Cocina -->
+                                        <Border IsVisible="{Binding TieneNotas}" 
+                                                BackgroundColor="#EFEBE9" 
+                                                Stroke="#D7CCC8" 
+                                                StrokeThickness="1" 
+                                                Padding="8,6">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="8" />
+                                            </Border.StrokeShape>
+                                            <HorizontalStackLayout Spacing="6" VerticalOptions="Center">
+                                                <Label Text="📌" FontSize="14" VerticalOptions="Center" />
+                                                <Label Text="{Binding Notas, StringFormat='Nota: {0}'}" 
+                                                       FontSize="12" 
+                                                       TextColor="#3E2723" 
+                                                       VerticalOptions="Center" />
+                                            </HorizontalStackLayout>
+                                        </Border>
+                                    </VerticalStackLayout>
+                                </Border>
+
+                                <!-- BARRA DE ACCIÓN Y AVANCE DE FASE -->
+                                <Grid ColumnDefinitions="*, Auto, Auto" ColumnSpacing="8" Margin="0,4,0,0">
+                                    <!-- Botón Principal: Avanzar siguiente fase -->
+                                    <Button Grid.Column="0" 
+                                            Text="{Binding BotonAccionTexto}" 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ComandaViewModel}}, Path=AvanzarFaseCommand}" 
+                                            CommandParameter="{Binding .}" 
+                                            BackgroundColor="{Binding BotonAccionColor}" 
+                                            TextColor="#FFFFFF" 
+                                            CornerRadius="12" 
+                                            HeightRequest="44" 
+                                            FontSize="14" 
+                                            FontAttributes="Bold" 
+                                            IsVisible="{Binding PuedeAvanzar}">
+                                        <Button.Shadow>
+                                            <Shadow Brush="{Binding BotonAccionColor}" Offset="0,2" Radius="6" Opacity="0.25" />
+                                        </Button.Shadow>
+                                    </Button>
+
+                                    <!-- Botón: Añadir / Modificar Nota Técnica -->
+                                    <Button Grid.Column="1" 
+                                            Text="📝 Nota" 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ComandaViewModel}}, Path=AgregarNotaCommand}" 
+                                            CommandParameter="{Binding .}" 
+                                            BackgroundColor="#FFFFFF" 
+                                            TextColor="#5D4037" 
+                                            BorderColor="#D7CCC8" 
+                                            BorderWidth="1" 
+                                            CornerRadius="12" 
+                                            HeightRequest="44" 
+                                            FontSize="13" 
+                                            FontAttributes="Bold" 
+                                            Padding="12,0" />
+
+                                    <!-- Botón: Selector directo de fase -->
+                                    <Button Grid.Column="2" 
+                                            Text="⚙️ Fase" 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ComandaViewModel}}, Path=CambiarFaseManualCommand}" 
+                                            CommandParameter="{Binding .}" 
+                                            BackgroundColor="#FFFFFF" 
+                                            TextColor="#5D4037" 
+                                            BorderColor="#D7CCC8" 
+                                            BorderWidth="1" 
+                                            CornerRadius="12" 
+                                            HeightRequest="44" 
+                                            FontSize="13" 
+                                            FontAttributes="Bold" 
+                                            Padding="12,0" />
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

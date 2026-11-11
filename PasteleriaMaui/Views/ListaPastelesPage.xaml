@@ -7,7 +7,20 @@
 
     <Grid RowDefinitions="Auto, *, Auto">
         
-        <!-- Barra de Búsqueda -->
+        <!-- Barra de Búsqueda y Botón de Personalización -->
+        <Button Text="🎨 ¿Quieres un diseño único? Arma tu Pastel en Vivo"
+                Clicked="OnCrearPersonalizadoClicked"
+                BackgroundColor="#8B5E34"
+                TextColor="#FFFFFF"
+                FontAttributes="Bold"
+                FontSize="13"
+                HeightRequest="44"
+                CornerRadius="12"
+                Margin="20,10,20,0">
+            <Button.Shadow>
+                <Shadow Brush="#8B5E34" Offset="0,3" Radius="8" Opacity="0.18" />
+            </Button.Shadow>
+        </Button>
         <VerticalStackLayout Padding="20,20,20,10" Grid.Row="0">
             <Border Stroke="#EAE4DB" 
                     StrokeThickness="1" 

@@ -11,14 +11,209 @@ using PasteleriaAPI.Data;
 namespace PasteleriaAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260924001840_InitialSqlite")]
-    partial class InitialSqlite
+    [Migration("20261014214012_InitialIdentity")]
+    partial class InitialIdentity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("PasteleriaAPI.Entities.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nombre")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
 
             modelBuilder.Entity("PasteleriaAPI.Entities.Catalogos.CatBizcocho", b =>
                 {
@@ -262,8 +457,8 @@ namespace PasteleriaAPI.Migrations
                     b.Property<int>("PastelId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -272,53 +467,6 @@ namespace PasteleriaAPI.Migrations
                     b.HasIndex("UsuarioId");
 
                     b.ToTable("Mermas");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Descripcion = "Pastel aplastado durante el transporte",
-                            Estatus = "Pendiente",
-                            Fecha = new DateTime(2023, 10, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 2,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Descripcion = "Falta de decoración en el cheesecake",
-                            Estatus = "Pendiente",
-                            Fecha = new DateTime(2023, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 5,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 103,
-                            Descripcion = "El cliente reportó que el chocolate estaba muy amargo",
-                            Estatus = "Pendiente",
-                            Fecha = new DateTime(2024, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 106,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 104,
-                            Descripcion = "Flores de fondant derretidas por el calor",
-                            Estatus = "Pendiente",
-                            Fecha = new DateTime(2023, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 4,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 105,
-                            Descripcion = "La leche se derramó en la caja",
-                            Estatus = "Pendiente",
-                            Fecha = new DateTime(2023, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 6,
-                            UsuarioId = 2
-                        });
                 });
 
             modelBuilder.Entity("PasteleriaAPI.Entities.Pastel", b =>
@@ -533,8 +681,8 @@ namespace PasteleriaAPI.Migrations
                     b.Property<int>("PastelId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -543,149 +691,57 @@ namespace PasteleriaAPI.Migrations
                     b.HasIndex("UsuarioId");
 
                     b.ToTable("Pedidos");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Cantidad = 2,
-                            Estatus = "Entregado",
-                            Fecha = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaEntrega = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 1,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Cantidad = 1,
-                            Estatus = "En Proceso",
-                            Fecha = new DateTime(2023, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaEntrega = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 3,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Cantidad = 5,
-                            Estatus = "Pendiente",
-                            Fecha = new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaEntrega = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 6,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 104,
-                            Cantidad = 1,
-                            Estatus = "Entregado",
-                            Fecha = new DateTime(2023, 11, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaEntrega = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 4,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 105,
-                            Cantidad = 3,
-                            Estatus = "Pendiente",
-                            Fecha = new DateTime(2023, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaEntrega = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 101,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 106,
-                            Cantidad = 1,
-                            Estatus = "Cancelado",
-                            Fecha = new DateTime(2023, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaEntrega = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 2,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 107,
-                            Cantidad = 2,
-                            Estatus = "Entregado",
-                            Fecha = new DateTime(2023, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaEntrega = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 104,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 108,
-                            Cantidad = 1,
-                            Estatus = "En Proceso",
-                            Fecha = new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaEntrega = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 102,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 109,
-                            Cantidad = 4,
-                            Estatus = "Pendiente",
-                            Fecha = new DateTime(2024, 2, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaEntrega = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 106,
-                            UsuarioId = 2
-                        },
-                        new
-                        {
-                            Id = 110,
-                            Cantidad = 2,
-                            Estatus = "Entregado",
-                            Fecha = new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaEntrega = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PastelId = 5,
-                            UsuarioId = 2
-                        });
                 });
 
-            modelBuilder.Entity("PasteleriaAPI.Entities.Usuario", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Property<string>("Email")
-                        .HasColumnType("TEXT");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("PasteleriaAPI.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Property<string>("Nombre")
-                        .HasColumnType("TEXT");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("PasteleriaAPI.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Property<string>("Password")
-                        .HasColumnType("TEXT");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<string>("Rol")
-                        .HasColumnType("TEXT");
+                    b.HasOne("PasteleriaAPI.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Usuarios");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "admin@pasteleria.com",
-                            Nombre = "Admin Master",
-                            Password = "admin",
-                            Rol = "Admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "cliente@correo.com",
-                            Nombre = "Cliente Juan",
-                            Password = "123",
-                            Rol = "Cliente"
-                        });
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("PasteleriaAPI.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PasteleriaAPI.Entities.Merma", b =>
@@ -696,11 +752,9 @@ namespace PasteleriaAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PasteleriaAPI.Entities.Usuario", "Usuario")
+                    b.HasOne("PasteleriaAPI.Entities.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
 
                     b.Navigation("Pastel");
 
@@ -750,11 +804,9 @@ namespace PasteleriaAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PasteleriaAPI.Entities.Usuario", "Usuario")
+                    b.HasOne("PasteleriaAPI.Entities.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
 
                     b.Navigation("Pastel");
 

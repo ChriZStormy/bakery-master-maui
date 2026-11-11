@@ -3,12 +3,6 @@ using PasteleriaMaui.Models;
 
 namespace PasteleriaMaui.Services
 {
-    public class AuthResponse
-    {
-        public string Token { get; set; }
-        public Usuario Usuario { get; set; }
-    }
-
     public class AuthService
     {
         private readonly HttpClient _httpClient;
@@ -25,13 +19,11 @@ namespace PasteleriaMaui.Services
             _httpClient = new HttpClient(authHandler);
         }
 
-        public async Task<Usuario> LoginAsync(string email, string password)
+        public async Task<Usuario?> LoginAsync(string email, string password)
         {
-            var credenciales = new Usuario { Email = email, Password = password };
-            var json = System.Text.Json.JsonSerializer.Serialize(credenciales);
-            var payload = new PasteleriaMaui.Helpers.EncryptedPayload { Data = PasteleriaMaui.Helpers.CryptoHelper.Encrypt(json) };
+            var loginRequest = new LoginRequest { Email = email, Password = password };
 
-            var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}api/auth/login", payload);
+            var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}api/auth/login", loginRequest);
             if (response.IsSuccessStatusCode)
             {
                 var authResult = await response.Content.ReadFromJsonAsync<AuthResponse>();
@@ -45,12 +37,17 @@ namespace PasteleriaMaui.Services
             return null;
         }
 
-        public async Task<Usuario> RegisterAsync(Usuario nuevoUsuario)
+        public async Task<Usuario?> RegisterAsync(string nombre, string email, string password)
         {
-            var json = System.Text.Json.JsonSerializer.Serialize(nuevoUsuario);
-            var payload = new PasteleriaMaui.Helpers.EncryptedPayload { Data = PasteleriaMaui.Helpers.CryptoHelper.Encrypt(json) };
+            // SECURITY: No role field sent. Server always assigns 'Cliente'.
+            var registerRequest = new RegisterRequest
+            {
+                Nombre = nombre,
+                Email = email,
+                Password = password
+            };
 
-            var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}api/auth/register", payload);
+            var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}api/auth/register", registerRequest);
             if (response.IsSuccessStatusCode)
             {
                 var authResult = await response.Content.ReadFromJsonAsync<AuthResponse>();
@@ -63,5 +60,21 @@ namespace PasteleriaMaui.Services
             }
             return null;
         }
+
+#if DEBUG
+        public async Task<AuthResponse?> DebugSwitchRoleAsync(string targetRole)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsync($"{_baseUrl}api/auth/debug-switch/{targetRole}", null);
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<AuthResponse>();
+                }
+            }
+            catch { }
+            return null;
+        }
+#endif
     }
 }
