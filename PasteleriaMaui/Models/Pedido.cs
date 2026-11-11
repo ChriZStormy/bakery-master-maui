@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Text.Json.Serialization;
 
 namespace PasteleriaMaui.Models
@@ -20,6 +21,7 @@ namespace PasteleriaMaui.Models
         public string? Direccion { get; set; }
         public decimal Total { get; set; }
         public string? Notas { get; set; }
+        public DateTime? FechaEntregaReal { get; set; }
 
         [JsonIgnore]
         public string? Hora
@@ -37,5 +39,55 @@ namespace PasteleriaMaui.Models
 
         public Pastel? Pastel { get; set; }
         public Usuario? Usuario { get; set; }
+
+        // Propiedades de apoyo para reportes y visualización
+        [JsonIgnore]
+        public string TotalFormateado => Total.ToString("C2", CultureInfo.GetCultureInfo("es-MX"));
+
+        [JsonIgnore]
+        public bool EsATiempo
+        {
+            get
+            {
+                DateTime entregaEfectiva = FechaEntregaReal ?? FechaEntrega;
+                return entregaEfectiva <= FechaEntrega.AddHours(2);
+            }
+        }
+
+        [JsonIgnore]
+        public string EstadoPuntualidadTexto
+        {
+            get
+            {
+                if (Estatus == "Entregado" || Estatus == "Completado")
+                {
+                    return EsATiempo ? "A Tiempo" : "Retrasado";
+                }
+                if (DateTime.Now > FechaEntrega)
+                {
+                    return "Retrasado";
+                }
+                return "En Preparación / Ruta";
+            }
+        }
+
+        [JsonIgnore]
+        public string EstadoPuntualidadColor => EstadoPuntualidadTexto switch
+        {
+            "A Tiempo" => "#2E7D32",
+            "Retrasado" => "#C62828",
+            _ => "#E65100"
+        };
+
+        [JsonIgnore]
+        public double HorasPreparacion
+        {
+            get
+            {
+                DateTime fin = FechaEntregaReal ?? (Estatus == "Entregado" ? FechaEntrega : DateTime.Now);
+                var diff = (fin - Fecha).TotalHours;
+                return diff > 0 ? Math.Round(diff, 1) : 1.0;
+            }
+        }
     }
 }

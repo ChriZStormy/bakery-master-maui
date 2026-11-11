@@ -756,6 +756,9 @@ namespace PasteleriaAPI.Migrations
                     b.Property<DateTime>("FechaEntrega")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime?>("FechaEntregaReal")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("HoraEntrega")
                         .HasColumnType("TEXT");
 

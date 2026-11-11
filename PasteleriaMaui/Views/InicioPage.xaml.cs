@@ -24,6 +24,7 @@ namespace PasteleriaMaui.Views
                 BotonCatalogos.IsVisible = false;
                 BotonUsuarios.IsVisible = false;
                 BotonComandas.IsVisible = false;
+                BotonReporteEntregas.IsVisible = false;
                 BotonMermas.IsVisible = true;
                 BotonMermas.Text = "Reclamos";
                 BotonGestiones.Text = "Menú de Pasteles";
@@ -34,6 +35,7 @@ namespace PasteleriaMaui.Views
                 BotonCatalogos.IsVisible = false;
                 BotonUsuarios.IsVisible = false;
                 BotonComandas.IsVisible = true;
+                BotonReporteEntregas.IsVisible = false;
                 BotonMermas.IsVisible = true;
                 BotonMermas.Text = "Registro de Mermas";
                 BotonGestiones.Text = "Gestión de Pasteles";
@@ -44,6 +46,7 @@ namespace PasteleriaMaui.Views
                 BotonCatalogos.IsVisible = true;
                 BotonUsuarios.IsVisible = true;
                 BotonComandas.IsVisible = true;
+                BotonReporteEntregas.IsVisible = true;
                 BotonMermas.IsVisible = true;
                 BotonMermas.Text = "Control y Reportes de Mermas";
                 BotonGestiones.Text = "Gestión de Pasteles";
@@ -69,6 +72,16 @@ namespace PasteleriaMaui.Views
 		private async void OnReportesClicked(object sender, EventArgs e)
 		{
 			await Shell.Current.GoToAsync(nameof(ReporteMermaPage));
+		}
+
+		private async void OnReporteEntregasClicked(object sender, EventArgs e)
+		{
+            if (AppSession.CurrentUser != null && AppSession.CurrentUser.Rol == "Cliente")
+            {
+                await DisplayAlert("Acceso Denegado", "Solo los administradores pueden consultar el reporte de entregas.", "OK");
+                return;
+            }
+			await Shell.Current.GoToAsync(nameof(ReporteEntregasPage));
 		}
 
 		private async void OnCatalogosClicked(object sender, EventArgs e)

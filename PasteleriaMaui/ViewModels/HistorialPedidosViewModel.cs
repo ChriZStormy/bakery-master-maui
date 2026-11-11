@@ -123,6 +123,8 @@ namespace PasteleriaMaui.ViewModels
         public ICommand RecargarPedidosCommand { get; }
         public ICommand CambiarTabPrincipalCommand { get; }
         public ICommand CambiarSubTabCommand { get; }
+        public ICommand VerDetallePedidoCommand { get; }
+        public ICommand PedirDeNuevoCommand { get; }
 
         public HistorialPedidosViewModel()
         {
@@ -133,6 +135,26 @@ namespace PasteleriaMaui.ViewModels
             RecargarPedidosCommand = new Command(async () => await CargarPedidosAsync());
             CambiarTabPrincipalCommand = new Command<string>(tab => { if (!string.IsNullOrEmpty(tab)) CurrentMainTab = tab; });
             CambiarSubTabCommand = new Command<string>(subTab => { if (!string.IsNullOrEmpty(subTab)) CurrentSubTab = subTab; });
+
+            VerDetallePedidoCommand = new Command<Pedido>(async pedido =>
+            {
+                if (pedido == null) return;
+                await Shell.Current.Navigation.PushAsync(new DetallePedidoPage(pedido));
+            });
+
+            PedirDeNuevoCommand = new Command<Pedido>(async pedido =>
+            {
+                if (pedido?.Pastel == null) return;
+                var navParam = new Dictionary<string, object>
+                {
+                    { "PastelAComprar", pedido.Pastel }
+                };
+                await Shell.Current.GoToAsync(nameof(RegistrarPedidoPage), navParam);
+                if (Application.Current?.MainPage != null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("¡Pedido Repetido!", $"Se cargaron los mismos ingredientes del pastel '{pedido.Pastel.Nombre}' para tu nueva orden.", "Aceptar");
+                }
+            });
         }
 
         public async Task InicializarAsync()

@@ -137,6 +137,21 @@
                 </VerticalStackLayout>
             </Border>
             
+            <Button Text="🔁 Pedir de Nuevo (Repetir Pedido)" 
+                    Command="{Binding PedirDeNuevoCommand}" 
+                    BackgroundColor="#8B5E34" 
+                    TextColor="#FFFFFF" 
+                    CornerRadius="14" 
+                    HeightRequest="54" 
+                    FontSize="16" 
+                    FontAttributes="Bold"
+                    IsVisible="{Binding IsCliente}"
+                    Margin="0,5,0,0">
+                <Button.Shadow>
+                    <Shadow Brush="#8B5E34" Offset="0,4" Radius="10" Opacity="0.2" />
+                </Button.Shadow>
+            </Button>
+            
             <Button Text="Volver" 
                     Command="{Binding VolverCommand}" 
                     BackgroundColor="#FFFFFF" 

@@ -185,6 +185,19 @@
                                         <Label Text="{Binding Estatus}" FontSize="13" TextColor="#D84315" FontAttributes="Bold" HorizontalTextAlignment="Center" />
                                     </Border>
                                 </Grid>
+
+                                <!-- Botón Pedir de Nuevo (HU Sprint 3) -->
+                                <Button Text="🔁 Pedir de nuevo" 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:HistorialPedidosViewModel}}, Path=PedirDeNuevoCommand}" 
+                                        CommandParameter="{Binding .}" 
+                                        HeightRequest="36" 
+                                        CornerRadius="8" 
+                                        BackgroundColor="#8B5E34" 
+                                        TextColor="#FFFFFF" 
+                                        FontSize="12" 
+                                        FontAttributes="Bold" 
+                                        Margin="0,6,0,0"
+                                        IsVisible="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:HistorialPedidosViewModel}}, Path=EsCliente}" />
                             </VerticalStackLayout>
                         </Border>
                     </DataTemplate>

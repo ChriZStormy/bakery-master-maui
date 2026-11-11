@@ -20,6 +20,8 @@ namespace PasteleriaMaui
             Routing.RegisterRoute(nameof(CalendarioPedidosPage), typeof(CalendarioPedidosPage));
             Routing.RegisterRoute(nameof(GestionUsuariosPage), typeof(GestionUsuariosPage));
             Routing.RegisterRoute(nameof(ComandaPage), typeof(ComandaPage));
+            Routing.RegisterRoute(nameof(ReporteEntregasPage), typeof(ReporteEntregasPage));
+            Routing.RegisterRoute(nameof(DetallePedidoPage), typeof(DetallePedidoPage));
 		}
     }
 }

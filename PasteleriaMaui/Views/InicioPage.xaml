@@ -87,6 +87,20 @@
                     </Button.Shadow>
                 </Button>
 
+                <Button x:Name="BotonReporteEntregas" 
+                        Text="⏱️ Cumplimiento de Entregas" 
+                        HeightRequest="60" 
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        CornerRadius="14"
+                        BackgroundColor="#FFFFFF" 
+                        TextColor="#3E2723"
+                        Clicked="OnReporteEntregasClicked">
+                    <Button.Shadow>
+                        <Shadow Brush="#8B5E34" Offset="0,4" Radius="10" Opacity="0.08" />
+                    </Button.Shadow>
+                </Button>
+
                 <Button x:Name="BotonCatalogos" 
                         Text="Catálogos" 
                         HeightRequest="60" 

@@ -20,6 +20,7 @@ namespace PasteleriaAPI.Entities
         public string? Direccion { get; set; }
         public decimal Total { get; set; }
         public string? Notas { get; set; }
+        public DateTime? FechaEntregaReal { get; set; }
 
         [NotMapped]
         public string? Hora

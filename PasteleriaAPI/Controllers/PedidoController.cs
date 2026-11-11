@@ -201,6 +201,10 @@ namespace PasteleriaAPI.Controllers
             if (!string.IsNullOrWhiteSpace(pedidoActualizado.Estatus))
             {
                 pedido.Estatus = pedidoActualizado.Estatus;
+                if ((pedido.Estatus == "Entregado" || pedido.Estatus == "Completado") && !pedido.FechaEntregaReal.HasValue)
+                {
+                    pedido.FechaEntregaReal = DateTime.Now;
+                }
             }
             if (pedidoActualizado.Notas != null)
             {
@@ -234,6 +238,95 @@ namespace PasteleriaAPI.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpGet("reporte-entregas")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetReporteEntregas([FromQuery] DateTime? fechaInicio, [FromQuery] DateTime? fechaFin)
+        {
+            var authResult = await _authorizationService.AuthorizeAsync(User, "LocalNetworkOnly");
+            if (!authResult.Succeeded)
+            {
+                return Forbid();
+            }
+
+            var query = _context.Pedidos
+                .Include(p => p.Pastel).ThenInclude(p => p.Bizcocho)
+                .Include(p => p.Pastel).ThenInclude(p => p.Relleno)
+                .Include(p => p.Pastel).ThenInclude(p => p.Glaseado)
+                .Include(p => p.Usuario)
+                .AsQueryable();
+
+            if (fechaInicio.HasValue)
+            {
+                var inicio = fechaInicio.Value.Date;
+                query = query.Where(p => p.Fecha >= inicio || p.FechaEntrega >= inicio);
+            }
+
+            if (fechaFin.HasValue)
+            {
+                var fin = fechaFin.Value.Date.AddDays(1).AddTicks(-1);
+                query = query.Where(p => p.Fecha <= fin || p.FechaEntrega <= fin);
+            }
+
+            var pedidos = await query.OrderByDescending(p => p.FechaEntrega).ToListAsync();
+
+            int totalPedidos = pedidos.Count;
+            int entregadosATiempo = 0;
+            int entregasRetrasadas = 0;
+            int enProceso = 0;
+            double sumaHorasPreparacion = 0;
+            int countConPreparacion = 0;
+
+            foreach (var p in pedidos)
+            {
+                bool esEntregado = p.Estatus == "Entregado" || p.Estatus == "Completado";
+                if (esEntregado)
+                {
+                    DateTime fechaFinReal = p.FechaEntregaReal ?? p.FechaEntrega;
+                    if (fechaFinReal <= p.FechaEntrega.AddHours(2))
+                    {
+                        entregadosATiempo++;
+                    }
+                    else
+                    {
+                        entregasRetrasadas++;
+                    }
+
+                    var duracion = (fechaFinReal - p.Fecha).TotalHours;
+                    if (duracion > 0)
+                    {
+                        sumaHorasPreparacion += duracion;
+                        countConPreparacion++;
+                    }
+                }
+                else
+                {
+                    if (DateTime.Now > p.FechaEntrega)
+                    {
+                        entregasRetrasadas++;
+                    }
+                    else
+                    {
+                        enProceso++;
+                    }
+                }
+            }
+
+            double tiempoPromedioHoras = countConPreparacion > 0 ? Math.Round(sumaHorasPreparacion / countConPreparacion, 1) : 0;
+            int totalDespachados = entregadosATiempo + entregasRetrasadas;
+            double porcentajePuntualidad = totalDespachados > 0 ? Math.Round((double)entregadosATiempo / totalDespachados * 100, 1) : 100;
+
+            return Ok(new
+            {
+                TotalPedidos = totalPedidos,
+                EntregadosATiempo = entregadosATiempo,
+                EntregasRetrasadas = entregasRetrasadas,
+                EnProceso = enProceso,
+                TiempoPromedioPreparacionHoras = tiempoPromedioHoras,
+                PorcentajePuntualidad = porcentajePuntualidad,
+                Pedidos = pedidos
+            });
         }
     }
 }
