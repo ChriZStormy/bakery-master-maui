@@ -26,7 +26,7 @@ namespace PasteleriaMaui.Services
             try
             {
                 var url = $"{_baseUrl}api/pedido" + (!string.IsNullOrEmpty(usuarioId) ? $"?usuarioId={usuarioId}" : "");
-                return await _httpClient.GetFromJsonAsync<List<Pedido>>(url);
+                return await _httpClient.GetFromJsonAsync<List<Pedido>>(url, GetJsonOptions()) ?? new List<Pedido>();
             }
             catch { return new List<Pedido>(); }
         }
@@ -64,7 +64,11 @@ namespace PasteleriaMaui.Services
 
         private JsonSerializerOptions GetJsonOptions()
         {
-            return new JsonSerializerOptions { ReferenceHandler = ReferenceHandler.IgnoreCycles };
+            return new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                PropertyNameCaseInsensitive = true
+            };
         }
 
         public async Task<(bool Exito, Pedido? PedidoCreado)> RegistrarPedidoAsync(Pedido pedido)

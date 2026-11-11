@@ -248,6 +248,13 @@ namespace PasteleriaMaui.ViewModels
             set { _contadorListos = value; OnPropertyChanged(); }
         }
 
+        private int _contadorCompletos;
+        public int ContadorCompletos
+        {
+            get => _contadorCompletos;
+            set { _contadorCompletos = value; OnPropertyChanged(); }
+        }
+
         private int _contadorTotalCocina;
         public int ContadorTotalCocina
         {
@@ -270,6 +277,9 @@ namespace PasteleriaMaui.ViewModels
 
         public Color TabListosBg => FaseFiltro == "Listo" ? Color.FromArgb("#2E7D32") : Color.FromArgb("#FAF8F5");
         public Color TabListosText => FaseFiltro == "Listo" ? Colors.White : Color.FromArgb("#795548");
+
+        public Color TabCompletosBg => (FaseFiltro == "Completos" || FaseFiltro == "Entregado") ? Color.FromArgb("#1565C0") : Color.FromArgb("#FAF8F5");
+        public Color TabCompletosText => (FaseFiltro == "Completos" || FaseFiltro == "Entregado") ? Colors.White : Color.FromArgb("#795548");
 
         // Comandos MVVM
         public ICommand RecargarComandasCommand { get; }
@@ -340,6 +350,7 @@ namespace PasteleriaMaui.ViewModels
             ContadorHorneado = _todasLasComandas.Count(c => c.Estatus == "Horneado");
             ContadorDecoracion = _todasLasComandas.Count(c => c.Estatus == "Decoración");
             ContadorListos = _todasLasComandas.Count(c => c.Estatus == "Listo");
+            ContadorCompletos = _todasLasComandas.Count(c => c.Estatus == "Entregado" || c.Estatus == "Completado");
             ContadorTotalCocina = ContadorEnEspera + ContadorHorneado + ContadorDecoracion + ContadorListos;
         }
 
@@ -362,6 +373,10 @@ namespace PasteleriaMaui.ViewModels
                     break;
                 case "Listo":
                     query = query.Where(c => c.Estatus == "Listo");
+                    break;
+                case "Completos":
+                case "Entregado":
+                    query = query.Where(c => c.Estatus == "Entregado" || c.Estatus == "Completado");
                     break;
                 case "Todas":
                 default:
@@ -388,6 +403,8 @@ namespace PasteleriaMaui.ViewModels
             OnPropertyChanged(nameof(TabDecoracionText));
             OnPropertyChanged(nameof(TabListosBg));
             OnPropertyChanged(nameof(TabListosText));
+            OnPropertyChanged(nameof(TabCompletosBg));
+            OnPropertyChanged(nameof(TabCompletosText));
         }
 
         private async Task EjecutarAvanzarFaseAsync(ComandaItemViewModel? item)

@@ -25,8 +25,8 @@ public partial class ReporteEntregasPage : ContentPage
         _transaccionesService = new TransaccionesService();
         BindingContext = this;
 
-        FiltroFechaInicio.Date = DateTime.Today.AddDays(-30);
-        FiltroFechaFin.Date = DateTime.Today;
+        FiltroFechaInicio.Date = DateTime.Today.AddMonths(-3);
+        FiltroFechaFin.Date = DateTime.Today.AddMonths(1);
     }
 
     protected override async void OnAppearing()
@@ -54,7 +54,7 @@ public partial class ReporteEntregasPage : ContentPage
                 // Fallback local en caso de conexión directa
                 var todosPedidos = await _transaccionesService.GetPedidosAsync();
                 var filtrados = todosPedidos
-                    .Where(p => p.Fecha.Date >= inicio && p.Fecha.Date <= fin)
+                    .Where(p => (p.Fecha.Date >= inicio && p.Fecha.Date <= fin) || (p.FechaEntrega.Date >= inicio && p.FechaEntrega.Date <= fin))
                     .OrderByDescending(p => p.FechaEntrega)
                     .ToList();
 
@@ -127,8 +127,8 @@ public partial class ReporteEntregasPage : ContentPage
 
     private async void OnFiltroTodoClicked(object sender, EventArgs e)
     {
-        FiltroFechaInicio.Date = DateTime.Today.AddYears(-2);
-        FiltroFechaFin.Date = DateTime.Today.AddDays(1);
+        FiltroFechaInicio.Date = new DateTime(2020, 1, 1);
+        FiltroFechaFin.Date = DateTime.Today.AddYears(1);
         await CargarReporteAsync();
     }
 

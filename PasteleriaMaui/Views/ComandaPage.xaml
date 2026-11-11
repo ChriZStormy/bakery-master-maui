@@ -101,6 +101,18 @@
                         Padding="16,0" 
                         FontSize="13"
                         FontAttributes="Bold" />
+
+                <!-- Completos -->
+                <Button Text="🏆 Completos" 
+                        Command="{Binding CambiarFiltroCommand}" 
+                        CommandParameter="Completos"
+                        BackgroundColor="{Binding TabCompletosBg}" 
+                        TextColor="{Binding TabCompletosText}" 
+                        CornerRadius="18" 
+                        HeightRequest="38" 
+                        Padding="16,0" 
+                        FontSize="13"
+                        FontAttributes="Bold" />
             </HorizontalStackLayout>
         </ScrollView>
 

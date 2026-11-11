@@ -76,7 +76,7 @@ namespace PasteleriaMaui.Services
 			try
 			{
 				var query = soloActivos.HasValue ? $"?soloActivos={soloActivos.Value}" : "";
-				return await _httpClient.GetFromJsonAsync<List<Pastel>>($"{_baseUrl}api/pastel/todaspasteles{query}", GetJsonOptions()) ?? new List<Pastel>();
+				return await _httpClient.GetFromJsonAsync<List<Pastel>>($"{_baseUrl}api/pastel/todospasteles{query}", GetJsonOptions()) ?? new List<Pastel>();
 			}
 			catch (Exception ex)
 			{

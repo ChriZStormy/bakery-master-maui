@@ -99,7 +99,8 @@ namespace PasteleriaAPI.Controllers
             // Seguridad IDOR: Forzar el ID del usuario autenticado del token JWT
             merma.UsuarioId = currentUserId;
 
-            // Si es merma de pastel y no se ingresó costo estimado, calcularlo según tamaño
+            // Si no se ingresó costo estimado, calcularlo automáticamente según el elemento afectado
+            decimal qty = (decimal)(merma.Cantidad > 0 ? merma.Cantidad : 1);
             if (merma.PastelId.HasValue && merma.PastelId.Value > 0)
             {
                 var pastel = await _context.Pasteles.FindAsync(merma.PastelId.Value);
@@ -120,10 +121,28 @@ namespace PasteleriaAPI.Controllers
                             "extra grande" => 680m,
                             _ => 380m
                         };
-                        decimal qty = (decimal)(merma.Cantidad > 0 ? merma.Cantidad : 1);
                         merma.CostoEstimado = precioUnitario * qty;
                     }
                 }
+            }
+            else if (merma.CostoEstimado <= 0)
+            {
+                // Insumo / materia prima fallback
+                string elem = merma.ElementoAfectado ?? string.Empty;
+                decimal costoUnitario = 50.00m;
+                if (elem.Contains("Harina", StringComparison.OrdinalIgnoreCase)) costoUnitario = 28.00m;
+                else if (elem.Contains("Azúcar", StringComparison.OrdinalIgnoreCase) || elem.Contains("Azucar", StringComparison.OrdinalIgnoreCase)) costoUnitario = 35.00m;
+                else if (elem.Contains("Mantequilla", StringComparison.OrdinalIgnoreCase)) costoUnitario = 140.00m;
+                else if (elem.Contains("Huevo", StringComparison.OrdinalIgnoreCase)) costoUnitario = 4.50m;
+                else if (elem.Contains("Leche", StringComparison.OrdinalIgnoreCase)) costoUnitario = 26.00m;
+                else if (elem.Contains("Crema", StringComparison.OrdinalIgnoreCase) || elem.Contains("Chantilly", StringComparison.OrdinalIgnoreCase)) costoUnitario = 85.00m;
+                else if (elem.Contains("Chocolate", StringComparison.OrdinalIgnoreCase)) costoUnitario = 180.00m;
+                else if (elem.Contains("Fruto", StringComparison.OrdinalIgnoreCase) || elem.Contains("Fresa", StringComparison.OrdinalIgnoreCase)) costoUnitario = 120.00m;
+                else if (elem.Contains("Bizcocho", StringComparison.OrdinalIgnoreCase)) costoUnitario = 110.00m;
+                else if (elem.Contains("Relleno", StringComparison.OrdinalIgnoreCase)) costoUnitario = 90.00m;
+                else if (elem.Contains("Glaseado", StringComparison.OrdinalIgnoreCase)) costoUnitario = 75.00m;
+
+                merma.CostoEstimado = costoUnitario * qty;
             }
 
             if (string.IsNullOrWhiteSpace(merma.ElementoAfectado))

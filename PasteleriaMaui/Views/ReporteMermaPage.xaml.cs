@@ -30,11 +30,13 @@ public partial class ReporteMermaPage : ContentPage
         BindingContext = this;
 
         // Configuración inicial de controles
-        FiltroFechaInicio.Date = DateTime.Today.AddDays(-30);
-        FiltroFechaFin.Date = DateTime.Today;
+        FiltroFechaInicio.Date = DateTime.Today.AddDays(-60);
+        FiltroFechaFin.Date = DateTime.Today.AddDays(1);
         FechaMerma.Date = DateTime.Today;
         PickerTipoElemento.SelectedIndex = 0; // Pastel por defecto
         PickerUnidad.SelectedIndex = 0; // Piezas
+        PickerCausa.SelectedIndex = 0; // Causa por defecto
+        FiltroCausaPicker.SelectedIndex = 0; // Todas las causas por defecto
     }
 
     protected override async void OnAppearing()
@@ -81,12 +83,21 @@ public partial class ReporteMermaPage : ContentPage
                 var misPedidos = await _transaccionesService.GetPedidosAsync(AppSession.CurrentUser?.Id);
                 var pastelesComprados = misPedidos.Select(p => p.Pastel).Where(p => p != null).GroupBy(p => p!.Id).Select(g => g.First()!).ToList();
                 PickerPastel.ItemsSource = pastelesComprados;
+                if (pastelesComprados.Count > 0 && PickerPastel.SelectedIndex < 0)
+                {
+                    PickerPastel.SelectedIndex = 0;
+                }
             }
             else
             {
                 var pasteles = await _pastelService.GetPastelesAsync();
                 PickerPastel.ItemsSource = pasteles;
+                if (pasteles.Count > 0 && PickerPastel.SelectedIndex < 0)
+                {
+                    PickerPastel.SelectedIndex = 0;
+                }
             }
+            RecalcularCostoEstimado();
         }
         catch (Exception ex)
         {
@@ -152,10 +163,18 @@ public partial class ReporteMermaPage : ContentPage
         {
             PickerUnidad.SelectedItem = "Piezas";
             LayoutOtroInsumo.IsVisible = false;
+            if (PickerPastel.ItemsSource is System.Collections.IList list && list.Count > 0 && PickerPastel.SelectedIndex < 0)
+            {
+                PickerPastel.SelectedIndex = 0;
+            }
         }
         else
         {
             PickerUnidad.SelectedItem = "Kg";
+            if (PickerInsumo.SelectedIndex < 0)
+            {
+                PickerInsumo.SelectedIndex = 0;
+            }
         }
         RecalcularCostoEstimado();
     }
@@ -206,20 +225,28 @@ public partial class ReporteMermaPage : ContentPage
         double.TryParse(EntryCantidad.Text, out double cantidad);
         if (cantidad <= 0) cantidad = 1;
 
-        if (PickerTipoElemento.SelectedIndex == 0 && PickerPastel.SelectedItem is Pastel pastel)
+        if (PickerTipoElemento.SelectedIndex == 0)
         {
-            decimal precioBase = pastel.Tamanio?.ToLowerInvariant() switch
+            if (PickerPastel.SelectedItem is Pastel pastel)
             {
-                "chico" => 250m,
-                "mediano" => 380m,
-                "grande" => 520m,
-                "extra grande" => 680m,
-                _ => 380m
-            };
-            EntryCostoEstimado.Text = (precioBase * (decimal)cantidad).ToString("0.00", CultureInfo.InvariantCulture);
+                decimal precioBase = pastel.Tamanio?.ToLowerInvariant() switch
+                {
+                    "chico" => 250m,
+                    "mediano" => 380m,
+                    "grande" => 520m,
+                    "extra grande" => 680m,
+                    _ => 380m
+                };
+                EntryCostoEstimado.Text = (precioBase * (decimal)cantidad).ToString("0.00", CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                EntryCostoEstimado.Text = (380m * (decimal)cantidad).ToString("0.00", CultureInfo.InvariantCulture);
+            }
         }
-        else if (PickerTipoElemento.SelectedIndex == 1 && PickerInsumo.SelectedItem is string insumo)
+        else if (PickerTipoElemento.SelectedIndex == 1)
         {
+            string insumo = PickerInsumo.SelectedItem as string ?? "Harina de Trigo (Kg)";
             decimal costoKg = ObtenerCostoEstimadoInsumo(insumo);
             EntryCostoEstimado.Text = (costoKg * (decimal)cantidad).ToString("0.00", CultureInfo.InvariantCulture);
         }
@@ -282,7 +309,36 @@ public partial class ReporteMermaPage : ContentPage
             return;
         }
 
-        decimal.TryParse(EntryCostoEstimado.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal costoEstimado);
+        decimal costoEstimado = 0m;
+        var costoStr = EntryCostoEstimado.Text?.Replace("$", "").Trim();
+        if (!decimal.TryParse(costoStr, NumberStyles.Any, CultureInfo.InvariantCulture, out costoEstimado))
+        {
+            decimal.TryParse(costoStr, NumberStyles.Any, CultureInfo.GetCultureInfo("es-MX"), out costoEstimado);
+        }
+
+        if (costoEstimado <= 0)
+        {
+            if (esPastel && PickerPastel.SelectedItem is Pastel pastelSeleccionado)
+            {
+                decimal precioBase = pastelSeleccionado.Tamanio?.ToLowerInvariant() switch
+                {
+                    "chico" => 250m,
+                    "mediano" => 380m,
+                    "grande" => 520m,
+                    "extra grande" => 680m,
+                    _ => 380m
+                };
+                costoEstimado = precioBase * (decimal)cantidad;
+            }
+            else if (!esPastel)
+            {
+                costoEstimado = ObtenerCostoEstimadoInsumo(elementoAfectado) * (decimal)cantidad;
+            }
+            else
+            {
+                costoEstimado = 380m * (decimal)cantidad;
+            }
+        }
         string unidad = PickerUnidad.SelectedItem as string ?? (esPastel ? "Piezas" : "Kg");
 
         var nuevaMerma = new Merma
@@ -346,6 +402,11 @@ public partial class ReporteMermaPage : ContentPage
         FiltroFechaInicio.Date = DateTime.Today.AddYears(-2);
         FiltroFechaFin.Date = DateTime.Today.AddDays(1);
         if (FiltroCausaPicker != null) FiltroCausaPicker.SelectedIndex = 0;
+        AplicarFiltrosLocales();
+    }
+
+    private void OnFiltroCausaChanged(object sender, EventArgs e)
+    {
         AplicarFiltrosLocales();
     }
 

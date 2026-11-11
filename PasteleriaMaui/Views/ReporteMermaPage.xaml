@@ -87,14 +87,13 @@
                             <!-- Tipo de Merma: Pastel o Insumo -->
                             <VerticalStackLayout Spacing="6">
                                 <Label Text="Tipo de Elemento Afectado" FontAttributes="Bold" FontSize="14" TextColor="#5D4037" Margin="4,0,0,0" />
-                                <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="48" Padding="12,0">
+                                <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" MinimumHeightRequest="48" Padding="10,0">
                                     <Border.StrokeShape>
                                         <RoundRectangle CornerRadius="12" />
                                     </Border.StrokeShape>
                                     <Picker x:Name="PickerTipoElemento" 
-                                            Title="Selecciona tipo de merma" 
                                             TextColor="#3E2723" 
-                                            TitleColor="#BCAAA4" 
+                                            BackgroundColor="Transparent"
                                             VerticalOptions="Center"
                                             SelectedIndexChanged="OnTipoElementoChanged">
                                         <Picker.ItemsSource>
@@ -110,15 +109,14 @@
                             <!-- Selector de Pastel Terminado -->
                             <VerticalStackLayout x:Name="LayoutPastel" Spacing="6" IsVisible="true">
                                 <Label Text="Pastel Afectado" FontAttributes="Bold" FontSize="14" TextColor="#5D4037" Margin="4,0,0,0" />
-                                <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="48" Padding="12,0">
+                                <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" MinimumHeightRequest="48" Padding="10,0">
                                     <Border.StrokeShape>
                                         <RoundRectangle CornerRadius="12" />
                                     </Border.StrokeShape>
                                     <Picker x:Name="PickerPastel" 
-                                            Title="Selecciona el pastel del catálogo..." 
                                             ItemDisplayBinding="{Binding Nombre}" 
                                             TextColor="#3E2723" 
-                                            TitleColor="#BCAAA4" 
+                                            BackgroundColor="Transparent"
                                             VerticalOptions="Center"
                                             SelectedIndexChanged="OnPastelSeleccionadoChanged" />
                                 </Border>
@@ -127,14 +125,13 @@
                             <!-- Selector de Insumo / Materia Prima -->
                             <VerticalStackLayout x:Name="LayoutInsumo" Spacing="6" IsVisible="false">
                                 <Label Text="Insumo / Materia Prima Afectada" FontAttributes="Bold" FontSize="14" TextColor="#5D4037" Margin="4,0,0,0" />
-                                <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="48" Padding="12,0">
+                                <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" MinimumHeightRequest="48" Padding="10,0">
                                     <Border.StrokeShape>
                                         <RoundRectangle CornerRadius="12" />
                                     </Border.StrokeShape>
                                     <Picker x:Name="PickerInsumo" 
-                                            Title="Selecciona el insumo afectado..." 
                                             TextColor="#3E2723" 
-                                            TitleColor="#BCAAA4" 
+                                            BackgroundColor="Transparent"
                                             VerticalOptions="Center"
                                             SelectedIndexChanged="OnInsumoSeleccionadoChanged">
                                         <Picker.ItemsSource>
@@ -186,13 +183,13 @@
 
                                 <VerticalStackLayout Grid.Column="1" Spacing="6">
                                     <Label Text="Unidad" FontAttributes="Bold" FontSize="14" TextColor="#5D4037" Margin="4,0,0,0" />
-                                    <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="48" Padding="12,0">
+                                    <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" MinimumHeightRequest="48" Padding="10,0">
                                         <Border.StrokeShape>
                                             <RoundRectangle CornerRadius="12" />
                                         </Border.StrokeShape>
                                         <Picker x:Name="PickerUnidad" 
                                                 TextColor="#3E2723" 
-                                                TitleColor="#BCAAA4" 
+                                                BackgroundColor="Transparent"
                                                 VerticalOptions="Center">
                                             <Picker.ItemsSource>
                                                 <x:Array Type="{x:Type x:String}">
@@ -210,14 +207,13 @@
                             <!-- Causa de Merma (Lista Predefinida de Criterios de Aceptación) -->
                             <VerticalStackLayout Spacing="6">
                                 <Label Text="Causa de la Pérdida *" FontAttributes="Bold" FontSize="14" TextColor="#5D4037" Margin="4,0,0,0" />
-                                <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="48" Padding="12,0">
+                                <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" MinimumHeightRequest="48" Padding="10,0">
                                     <Border.StrokeShape>
                                         <RoundRectangle CornerRadius="12" />
                                     </Border.StrokeShape>
                                     <Picker x:Name="PickerCausa" 
-                                            Title="Selecciona el motivo de merma..." 
                                             TextColor="#3E2723" 
-                                            TitleColor="#BCAAA4" 
+                                            BackgroundColor="Transparent"
                                             VerticalOptions="Center">
                                         <Picker.ItemsSource>
                                             <x:Array Type="{x:Type x:String}">
@@ -330,11 +326,15 @@
                             <!-- Filtro por Causa -->
                             <VerticalStackLayout Spacing="4">
                                 <Label Text="Filtrar por Causa:" FontSize="12" FontAttributes="Bold" TextColor="#5D4037" />
-                                <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="42" Padding="10,0">
+                                <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" MinimumHeightRequest="44" Padding="10,0">
                                     <Border.StrokeShape>
                                         <RoundRectangle CornerRadius="8" />
                                     </Border.StrokeShape>
-                                    <Picker x:Name="FiltroCausaPicker" TextColor="#3E2723" Title="Todas las causas" TitleColor="#BCAAA4" VerticalOptions="Center">
+                                    <Picker x:Name="FiltroCausaPicker" 
+                                            TextColor="#3E2723" 
+                                            BackgroundColor="Transparent" 
+                                            VerticalOptions="Center" 
+                                            SelectedIndexChanged="OnFiltroCausaChanged">
                                         <Picker.ItemsSource>
                                             <x:Array Type="{x:Type x:String}">
                                                 <x:String>Todas las causas</x:String>

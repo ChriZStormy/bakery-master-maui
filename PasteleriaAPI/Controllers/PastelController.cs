@@ -91,6 +91,7 @@ namespace PasteleriaAPI.Controllers
         }
 
         [HttpGet("todospasteles")]
+        [HttpGet("todaspasteles")]
         public async Task<ActionResult<List<Pastel>>> GetAllPastelesFromDB([FromQuery] bool? soloActivos)
         {
             var isAdmin = User.IsInRole("Admin");
