@@ -31,12 +31,19 @@ namespace PasteleriaMaui.Services
             catch { return new List<Pedido>(); }
         }
 
-        public async Task<List<Merma>> GetMermasAsync(string? usuarioId = null)
+        public async Task<List<Merma>> GetMermasAsync(string? usuarioId = null, string? causa = null, DateTime? fechaInicio = null, DateTime? fechaFin = null)
         {
             try
             {
-                var url = $"{_baseUrl}api/merma" + (!string.IsNullOrEmpty(usuarioId) ? $"?usuarioId={usuarioId}" : "");
-                return await _httpClient.GetFromJsonAsync<List<Merma>>(url);
+                var queryParams = new List<string>();
+                if (!string.IsNullOrEmpty(usuarioId)) queryParams.Add($"usuarioId={Uri.EscapeDataString(usuarioId)}");
+                if (!string.IsNullOrEmpty(causa) && causa != "Todas" && causa != "Todos") queryParams.Add($"causa={Uri.EscapeDataString(causa)}");
+                if (fechaInicio.HasValue) queryParams.Add($"fechaInicio={fechaInicio.Value:yyyy-MM-dd}");
+                if (fechaFin.HasValue) queryParams.Add($"fechaFin={fechaFin.Value:yyyy-MM-dd}");
+
+                var queryString = queryParams.Count > 0 ? "?" + string.Join("&", queryParams) : "";
+                var url = $"{_baseUrl}api/merma{queryString}";
+                return await _httpClient.GetFromJsonAsync<List<Merma>>(url, GetJsonOptions()) ?? new List<Merma>();
             }
             catch { return new List<Merma>(); }
         }

@@ -477,7 +477,21 @@ namespace PasteleriaAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<double>("Cantidad")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("Causa")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("CostoEstimado")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Descripcion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ElementoAfectado")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Estatus")
@@ -486,8 +500,16 @@ namespace PasteleriaAPI.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("PastelId")
+                    b.Property<int?>("PastelId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("TipoElemento")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UnidadMedida")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("UsuarioId")
                         .HasColumnType("TEXT");
@@ -822,9 +844,7 @@ namespace PasteleriaAPI.Migrations
                 {
                     b.HasOne("PasteleriaAPI.Entities.Pastel", "Pastel")
                         .WithMany()
-                        .HasForeignKey("PastelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PastelId");
 
                     b.HasOne("PasteleriaAPI.Entities.ApplicationUser", "Usuario")
                         .WithMany()

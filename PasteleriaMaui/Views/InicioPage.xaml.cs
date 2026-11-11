@@ -1,4 +1,6 @@
+using System;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.Storage;
 
 namespace PasteleriaMaui.Views
 {
@@ -33,7 +35,7 @@ namespace PasteleriaMaui.Views
                 BotonUsuarios.IsVisible = false;
                 BotonComandas.IsVisible = true;
                 BotonMermas.IsVisible = true;
-                BotonMermas.Text = "Reportes de Mermas";
+                BotonMermas.Text = "Registro de Mermas";
                 BotonGestiones.Text = "Gestión de Pasteles";
                 BotonPedidos.Text = "Historial de Pedidos";
             }
@@ -43,27 +45,32 @@ namespace PasteleriaMaui.Views
                 BotonUsuarios.IsVisible = true;
                 BotonComandas.IsVisible = true;
                 BotonMermas.IsVisible = true;
-                BotonMermas.Text = "Reportes de Mermas";
+                BotonMermas.Text = "Control y Reportes de Mermas";
                 BotonGestiones.Text = "Gestión de Pasteles";
                 BotonPedidos.Text = "Pedidos";
             }
         }
+
         private async void OnPersonalizarClicked(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync(nameof(PedidoPersonalizadoPage));
         }
+
 		private async void OnPastelesClicked(object sender, EventArgs e)
 		{
 			await Shell.Current.GoToAsync(nameof(ListaPastelesPage));
 		}
+
 		private async void OnPedidosClicked(object sender, EventArgs e)
 		{
 			await Shell.Current.GoToAsync(nameof(HistorialPedidosPage));
 		}
+
 		private async void OnReportesClicked(object sender, EventArgs e)
 		{
 			await Shell.Current.GoToAsync(nameof(ReporteMermaPage));
 		}
+
 		private async void OnCatalogosClicked(object sender, EventArgs e)
 		{
             if (AppSession.CurrentUser != null && AppSession.CurrentUser.Rol == "Cliente")
