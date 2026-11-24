@@ -37,13 +37,14 @@ namespace PasteleriaMaui.Services
             return null;
         }
 
-        public async Task<Usuario?> RegisterAsync(string nombre, string email, string password)
+        public async Task<Usuario?> RegisterAsync(string nombre, string email, string telefono, string password)
         {
             // SECURITY: No role field sent. Server always assigns 'Cliente'.
             var registerRequest = new RegisterRequest
             {
                 Nombre = nombre,
                 Email = email,
+                Telefono = telefono,
                 Password = password
             };
 

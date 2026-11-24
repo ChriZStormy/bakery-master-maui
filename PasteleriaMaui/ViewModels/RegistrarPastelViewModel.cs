@@ -14,6 +14,31 @@ namespace PasteleriaMaui.ViewModels
 		private string _nombre = "";
 		private string _tamanio = "";
 		private string _fotoUrl = "";
+		private decimal _precioBase = 350m;
+		private string _descripcion = "";
+		private string _ingredientes = "";
+		private string _alergenos = "";
+
+		public decimal PrecioBase
+		{
+			get => _precioBase;
+			set { _precioBase = value; OnPropertyChanged(); }
+		}
+		public string Descripcion
+		{
+			get => _descripcion;
+			set { _descripcion = value; OnPropertyChanged(); }
+		}
+		public string Ingredientes
+		{
+			get => _ingredientes;
+			set { _ingredientes = value; OnPropertyChanged(); }
+		}
+		public string Alergenos
+		{
+			get => _alergenos;
+			set { _alergenos = value; OnPropertyChanged(); }
+		}
 
 		public string Nombre
 		{

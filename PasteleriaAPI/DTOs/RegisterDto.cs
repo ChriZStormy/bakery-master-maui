@@ -12,6 +12,10 @@ namespace PasteleriaAPI.DTOs
         public string Email { get; set; } = string.Empty;
 
         [Required]
+        [Phone]
+        public string Telefono { get; set; } = string.Empty;
+
+        [Required]
         [MinLength(8)]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$",
             ErrorMessage = "La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.")]

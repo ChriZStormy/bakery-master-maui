@@ -151,14 +151,13 @@
                                         <Border Stroke="#D7CCC8" 
                                                 StrokeThickness="1" 
                                                 BackgroundColor="#FAF8F5" 
-                                                HeightRequest="36" 
-                                                Padding="6,0"
+                                                MinimumHeightRequest="54" 
+                                                Padding="8,2"
                                                 Margin="0,0,6,4">
                                             <Border.StrokeShape>
                                                 <RoundRectangle CornerRadius="8" />
                                             </Border.StrokeShape>
-                                            <Picker Title="Rol" 
-                                                    ItemsSource="{Binding RolesDisponibles}"
+                                            <Picker ItemsSource="{Binding RolesDisponibles}"
                                                     SelectedItem="{Binding RolSeleccionado}"
                                                     TextColor="#3E2723"
                                                     TitleColor="#8D6E63"

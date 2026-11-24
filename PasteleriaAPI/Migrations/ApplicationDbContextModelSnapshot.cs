@@ -221,6 +221,15 @@ namespace PasteleriaAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("Activo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Agotado")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("CostoAdicional")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ImagenUrl")
                         .HasColumnType("TEXT");
 
@@ -235,48 +244,72 @@ namespace PasteleriaAPI.Migrations
                         new
                         {
                             Id = 1,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "bizcocho_vainilla.png",
                             Nombre = "Vainilla"
                         },
                         new
                         {
                             Id = 2,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "bizcocho_chocolate.png",
                             Nombre = "Chocolate"
                         },
                         new
                         {
                             Id = 3,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "bizcocho_red_velvet.png",
                             Nombre = "Red Velvet"
                         },
                         new
                         {
                             Id = 4,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "bizcocho_zanahoria.png",
                             Nombre = "Zanahoria"
                         },
                         new
                         {
                             Id = 5,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "bizcocho_marmol.png",
                             Nombre = "Mármol"
                         },
                         new
                         {
                             Id = 6,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "bizcocho_limon.png",
                             Nombre = "Limón"
                         },
                         new
                         {
                             Id = 7,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "bizcocho_naranja.png",
                             Nombre = "Naranja"
                         },
                         new
                         {
                             Id = 8,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "bizcocho_esponja.png",
                             Nombre = "Esponja"
                         });
@@ -349,6 +382,15 @@ namespace PasteleriaAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("Activo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Agotado")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("CostoAdicional")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ImagenUrl")
                         .HasColumnType("TEXT");
 
@@ -363,42 +405,63 @@ namespace PasteleriaAPI.Migrations
                         new
                         {
                             Id = 1,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "glaseado_fondant.png",
                             Nombre = "Fondant"
                         },
                         new
                         {
                             Id = 2,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "glaseado_crema_mantequilla.png",
                             Nombre = "Crema de Mantequilla"
                         },
                         new
                         {
                             Id = 3,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "glaseado_ganache_chocolate.png",
                             Nombre = "Ganache de Chocolate"
                         },
                         new
                         {
                             Id = 4,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "glaseado_queso_crema.png",
                             Nombre = "Queso Crema"
                         },
                         new
                         {
                             Id = 5,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "glaseado_merengue_italiano.png",
                             Nombre = "Merengue Italiano"
                         },
                         new
                         {
                             Id = 6,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "glaseado_espejo_chocolate.png",
                             Nombre = "Espejo de Chocolate"
                         },
                         new
                         {
                             Id = 7,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "glaseado_chantilly.png",
                             Nombre = "Chantilly"
                         });
@@ -409,6 +472,15 @@ namespace PasteleriaAPI.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Agotado")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("CostoAdicional")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ImagenUrl")
                         .HasColumnType("TEXT");
@@ -424,48 +496,72 @@ namespace PasteleriaAPI.Migrations
                         new
                         {
                             Id = 1,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "relleno_fresa.png",
                             Nombre = "Fresa"
                         },
                         new
                         {
                             Id = 2,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "relleno_cajeta.png",
                             Nombre = "Cajeta"
                         },
                         new
                         {
                             Id = 3,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "relleno_crema_pastelera.png",
                             Nombre = "Crema Pastelera"
                         },
                         new
                         {
                             Id = 4,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "relleno_nutella.png",
                             Nombre = "Nutella"
                         },
                         new
                         {
                             Id = 5,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "relleno_mermelada_frambuesa.png",
                             Nombre = "Mermelada de Frambuesa"
                         },
                         new
                         {
                             Id = 6,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "relleno_crema_limon.png",
                             Nombre = "Crema de Limón"
                         },
                         new
                         {
                             Id = 7,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "relleno_durazno.png",
                             Nombre = "Durazno"
                         },
                         new
                         {
                             Id = 8,
+                            Activo = true,
+                            Agotado = false,
+                            CostoAdicional = 0m,
                             ImagenUrl = "relleno_frutos_rojos.png",
                             Nombre = "Frutos Rojos"
                         });
@@ -532,19 +628,31 @@ namespace PasteleriaAPI.Migrations
                     b.Property<bool>("Activo")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Alergenos")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("BizcochoId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("CategoriaId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("FotoUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FotosUrls")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("GlaseadoId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ImagenDecoracion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Ingredientes")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsPersonalizado")
@@ -555,6 +663,9 @@ namespace PasteleriaAPI.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("PrecioBase")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("RellenoId")
@@ -587,6 +698,7 @@ namespace PasteleriaAPI.Migrations
                             GlaseadoId = 3,
                             IsPersonalizado = false,
                             Nombre = "Selva Negra",
+                            PrecioBase = 0m,
                             RellenoId = 1,
                             Tamanio = "Grande"
                         },
@@ -600,6 +712,7 @@ namespace PasteleriaAPI.Migrations
                             GlaseadoId = 1,
                             IsPersonalizado = false,
                             Nombre = "Pastel de Spiderman",
+                            PrecioBase = 0m,
                             RellenoId = 2,
                             Tamanio = "Mediano"
                         },
@@ -613,6 +726,7 @@ namespace PasteleriaAPI.Migrations
                             GlaseadoId = 2,
                             IsPersonalizado = false,
                             Nombre = "Rosca de Reyes",
+                            PrecioBase = 0m,
                             RellenoId = 3,
                             Tamanio = "Grande"
                         },
@@ -626,6 +740,7 @@ namespace PasteleriaAPI.Migrations
                             GlaseadoId = 4,
                             IsPersonalizado = false,
                             Nombre = "Pastel Nupcial Blanco",
+                            PrecioBase = 0m,
                             RellenoId = 4,
                             Tamanio = "Extra Grande"
                         },
@@ -639,6 +754,7 @@ namespace PasteleriaAPI.Migrations
                             GlaseadoId = 4,
                             IsPersonalizado = false,
                             Nombre = "Cheesecake Keto",
+                            PrecioBase = 0m,
                             RellenoId = 1,
                             Tamanio = "Chico"
                         },
@@ -652,6 +768,7 @@ namespace PasteleriaAPI.Migrations
                             GlaseadoId = 7,
                             IsPersonalizado = false,
                             Nombre = "Tres Leches",
+                            PrecioBase = 0m,
                             RellenoId = 3,
                             Tamanio = "Mediano"
                         },
@@ -665,6 +782,7 @@ namespace PasteleriaAPI.Migrations
                             GlaseadoId = 4,
                             IsPersonalizado = false,
                             Nombre = "Pastel Vegano Zanahoria",
+                            PrecioBase = 0m,
                             RellenoId = 4,
                             Tamanio = "Mediano"
                         },
@@ -678,6 +796,7 @@ namespace PasteleriaAPI.Migrations
                             GlaseadoId = 1,
                             IsPersonalizado = false,
                             Nombre = "Especial 50 Años",
+                            PrecioBase = 0m,
                             RellenoId = 2,
                             Tamanio = "Grande"
                         },
@@ -691,6 +810,7 @@ namespace PasteleriaAPI.Migrations
                             GlaseadoId = 3,
                             IsPersonalizado = false,
                             Nombre = "Moka Intenso",
+                            PrecioBase = 0m,
                             RellenoId = 4,
                             Tamanio = "Mediano"
                         },
@@ -704,6 +824,7 @@ namespace PasteleriaAPI.Migrations
                             GlaseadoId = 1,
                             IsPersonalizado = false,
                             Nombre = "Unicornio Mágico",
+                            PrecioBase = 0m,
                             RellenoId = 1,
                             Tamanio = "Grande"
                         },
@@ -717,6 +838,7 @@ namespace PasteleriaAPI.Migrations
                             GlaseadoId = 5,
                             IsPersonalizado = false,
                             Nombre = "Limón Cítrico",
+                            PrecioBase = 0m,
                             RellenoId = 6,
                             Tamanio = "Chico"
                         },
@@ -730,6 +852,7 @@ namespace PasteleriaAPI.Migrations
                             GlaseadoId = 3,
                             IsPersonalizado = false,
                             Nombre = "Chocolate Extremo",
+                            PrecioBase = 0m,
                             RellenoId = 4,
                             Tamanio = "Extra Grande"
                         });
@@ -757,6 +880,18 @@ namespace PasteleriaAPI.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("FechaEntregaReal")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("FechaEntregado")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("FechaListo")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("FechaPreparacion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("FechaRecibido")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("HoraEntrega")

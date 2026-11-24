@@ -22,6 +22,38 @@ namespace PasteleriaMaui
             Routing.RegisterRoute(nameof(ComandaPage), typeof(ComandaPage));
             Routing.RegisterRoute(nameof(ReporteEntregasPage), typeof(ReporteEntregasPage));
             Routing.RegisterRoute(nameof(DetallePedidoPage), typeof(DetallePedidoPage));
+            Routing.RegisterRoute(nameof(CarritoPage), typeof(CarritoPage));
 		}
+
+        protected override async void OnNavigating(ShellNavigatingEventArgs args)
+        {
+            base.OnNavigating(args);
+
+            var target = args.Target?.Location?.OriginalString ?? string.Empty;
+            var rol = AppSession.CurrentUser?.Rol ?? string.Empty;
+
+            if (string.IsNullOrEmpty(rol)) return;
+
+            bool isAdminRoute = target.Contains(nameof(RegistrarPastelPage)) ||
+                                target.Contains(nameof(EditarPastelPage)) ||
+                                target.Contains(nameof(CatalogosPage)) ||
+                                target.Contains(nameof(GestionUsuariosPage)) ||
+                                target.Contains(nameof(ReporteEntregasPage));
+
+            bool isKitchenRoute = target.Contains(nameof(ComandaPage));
+
+            if (rol == "Cliente" && (isAdminRoute || isKitchenRoute))
+            {
+                args.Cancel();
+                if (CurrentPage != null)
+                    await CurrentPage.DisplayAlert("Acceso Denegado", "No tienes permisos para acceder a esta sección.", "OK");
+            }
+            else if ((rol == "Repostero" || rol == "Empleado") && isAdminRoute)
+            {
+                args.Cancel();
+                if (CurrentPage != null)
+                    await CurrentPage.DisplayAlert("Acceso Denegado", "Solo el Administrador puede acceder a esta sección.", "OK");
+            }
+        }
     }
 }

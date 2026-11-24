@@ -22,6 +22,10 @@ namespace PasteleriaMaui.Models
         public decimal Total { get; set; }
         public string? Notas { get; set; }
         public DateTime? FechaEntregaReal { get; set; }
+        public DateTime? FechaRecibido { get; set; }
+        public DateTime? FechaPreparacion { get; set; }
+        public DateTime? FechaListo { get; set; }
+        public DateTime? FechaEntregado { get; set; }
 
         [JsonIgnore]
         public string? Hora

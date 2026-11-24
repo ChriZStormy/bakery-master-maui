@@ -8,10 +8,63 @@ using PasteleriaMaui.Services;
 
 namespace PasteleriaMaui.ViewModels
 {
+    [QueryProperty(nameof(PastelBase), "PastelBase")]
     public class PedidoPersonalizadoViewModel : INotifyPropertyChanged
     {
         private readonly PastelApiService _pastelService;
         private readonly TransaccionesService _transaccionesService;
+
+        private Pastel? _pastelBase;
+        public Pastel? PastelBase
+        {
+            get => _pastelBase;
+            set
+            {
+                _pastelBase = value;
+                if (_pastelBase != null)
+                {
+                    Nombre = _pastelBase.Nombre;
+                    if (!string.IsNullOrWhiteSpace(_pastelBase.Tamanio)) Tamanio = _pastelBase.Tamanio;
+                    _ = AplicarPastelBaseAsync();
+                }
+                OnPropertyChanged();
+            }
+        }
+
+        private async Task AplicarPastelBaseAsync()
+        {
+            if (_pastelBase == null) return;
+            if (_pastelBase.BizcochoId == 0 && _pastelBase.Id > 0)
+            {
+                var completo = await _pastelService.GetPastelByIdAsync(_pastelBase.Id);
+                if (completo != null) _pastelBase = completo;
+            }
+
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                if (Bizcochos.Any())
+                {
+                    var bSel = Bizcochos.FirstOrDefault(b => b.Id == _pastelBase.BizcochoId || b.Nombre == _pastelBase.Bizcocho?.Nombre);
+                    if (bSel != null) { BizcochoSeleccionado = null; BizcochoSeleccionado = bSel; }
+                }
+                if (Rellenos.Any())
+                {
+                    var rSel = Rellenos.FirstOrDefault(r => r.Id == _pastelBase.RellenoId || r.Nombre == _pastelBase.Relleno?.Nombre);
+                    if (rSel != null) { RellenoSeleccionado = null; RellenoSeleccionado = rSel; }
+                }
+                if (Glaseados.Any())
+                {
+                    var gSel = Glaseados.FirstOrDefault(g => g.Id == _pastelBase.GlaseadoId || g.Nombre == _pastelBase.Glaseado?.Nombre);
+                    if (gSel != null) { GlaseadoSeleccionado = null; GlaseadoSeleccionado = gSel; }
+                }
+                if (Categorias.Any())
+                {
+                    var cSel = Categorias.FirstOrDefault(c => c.Id == _pastelBase.CategoriaId);
+                    if (cSel != null) CategoriaSeleccionada = cSel;
+                }
+                OnPropertyChanged(nameof(ResumenSeleccion));
+            });
+        }
 
         public ObservableCollection<CatBizcocho> Bizcochos { get; set; } = new();
         public ObservableCollection<CatRelleno> Rellenos { get; set; } = new();
@@ -36,7 +89,13 @@ namespace PasteleriaMaui.ViewModels
         public string Mensaje
         {
             get => _mensaje;
-            set { _mensaje = value; OnPropertyChanged(); }
+            set
+            {
+                var val = value ?? string.Empty;
+                if (val.Length > 50) val = val.Substring(0, 50);
+                _mensaje = val;
+                OnPropertyChanged();
+            }
         }
 
         private string? _imagenDecoracion;
@@ -69,7 +128,7 @@ namespace PasteleriaMaui.ViewModels
             set { _fechaEntrega = value; OnPropertyChanged(); }
         }
 
-        public DateTime FechaMinima => DateTime.Today;
+        public DateTime FechaMinima => DateTime.Today.AddDays(2);
 
         private string _cantidad = "1";
         public string Cantidad
@@ -145,7 +204,24 @@ namespace PasteleriaMaui.ViewModels
         public string GlaseadoPreviewUrl => GlaseadoSeleccionado?.ImagenUrl ?? "glaseado_fondant.png";
 
         public string ResumenSeleccion =>
-            $"Pan: {BizcochoSeleccionado?.Nombre ?? "---"} • Relleno: {RellenoSeleccionado?.Nombre ?? "---"} • Cubierta: {GlaseadoSeleccionado?.Nombre ?? "---"}";
+            $"Pan: {BizcochoSeleccionado?.Nombre ?? "---"} (+${BizcochoSeleccionado?.CostoAdicional ?? 0m:N2}) • Relleno: {RellenoSeleccionado?.Nombre ?? "---"} (+${RellenoSeleccionado?.CostoAdicional ?? 0m:N2}) • Cubierta: {GlaseadoSeleccionado?.Nombre ?? "---"} (+${GlaseadoSeleccionado?.CostoAdicional ?? 0m:N2})";
+
+        public decimal TotalEstimado
+        {
+            get
+            {
+                decimal baseTamanio = Tamanio switch
+                {
+                    "Chico" => 350m,
+                    "Grande" => 650m,
+                    "Extra Grande" => 850m,
+                    _ => 480m
+                };
+                return baseTamanio + (BizcochoSeleccionado?.CostoAdicional ?? 0m) + (RellenoSeleccionado?.CostoAdicional ?? 0m) + (GlaseadoSeleccionado?.CostoAdicional ?? 0m);
+            }
+        }
+
+        public string TotalEstimadoTexto => $"Total estimado: ${TotalEstimado:N2} MXN";
 
         public ICommand GuardarPedidoCommand { get; }
         public ICommand SeleccionarDecoracionCommand { get; }
@@ -176,7 +252,9 @@ namespace PasteleriaMaui.ViewModels
                 {
                     Bizcochos.Clear();
                     foreach (var b in bizcos) Bizcochos.Add(b);
-                    if (BizcochoSeleccionado == null) BizcochoSeleccionado = Bizcochos[0];
+                    BizcochoSeleccionado = _pastelBase != null
+                        ? (Bizcochos.FirstOrDefault(b => b.Id == _pastelBase.BizcochoId || b.Nombre == _pastelBase.Bizcocho?.Nombre) ?? Bizcochos[0])
+                        : (BizcochoSeleccionado ?? Bizcochos[0]);
                 }
 
                 var rels = await _pastelService.GetRellenosAsync();
@@ -184,7 +262,9 @@ namespace PasteleriaMaui.ViewModels
                 {
                     Rellenos.Clear();
                     foreach (var r in rels) Rellenos.Add(r);
-                    if (RellenoSeleccionado == null) RellenoSeleccionado = Rellenos[0];
+                    RellenoSeleccionado = _pastelBase != null
+                        ? (Rellenos.FirstOrDefault(r => r.Id == _pastelBase.RellenoId || r.Nombre == _pastelBase.Relleno?.Nombre) ?? Rellenos[0])
+                        : (RellenoSeleccionado ?? Rellenos[0]);
                 }
 
                 var glas = await _pastelService.GetGlaseadosAsync();
@@ -192,12 +272,40 @@ namespace PasteleriaMaui.ViewModels
                 {
                     Glaseados.Clear();
                     foreach (var g in glas) Glaseados.Add(g);
-                    if (GlaseadoSeleccionado == null) GlaseadoSeleccionado = Glaseados[0];
+                    GlaseadoSeleccionado = _pastelBase != null
+                        ? (Glaseados.FirstOrDefault(g => g.Id == _pastelBase.GlaseadoId || g.Nombre == _pastelBase.Glaseado?.Nombre) ?? Glaseados[0])
+                        : (GlaseadoSeleccionado ?? Glaseados[0]);
                 }
 
                 var cats = await _pastelService.GetCategoriasAsync();
                 Categorias.Clear();
                 foreach (var c in cats) Categorias.Add(c);
+                if (_pastelBase != null && Categorias.Count > 0)
+                    CategoriaSeleccionada = Categorias.FirstOrDefault(c => c.Id == _pastelBase.CategoriaId) ?? Categorias[0];
+
+                await Task.Delay(150);
+                if (_pastelBase != null && _pastelBase.BizcochoId == 0 && _pastelBase.Id > 0)
+                {
+                    var completo = await _pastelService.GetPastelByIdAsync(_pastelBase.Id);
+                    if (completo != null) _pastelBase = completo;
+                }
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    if (_pastelBase != null)
+                    {
+                        var bSel = Bizcochos.FirstOrDefault(b => b.Id == _pastelBase.BizcochoId || b.Nombre == _pastelBase.Bizcocho?.Nombre);
+                        var rSel = Rellenos.FirstOrDefault(r => r.Id == _pastelBase.RellenoId || r.Nombre == _pastelBase.Relleno?.Nombre);
+                        var gSel = Glaseados.FirstOrDefault(g => g.Id == _pastelBase.GlaseadoId || g.Nombre == _pastelBase.Glaseado?.Nombre);
+                        if (bSel != null) { BizcochoSeleccionado = null; BizcochoSeleccionado = bSel; }
+                        if (rSel != null) { RellenoSeleccionado = null; RellenoSeleccionado = rSel; }
+                        if (gSel != null) { GlaseadoSeleccionado = null; GlaseadoSeleccionado = gSel; }
+                    }
+                    OnPropertyChanged(nameof(BizcochoSeleccionado));
+                    OnPropertyChanged(nameof(RellenoSeleccionado));
+                    OnPropertyChanged(nameof(GlaseadoSeleccionado));
+                    OnPropertyChanged(nameof(CategoriaSeleccionada));
+                    OnPropertyChanged(nameof(ResumenSeleccion));
+                });
 
                 // Fallback de contingencia: Si la API de categorías no devuelve datos, asegurar catálogo base
                 if (Categorias.Count == 0)

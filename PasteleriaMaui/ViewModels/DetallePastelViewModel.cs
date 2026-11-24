@@ -31,10 +31,43 @@ namespace PasteleriaMaui.ViewModels
             }
         }
 
-        public string EstadoPastelTexto => PastelSeleccionado?.Activo == true ? "Activo" : "Dado de baja (Inactivo)";
-        public string BotonBajaTexto => PastelSeleccionado?.Activo == true ? "Dar de baja" : "Reactivar";
+        public string EstadoPastelTexto => PastelSeleccionado?.Activo == true ? (PastelSeleccionado?.Agotado == true ? "Agotado" : "Activo") : "Desactivado (Inactivo)";
+        public string BotonBajaTexto => PastelSeleccionado?.Activo == true ? "Desactivar" : "Reactivar";
+        public string BotonAgotadoTexto => PastelSeleccionado?.Agotado == true ? "Disponible" : "Marcar Agotado";
+        public bool PuedeComprar => PastelSeleccionado?.Agotado != true;
         public Color BotonBajaBgColor => PastelSeleccionado?.Activo == true ? Color.FromArgb("#FFF0F0") : Color.FromArgb("#E8F5E9");
         public Color BotonBajaTextColor => PastelSeleccionado?.Activo == true ? Color.FromArgb("#D32F2F") : Color.FromArgb("#2E7D32");
+
+        public List<string> PorcionesOpciones { get; } = new() { "10 personas", "20 personas", "30 personas" };
+        private string _porcionesSeleccionadas = "10 personas";
+        public string PorcionesSeleccionadas
+        {
+            get => _porcionesSeleccionadas;
+            set
+            {
+                _porcionesSeleccionadas = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(PrecioCalculado));
+                OnPropertyChanged(nameof(PrecioCalculadoTexto));
+            }
+        }
+
+        public decimal PrecioCalculado
+        {
+            get
+            {
+                var basePrice = PastelSeleccionado?.PrecioBase ?? 0m;
+                if (basePrice <= 0) basePrice = 350m; // Valor base por defecto si aún no se asigna
+                return PorcionesSeleccionadas switch
+                {
+                    "20 personas" => Math.Round(basePrice * 1.6m, 2),
+                    "30 personas" => Math.Round(basePrice * 2.2m, 2),
+                    _ => basePrice
+                };
+            }
+        }
+
+        public string PrecioCalculadoTexto => $"${PrecioCalculado:N2} MXN";
 
         private async Task CargarDetallesCompletosAsync(int id)
         {
@@ -52,7 +85,10 @@ namespace PasteleriaMaui.ViewModels
 
         public ICommand EditarCommand { get; }
         public ICommand EliminarCommand { get; }
+        public ICommand ToggleAgotadoCommand { get; }
         public ICommand RealizarPedidoCommand { get; }
+        public ICommand PersonalizarCommand { get; }
+        public ICommand AgregarAlCarritoCommand { get; }
 
         public bool IsAdmin => AppSession.CurrentUser?.Rol == "Admin";
         public bool IsCliente => AppSession.CurrentUser?.Rol == "Cliente";
@@ -62,7 +98,41 @@ namespace PasteleriaMaui.ViewModels
             _apiService = new PastelApiService();
             EditarCommand = new Command(async () => await EditarPastel());
             EliminarCommand = new Command(async () => await EliminarPastel());
+            ToggleAgotadoCommand = new Command(async () =>
+            {
+                if (PastelSeleccionado == null) return;
+                PastelSeleccionado.Agotado = !PastelSeleccionado.Agotado;
+                OnPropertyChanged(nameof(PastelSeleccionado));
+                OnPropertyChanged(nameof(EstadoPastelTexto));
+                OnPropertyChanged(nameof(BotonAgotadoTexto));
+                OnPropertyChanged(nameof(PuedeComprar));
+                if (Application.Current?.MainPage != null)
+                    await Application.Current.MainPage.DisplayAlert("Estado", PastelSeleccionado.Agotado ? "Pastel marcado como Agotado." : "Pastel marcado como Disponible.", "OK");
+            });
             RealizarPedidoCommand = new Command(async () => await RealizarPedido());
+            PersonalizarCommand = new Command(async () =>
+            {
+                if (PastelSeleccionado == null)
+                {
+                    await Shell.Current.GoToAsync(nameof(PedidoPersonalizadoPage));
+                    return;
+                }
+                var navParam = new Dictionary<string, object> { { "PastelBase", PastelSeleccionado } };
+                await Shell.Current.GoToAsync(nameof(PedidoPersonalizadoPage), navParam);
+            });
+            AgregarAlCarritoCommand = new Command(async () =>
+            {
+                if (PastelSeleccionado == null) return;
+                CarritoService.Instance.Agregar(new CarritoItem
+                {
+                    Pastel = PastelSeleccionado,
+                    Porciones = PorcionesSeleccionadas,
+                    PrecioUnitario = PrecioCalculado,
+                    Cantidad = 1
+                });
+                if (Application.Current?.MainPage != null)
+                    await Application.Current.MainPage.DisplayAlert("Carrito", $"{PastelSeleccionado.Nombre} ({PorcionesSeleccionadas}) agregado al carrito.", "OK");
+            });
         }
 
         private async Task EditarPastel()

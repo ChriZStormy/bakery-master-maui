@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <ResourceDictionary 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
@@ -429,6 +429,55 @@
         <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource White}}" />
         <Setter Property="UnselectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray950}}" />
         <Setter Property="SelectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
+    </Style>
+
+    <!-- Estilos Reutilizables Pastelería Artesanal -->
+    <Style x:Key="CardBorder" TargetType="Border">
+        <Setter Property="Stroke" Value="{StaticResource BorderSand}" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="BackgroundColor" Value="{StaticResource SurfaceWhite}" />
+        <Setter Property="Padding" Value="20" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 16" />
+    </Style>
+
+    <Style x:Key="InputBorder" TargetType="Border">
+        <Setter Property="Stroke" Value="{StaticResource BorderInput}" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="BackgroundColor" Value="{StaticResource SurfaceSoft}" />
+        <Setter Property="HeightRequest" Value="52" />
+        <Setter Property="Padding" Value="15,0" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 12" />
+    </Style>
+
+    <Style x:Key="PrimaryButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource PrimaryBrown}" />
+        <Setter Property="TextColor" Value="{StaticResource White}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="HeightRequest" Value="48" />
+    </Style>
+
+    <Style x:Key="SecondaryButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource SurfaceWhite}" />
+        <Setter Property="TextColor" Value="{StaticResource PrimaryBrown}" />
+        <Setter Property="BorderColor" Value="{StaticResource PrimaryBrown}" />
+        <Setter Property="BorderWidth" Value="1" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="HeightRequest" Value="48" />
+    </Style>
+
+    <Style x:Key="SectionTitle" TargetType="Label">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{StaticResource DarkCocoa}" />
+    </Style>
+
+    <Style x:Key="MutedText" TargetType="Label">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="TextColor" Value="{StaticResource MutedCocoa}" />
     </Style>
 
 </ResourceDictionary>

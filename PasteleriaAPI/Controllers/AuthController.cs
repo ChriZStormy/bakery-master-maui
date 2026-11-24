@@ -72,7 +72,8 @@ namespace PasteleriaAPI.Controllers
             {
                 UserName = dto.Email,
                 Email = dto.Email,
-                Nombre = dto.Nombre
+                Nombre = dto.Nombre,
+                PhoneNumber = dto.Telefono
             };
 
             var result = await _userManager.CreateAsync(user, dto.Password);

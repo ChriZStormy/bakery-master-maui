@@ -17,9 +17,10 @@ namespace PasteleriaMaui.Views
         {
             var nombre = NombreEntry.Text;
             var email = EmailEntry.Text;
+            var telefono = TelefonoEntry.Text;
             var password = PasswordEntry.Text;
 
-            if (string.IsNullOrWhiteSpace(nombre) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(nombre) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(telefono) || string.IsNullOrWhiteSpace(password))
             {
                 await DisplayAlert("Error", "Llena todos los campos", "OK");
                 return;
@@ -39,7 +40,7 @@ namespace PasteleriaMaui.Views
                 return;
             }
 
-            var user = await _authService.RegisterAsync(nombre, email, password);
+            var user = await _authService.RegisterAsync(nombre, email, telefono, password);
             if (user != null)
             {
                 AppSession.CurrentUser = user;

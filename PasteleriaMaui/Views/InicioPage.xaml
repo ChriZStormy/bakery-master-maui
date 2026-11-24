@@ -6,14 +6,29 @@
              BackgroundColor="#F7F4EF">
     <Grid>
         <ScrollView>
-            <VerticalStackLayout Padding="20,40,20,20" Spacing="15" VerticalOptions="Center">
+            <VerticalStackLayout Padding="24,36,24,24" Spacing="14" VerticalOptions="Center" MaximumWidthRequest="720" HorizontalOptions="Center">
 
-                <Label Text="Sistema de Pasteles" 
-                       FontSize="30" 
+                <Label Text="Dolce Vita" 
+                       FontSize="34" 
                        FontAttributes="Bold" 
-                       TextColor="#3E2723" 
+                       TextColor="{StaticResource DarkCocoa}" 
                        HorizontalOptions="Center" 
-                       Margin="0,0,0,20" />
+                       Margin="0,0,0,0" />
+
+                <Label Text="Postres con amor"
+                       FontSize="14"
+                       TextColor="{StaticResource DolceGold}"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       Margin="0,0,0,4" />
+
+                <Label x:Name="SaludoUsuarioLabel"
+                       Text=""
+                       FontSize="15"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource DolceRose}"
+                       HorizontalOptions="Center"
+                       Margin="0,0,0,14" />
 
                 <!-- BOTÓN PRINCIPAL HU-03: ESTUDIO DE PERSONALIZACIÓN DE PASTELES -->
                 <Button x:Name="BotonPersonalizar" 

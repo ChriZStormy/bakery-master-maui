@@ -7,139 +7,110 @@
 
     <Grid RowDefinitions="Auto, *, Auto">
         
-        <!-- Barra de Búsqueda y Botón de Personalización -->
-        <Button Text="🎨 ¿Quieres un diseño único? Arma tu Pastel en Vivo"
-                Clicked="OnCrearPersonalizadoClicked"
-                BackgroundColor="#8B5E34"
-                TextColor="#FFFFFF"
-                FontAttributes="Bold"
-                FontSize="13"
-                HeightRequest="44"
-                CornerRadius="12"
-                Margin="20,10,20,0">
-            <Button.Shadow>
-                <Shadow Brush="#8B5E34" Offset="0,3" Radius="8" Opacity="0.18" />
-            </Button.Shadow>
-        </Button>
-        <VerticalStackLayout Padding="20,20,20,10" Grid.Row="0">
-            <Border Stroke="#EAE4DB" 
+        <!-- Header: Búsqueda + Hero Personalizar + Chips de Categorías -->
+        <VerticalStackLayout Padding="20,16,20,10" Spacing="10" Grid.Row="0">
+            <Border Stroke="{StaticResource BorderSand}" 
                     StrokeThickness="1" 
-                    BackgroundColor="#FFFFFF" 
-                    HeightRequest="50"
+                    BackgroundColor="{StaticResource SurfaceWhite}" 
+                    HeightRequest="48"
                     Padding="5,0">
                 <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="12" />
+                    <RoundRectangle CornerRadius="14" />
                 </Border.StrokeShape>
-                <SearchBar Placeholder="Buscar pastel..." 
-                           CancelButtonColor="#8B5E34" 
+                <SearchBar Text="{Binding SearchText}"
+                           Placeholder="Buscar pastel o postre..." 
+                           CancelButtonColor="{StaticResource DolceRose}" 
                            BackgroundColor="Transparent"
-                           TextColor="#3E2723"
-                           PlaceholderColor="#A1887F"
+                           TextColor="{StaticResource DarkCocoa}"
+                           PlaceholderColor="{StaticResource PlaceholderCocoa}"
                            VerticalOptions="Center"/>
             </Border>
+
+            <!-- Hero Banner Dolce Vita -->
+            <Button Text="Arma tu Pastel Personalizado en Vivo"
+                    Clicked="OnCrearPersonalizadoClicked"
+                    BackgroundColor="{StaticResource DolceRose}"
+                    TextColor="#FFFFFF"
+                    FontAttributes="Bold"
+                    FontSize="14"
+                    HeightRequest="46"
+                    CornerRadius="14" />
+
+            <!-- Filtro por Categorías (Chips horizontales) -->
+            <CollectionView ItemsSource="{Binding Categorias}"
+                            SelectedItem="{Binding CategoriaSeleccionada}"
+                            SelectionMode="Single"
+                            HeightRequest="44"
+                            Margin="0,10,0,0">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="8" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Stroke="{StaticResource BorderSand}"
+                                StrokeThickness="1"
+                                BackgroundColor="{StaticResource SurfaceWhite}"
+                                Padding="16,8">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="20" />
+                            </Border.StrokeShape>
+                            <Label Text="{Binding categoria}"
+                                   FontSize="13"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource DarkCocoa}"
+                                   VerticalOptions="Center" />
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </VerticalStackLayout>
 
-        <!-- Lista de Pasteles (Bindings intactos) -->
+        <!-- Lista de Pasteles en Grid de 4 tarjetas cuadradas por línea -->
         <CollectionView ItemsSource="{Binding Pasteles}" Grid.Row="1" Margin="20,5,20,0">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="4" HorizontalItemSpacing="14" VerticalItemSpacing="14" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.EmptyView>
+                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Padding="30" Spacing="10">
+                    <Label Text="🍰" FontSize="42" HorizontalOptions="Center" />
+                    <Label Text="Próximamente más productos en esta sección"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="#795548"
+                           HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     
-                    <!-- Tarjeta de cada Pastel -->
-                    <Border Stroke="#EAE4DB" 
-                            StrokeThickness="1" 
-                            BackgroundColor="#FFFFFF" 
-                            Padding="20"
-                            Margin="0,0,0,15">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="16" />
-                        </Border.StrokeShape>
-                        <Border.Shadow>
-                            <Shadow Brush="#8B5E34" Offset="0,4" Radius="12" Opacity="0.06" />
-                        </Border.Shadow>
-
-                        <Grid ColumnDefinitions="90, *, Auto" ColumnSpacing="15" VerticalOptions="Center">
-                            
-                            <!-- Imagen del Pastel -->
-                            <Border Grid.Column="0" 
-                                    StrokeThickness="0"
-                                    BackgroundColor="#FAF8F5"
-                                    HeightRequest="90" 
-                                    WidthRequest="90">
+                    <!-- Tarjeta cuadrada de cada Pastel -->
+                    <Border Style="{StaticResource CardBorder}" Padding="12">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.VerDetalleCommand}"
+                                                  CommandParameter="{Binding .}" />
+                        </Border.GestureRecognizers>
+                        <VerticalStackLayout Spacing="8">
+                            <Border StrokeThickness="0" BackgroundColor="{StaticResource SurfaceSoft}" HeightRequest="150">
                                 <Border.StrokeShape>
-                                    <RoundRectangle CornerRadius="14" />
+                                    <RoundRectangle CornerRadius="12" />
                                 </Border.StrokeShape>
-                                <Border.Shadow>
-                                    <Shadow Brush="#8B5E34" Offset="0,2" Radius="6" Opacity="0.08" />
-                                </Border.Shadow>
                                 <Grid>
-                                    <!-- Placeholder (siempre visible detrás) -->
                                     <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
-                                        <Label Text="🎂" FontSize="28" HorizontalOptions="Center" />
-                                        <Label Text="Sin foto" FontSize="10" TextColor="#BCAAA4" HorizontalOptions="Center" />
+                                        <Label Text="🎂" FontSize="32" HorizontalOptions="Center" />
+                                        <Label Text="Sin foto" FontSize="11" TextColor="{StaticResource PlaceholderCocoa}" HorizontalOptions="Center" />
                                     </VerticalStackLayout>
-                                    <!-- Imagen real (se superpone si carga bien) -->
-                                    <Image Source="{Binding FotoUrl}" 
-                                           Aspect="AspectFill" 
-                                           HeightRequest="90" 
-                                           WidthRequest="90" />
-                                    <!-- Botón Expandir ⇱ -->
-                                    <Border BackgroundColor="#CC8B5E34" 
-                                            StrokeThickness="0"
-                                            HeightRequest="26" 
-                                            WidthRequest="26" 
-                                            HorizontalOptions="End" 
-                                            VerticalOptions="Start" 
-                                            Margin="0,4,4,0">
-                                        <Border.StrokeShape>
-                                            <RoundRectangle CornerRadius="7" />
-                                        </Border.StrokeShape>
-                                        <Label Text="⇱" 
-                                               FontSize="14" 
-                                               TextColor="White" 
-                                               HorizontalOptions="Center" 
-                                               VerticalOptions="Center" />
-                                        <Border.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="OnExpandImageTapped" CommandParameter="{Binding FotoUrl}" />
-                                        </Border.GestureRecognizers>
-                                    </Border>
+                                    <Image Source="{Binding FotoUrl}" Aspect="AspectFill" HeightRequest="150" />
                                 </Grid>
                             </Border>
 
-                            <!-- Información del Pastel -->
-                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="4">
-                                <Label Text="{Binding Nombre}" 
-                                       FontSize="17" 
-                                       FontAttributes="Bold"
-                                       TextColor="#3E2723"
-                                       LineBreakMode="TailTruncation" />
-                                       
-                                <Label Text="{Binding Tamanio, StringFormat='Tamaño: {0}'}" 
-                                       FontSize="13" 
-                                       TextColor="#795548" />
-                                       
-                                <Label Text="{Binding Bizcocho.Nombre, StringFormat='Bizcocho: {0}'}" 
-                                       FontSize="13" 
-                                       TextColor="#A1887F" />
-                                       
-                                <Label Text="{Binding Relleno.Nombre, StringFormat='Relleno: {0}'}" 
-                                       FontSize="13" 
-                                       TextColor="#A1887F" />
-                            </VerticalStackLayout>
+                            <Label Text="{Binding Nombre}" FontSize="15" FontAttributes="Bold" TextColor="{StaticResource DarkCocoa}" LineBreakMode="TailTruncation" />
+                            <Label Text="{Binding PrecioBaseFormateado}" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource DolceGold}" />
 
-                            <!-- Botón de Acción -->
-                            <Button Grid.Column="2" 
-                                    Text="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.BotonAccionTexto}" 
-                                    HeightRequest="40" 
-                                    Padding="20,0" 
-                                    BackgroundColor="#8B5E34" 
-                                    TextColor="#FFFFFF"
-                                    FontAttributes="Bold"
-                                    FontSize="13"
-                                    CornerRadius="20"
-                                    VerticalOptions="Center"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.VerDetalleCommand}"
+                            <Button Text="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.BotonAccionTexto}" 
+                                    HeightRequest="38" BackgroundColor="{StaticResource DolceRose}" TextColor="#FFFFFF" FontAttributes="Bold" FontSize="13" CornerRadius="10"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.VerDetalleCommand}" 
                                     CommandParameter="{Binding .}" />
-                        </Grid>
+                        </VerticalStackLayout>
                     </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

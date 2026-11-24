@@ -81,47 +81,56 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- 1. SELECTOR VISUAL DE BIZCOCHOS (COLLECTIONVIEW HORIZONTAL) -->
-            <VerticalStackLayout Spacing="8">
-                <Label Text="🍰 1. Elige tu Bizcocho (Base)" FontSize="15" FontAttributes="Bold" TextColor="#3E2723" Margin="4,0,0,0"/>
+            <!-- 1. SELECTOR VISUAL DE BIZCOCHOS -->
+            <VerticalStackLayout Spacing="10">
+                <HorizontalStackLayout Spacing="10" VerticalOptions="Center" Margin="4,0,0,0">
+                    <Border BackgroundColor="{StaticResource DolceGold}" StrokeThickness="0" WidthRequest="26" HeightRequest="26">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="13" /></Border.StrokeShape>
+                        <Label Text="1" FontSize="13" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" />
+                    </Border>
+                    <Label Text="Elige tu Bizcocho (Base)" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource DarkCocoa}" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
                 <CollectionView ItemsSource="{Binding Bizcochos}"
                                 SelectedItem="{Binding BizcochoSeleccionado, Mode=TwoWay}"
                                 SelectionMode="Single"
-                                HeightRequest="150">
+                                HeightRequest="165">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Horizontal" ItemSpacing="12" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:CatBizcocho">
-                            <Border Stroke="#EAE4DB" 
+                            <Border Stroke="{StaticResource BorderSand}" 
                                     StrokeThickness="1.5" 
-                                    BackgroundColor="#FFFFFF" 
-                                    WidthRequest="115" 
-                                    HeightRequest="145" 
-                                    Padding="8">
+                                    BackgroundColor="{StaticResource SurfaceWhite}" 
+                                    WidthRequest="130" 
+                                    HeightRequest="155" 
+                                    Padding="10">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="16" />
                                 </Border.StrokeShape>
-                                <Border.Shadow>
-                                    <Shadow Brush="#8B5E34" Offset="0,3" Radius="6" Opacity="0.08" />
-                                </Border.Shadow>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup Name="CommonStates">
+                                        <VisualState Name="Normal" />
+                                        <VisualState Name="Selected">
+                                            <VisualState.Setters>
+                                                <Setter Property="Stroke" Value="{StaticResource DolceRose}" />
+                                                <Setter Property="StrokeThickness" Value="2.5" />
+                                                <Setter Property="BackgroundColor" Value="#FFF5F5" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:PedidoPersonalizadoViewModel}}, Path=SeleccionarBizcochoCommand}"
                                                           CommandParameter="{Binding .}" />
                                 </Border.GestureRecognizers>
                                 <VerticalStackLayout Spacing="6" VerticalOptions="Center" HorizontalOptions="Center">
-                                    <Image Source="{Binding ImagenUrl}" 
-                                           WidthRequest="75" 
-                                           HeightRequest="75" 
-                                           Aspect="AspectFit" 
-                                           HorizontalOptions="Center"/>
-                                    <Label Text="{Binding Nombre}" 
-                                           FontSize="12" 
-                                           FontAttributes="Bold" 
-                                           TextColor="#3E2723" 
-                                           HorizontalTextAlignment="Center" 
-                                           MaxLines="2" 
-                                           LineBreakMode="TailTruncation"/>
+                                    <Border BackgroundColor="{StaticResource SurfaceSoft}" StrokeThickness="0" HeightRequest="84" WidthRequest="106" Padding="4">
+                                        <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                                        <Image Source="{Binding ImagenUrl}" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    </Border>
+                                    <Label Text="{Binding Nombre}" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource DarkCocoa}" HorizontalTextAlignment="Center" MaxLines="1" LineBreakMode="TailTruncation"/>
+                                    <Label Text="{Binding CostoAdicional, StringFormat='+${0:N2}'}" FontSize="11" FontAttributes="Bold" TextColor="{StaticResource DolceGold}" HorizontalTextAlignment="Center"/>
                                 </VerticalStackLayout>
                             </Border>
                         </DataTemplate>
@@ -129,47 +138,56 @@
                 </CollectionView>
             </VerticalStackLayout>
 
-            <!-- 2. SELECTOR VISUAL DE RELLENOS (COLLECTIONVIEW HORIZONTAL) -->
-            <VerticalStackLayout Spacing="8">
-                <Label Text="🍓 2. Elige tu Relleno (Medio)" FontSize="15" FontAttributes="Bold" TextColor="#3E2723" Margin="4,0,0,0"/>
+            <!-- 2. SELECTOR VISUAL DE RELLENOS -->
+            <VerticalStackLayout Spacing="10">
+                <HorizontalStackLayout Spacing="10" VerticalOptions="Center" Margin="4,0,0,0">
+                    <Border BackgroundColor="{StaticResource DolceGold}" StrokeThickness="0" WidthRequest="26" HeightRequest="26">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="13" /></Border.StrokeShape>
+                        <Label Text="2" FontSize="13" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" />
+                    </Border>
+                    <Label Text="Elige tu Relleno (Medio)" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource DarkCocoa}" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
                 <CollectionView ItemsSource="{Binding Rellenos}"
                                 SelectedItem="{Binding RellenoSeleccionado, Mode=TwoWay}"
                                 SelectionMode="Single"
-                                HeightRequest="150">
+                                HeightRequest="165">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Horizontal" ItemSpacing="12" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:CatRelleno">
-                            <Border Stroke="#EAE4DB" 
+                            <Border Stroke="{StaticResource BorderSand}" 
                                     StrokeThickness="1.5" 
-                                    BackgroundColor="#FFFFFF" 
-                                    WidthRequest="115" 
-                                    HeightRequest="145" 
-                                    Padding="8">
+                                    BackgroundColor="{StaticResource SurfaceWhite}" 
+                                    WidthRequest="130" 
+                                    HeightRequest="155" 
+                                    Padding="10">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="16" />
                                 </Border.StrokeShape>
-                                <Border.Shadow>
-                                    <Shadow Brush="#8B5E34" Offset="0,3" Radius="6" Opacity="0.08" />
-                                </Border.Shadow>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup Name="CommonStates">
+                                        <VisualState Name="Normal" />
+                                        <VisualState Name="Selected">
+                                            <VisualState.Setters>
+                                                <Setter Property="Stroke" Value="{StaticResource DolceRose}" />
+                                                <Setter Property="StrokeThickness" Value="2.5" />
+                                                <Setter Property="BackgroundColor" Value="#FFF5F5" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:PedidoPersonalizadoViewModel}}, Path=SeleccionarRellenoCommand}"
                                                           CommandParameter="{Binding .}" />
                                 </Border.GestureRecognizers>
                                 <VerticalStackLayout Spacing="6" VerticalOptions="Center" HorizontalOptions="Center">
-                                    <Image Source="{Binding ImagenUrl}" 
-                                           WidthRequest="75" 
-                                           HeightRequest="75" 
-                                           Aspect="AspectFit" 
-                                           HorizontalOptions="Center"/>
-                                    <Label Text="{Binding Nombre}" 
-                                           FontSize="12" 
-                                           FontAttributes="Bold" 
-                                           TextColor="#3E2723" 
-                                           HorizontalTextAlignment="Center" 
-                                           MaxLines="2" 
-                                           LineBreakMode="TailTruncation"/>
+                                    <Border BackgroundColor="{StaticResource SurfaceSoft}" StrokeThickness="0" HeightRequest="84" WidthRequest="106" Padding="4">
+                                        <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                                        <Image Source="{Binding ImagenUrl}" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    </Border>
+                                    <Label Text="{Binding Nombre}" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource DarkCocoa}" HorizontalTextAlignment="Center" MaxLines="1" LineBreakMode="TailTruncation"/>
+                                    <Label Text="{Binding CostoAdicional, StringFormat='+${0:N2}'}" FontSize="11" FontAttributes="Bold" TextColor="{StaticResource DolceGold}" HorizontalTextAlignment="Center"/>
                                 </VerticalStackLayout>
                             </Border>
                         </DataTemplate>
@@ -177,47 +195,56 @@
                 </CollectionView>
             </VerticalStackLayout>
 
-            <!-- 3. SELECTOR VISUAL DE GLASEADOS (COLLECTIONVIEW HORIZONTAL) -->
-            <VerticalStackLayout Spacing="8">
-                <Label Text="🧁 3. Elige tu Glaseado o Cobertura (Corona)" FontSize="15" FontAttributes="Bold" TextColor="#3E2723" Margin="4,0,0,0"/>
+            <!-- 3. SELECTOR VISUAL DE GLASEADOS -->
+            <VerticalStackLayout Spacing="10">
+                <HorizontalStackLayout Spacing="10" VerticalOptions="Center" Margin="4,0,0,0">
+                    <Border BackgroundColor="{StaticResource DolceGold}" StrokeThickness="0" WidthRequest="26" HeightRequest="26">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="13" /></Border.StrokeShape>
+                        <Label Text="3" FontSize="13" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" />
+                    </Border>
+                    <Label Text="Elige tu Glaseado o Cobertura (Corona)" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource DarkCocoa}" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
                 <CollectionView ItemsSource="{Binding Glaseados}"
                                 SelectedItem="{Binding GlaseadoSeleccionado, Mode=TwoWay}"
                                 SelectionMode="Single"
-                                HeightRequest="150">
+                                HeightRequest="165">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Horizontal" ItemSpacing="12" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:CatGlaseado">
-                            <Border Stroke="#EAE4DB" 
+                            <Border Stroke="{StaticResource BorderSand}" 
                                     StrokeThickness="1.5" 
-                                    BackgroundColor="#FFFFFF" 
-                                    WidthRequest="115" 
-                                    HeightRequest="145" 
-                                    Padding="8">
+                                    BackgroundColor="{StaticResource SurfaceWhite}" 
+                                    WidthRequest="130" 
+                                    HeightRequest="155" 
+                                    Padding="10">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="16" />
                                 </Border.StrokeShape>
-                                <Border.Shadow>
-                                    <Shadow Brush="#8B5E34" Offset="0,3" Radius="6" Opacity="0.08" />
-                                </Border.Shadow>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup Name="CommonStates">
+                                        <VisualState Name="Normal" />
+                                        <VisualState Name="Selected">
+                                            <VisualState.Setters>
+                                                <Setter Property="Stroke" Value="{StaticResource DolceRose}" />
+                                                <Setter Property="StrokeThickness" Value="2.5" />
+                                                <Setter Property="BackgroundColor" Value="#FFF5F5" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:PedidoPersonalizadoViewModel}}, Path=SeleccionarGlaseadoCommand}"
                                                           CommandParameter="{Binding .}" />
                                 </Border.GestureRecognizers>
                                 <VerticalStackLayout Spacing="6" VerticalOptions="Center" HorizontalOptions="Center">
-                                    <Image Source="{Binding ImagenUrl}" 
-                                           WidthRequest="75" 
-                                           HeightRequest="75" 
-                                           Aspect="AspectFit" 
-                                           HorizontalOptions="Center"/>
-                                    <Label Text="{Binding Nombre}" 
-                                           FontSize="12" 
-                                           FontAttributes="Bold" 
-                                           TextColor="#3E2723" 
-                                           HorizontalTextAlignment="Center" 
-                                           MaxLines="2" 
-                                           LineBreakMode="TailTruncation"/>
+                                    <Border BackgroundColor="{StaticResource SurfaceSoft}" StrokeThickness="0" HeightRequest="84" WidthRequest="106" Padding="4">
+                                        <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                                        <Image Source="{Binding ImagenUrl}" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    </Border>
+                                    <Label Text="{Binding Nombre}" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource DarkCocoa}" HorizontalTextAlignment="Center" MaxLines="1" LineBreakMode="TailTruncation"/>
+                                    <Label Text="{Binding CostoAdicional, StringFormat='+${0:N2}'}" FontSize="11" FontAttributes="Bold" TextColor="{StaticResource DolceGold}" HorizontalTextAlignment="Center"/>
                                 </VerticalStackLayout>
                             </Border>
                         </DataTemplate>
@@ -320,7 +347,7 @@
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
                         <VerticalStackLayout Spacing="6" Grid.Column="0">
                             <Label Text="Tamaño" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
-                            <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="50" Padding="12,0">
+                            <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" MinimumHeightRequest="58" Padding="12,4">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="12" />
                                 </Border.StrokeShape>
@@ -337,7 +364,7 @@
 
                         <VerticalStackLayout Spacing="6" Grid.Column="1">
                             <Label Text="Categoría" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
-                            <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="50" Padding="12,0">
+                            <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" MinimumHeightRequest="58" Padding="12,4">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="12" />
                                 </Border.StrokeShape>
@@ -357,7 +384,7 @@
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
                         <VerticalStackLayout Spacing="6" Grid.Column="0">
                             <Label Text="Fecha de Entrega" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
-                            <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="50" Padding="12,0">
+                            <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" MinimumHeightRequest="58" Padding="12,4">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="12" />
                                 </Border.StrokeShape>
@@ -367,7 +394,7 @@
 
                         <VerticalStackLayout Spacing="6" Grid.Column="1">
                             <Label Text="Cantidad" FontSize="14" FontAttributes="Bold" TextColor="#5D4037" Margin="4,0,0,0" />
-                            <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" HeightRequest="50" Padding="12,0">
+                            <Border Stroke="#E0D7CD" StrokeThickness="1" BackgroundColor="#FAF8F5" MinimumHeightRequest="58" Padding="12,4">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="12" />
                                 </Border.StrokeShape>

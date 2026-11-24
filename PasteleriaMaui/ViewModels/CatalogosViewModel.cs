@@ -79,14 +79,21 @@ namespace PasteleriaMaui.ViewModels
             string result = await Application.Current.MainPage.DisplayPromptAsync($"Nuevo(a) {TabActual}", "Escribe el nombre:");
             if (!string.IsNullOrWhiteSpace(result))
             {
+                decimal costo = 0m;
+                if (TabActual != "Categorías")
+                {
+                    string costoStr = await Application.Current.MainPage.DisplayPromptAsync("Costo adicional", "Ingresa el costo adicional (ej. 50):", initialValue: "0", keyboard: Keyboard.Numeric);
+                    decimal.TryParse(costoStr, out costo);
+                }
+
                 if (TabActual == "Categorías")
                     await _apiService.RegistrarCategoriaAsync(new CatCategoria { categoria = result });
                 else if (TabActual == "Bizcochos")
-                    await _apiService.RegistrarBizcochoAsync(new CatBizcocho { Nombre = result });
+                    await _apiService.RegistrarBizcochoAsync(new CatBizcocho { Nombre = result, CostoAdicional = costo, Activo = true, Agotado = false });
                 else if (TabActual == "Rellenos")
-                    await _apiService.RegistrarRellenoAsync(new CatRelleno { Nombre = result });
+                    await _apiService.RegistrarRellenoAsync(new CatRelleno { Nombre = result, CostoAdicional = costo, Activo = true, Agotado = false });
                 else if (TabActual == "Glaseados")
-                    await _apiService.RegistrarGlaseadoAsync(new CatGlaseado { Nombre = result });
+                    await _apiService.RegistrarGlaseadoAsync(new CatGlaseado { Nombre = result, CostoAdicional = costo, Activo = true, Agotado = false });
                 
                 await CargarDatos();
             }

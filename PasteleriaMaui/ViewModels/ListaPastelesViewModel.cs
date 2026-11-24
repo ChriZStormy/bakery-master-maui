@@ -11,13 +11,47 @@ namespace PasteleriaMaui.ViewModels
     public class ListaPastelesViewModel : INotifyPropertyChanged
     {
         private readonly PastelApiService _apiService;
+        private List<Pastel> _todosLosPasteles = new();
         private ObservableCollection<Pastel> _pasteles;
+        private ObservableCollection<CatCategoria> _categorias = new();
+        private CatCategoria? _categoriaSeleccionada;
+        private string _searchText = string.Empty;
 
         public ObservableCollection<Pastel> Pasteles
         {
             get => _pasteles;
-            set { _pasteles = value; OnPropertyChanged(); }
+            set { _pasteles = value; OnPropertyChanged(); OnPropertyChanged(nameof(MostrarMensajeVacio)); }
         }
+
+        public ObservableCollection<CatCategoria> Categorias
+        {
+            get => _categorias;
+            set { _categorias = value; OnPropertyChanged(); }
+        }
+
+        public CatCategoria? CategoriaSeleccionada
+        {
+            get => _categoriaSeleccionada;
+            set
+            {
+                _categoriaSeleccionada = value;
+                OnPropertyChanged();
+                AplicarFiltros();
+            }
+        }
+
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                _searchText = value;
+                OnPropertyChanged();
+                AplicarFiltros();
+            }
+        }
+
+        public bool MostrarMensajeVacio => Pasteles == null || Pasteles.Count == 0;
 
         public ICommand CargarPastelesCommand { get; }
         public ICommand VerDetalleCommand { get; }
@@ -39,16 +73,42 @@ namespace PasteleriaMaui.ViewModels
 
         public async Task CargarPasteles()
         {
+            // Cargar categorías si aún no están cargadas
+            if (Categorias.Count == 0)
+            {
+                var cats = await _apiService.GetCategoriasAsync();
+                Categorias.Clear();
+                Categorias.Add(new CatCategoria { Id = 0, categoria = "Todas" });
+                foreach (var c in cats) Categorias.Add(c);
+                _categoriaSeleccionada = Categorias.FirstOrDefault();
+                OnPropertyChanged(nameof(CategoriaSeleccionada));
+            }
+
             // Filtro por rol: Si es cliente, solo solicitar y cargar pasteles activos
             bool soloActivos = !IsAdmin;
             var pastelesApi = await _apiService.GetPastelesAsync(soloActivos);
-            Pasteles.Clear();
-            foreach (var v in pastelesApi)
+            _todosLosPasteles = pastelesApi.Where(v => IsAdmin || v.Activo).ToList();
+            AplicarFiltros();
+        }
+
+        private void AplicarFiltros()
+        {
+            var filtrados = _todosLosPasteles.AsEnumerable();
+            if (CategoriaSeleccionada != null && CategoriaSeleccionada.Id != 0)
             {
-                // Seguridad adicional del lado cliente: Si no es Admin, nunca mostrar dados de baja
-                if (!IsAdmin && !v.Activo) continue;
+                filtrados = filtrados.Where(p => p.CategoriaId == CategoriaSeleccionada.Id);
+            }
+            if (!string.IsNullOrWhiteSpace(SearchText))
+            {
+                filtrados = filtrados.Where(p => p.Nombre.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
+            }
+
+            Pasteles.Clear();
+            foreach (var v in filtrados)
+            {
                 Pasteles.Add(v);
             }
+            OnPropertyChanged(nameof(MostrarMensajeVacio));
         }
 
         private async Task RegistrarNuevo()

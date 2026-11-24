@@ -41,4 +41,20 @@
     <SolidColorBrush x:Key="Gray600Brush" Color="{StaticResource Gray600}"/>
     <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}"/>
     <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}"/>
+
+    <!-- Design Tokens Dolce Vita (Postres con amor) -->
+    <Color x:Key="DolceGold">#C9A959</Color>
+    <Color x:Key="DolceRose">#D97878</Color>
+    <Color x:Key="BgCream">#FAF8F5</Color>
+    <Color x:Key="SurfaceWhite">#FFFFFF</Color>
+    <Color x:Key="SurfaceSoft">#F7F4EF</Color>
+    <Color x:Key="PrimaryBrown">#D97878</Color>
+    <Color x:Key="DarkCocoa">#2D241E</Color>
+    <Color x:Key="MediumCocoa">#5D4037</Color>
+    <Color x:Key="MutedCocoa">#8C7A6B</Color>
+    <Color x:Key="PlaceholderCocoa">#A1887F</Color>
+    <Color x:Key="BorderSand">#EAE4DB</Color>
+    <Color x:Key="BorderInput">#D7CCC8</Color>
+    <Color x:Key="DangerRed">#D32F2F</Color>
+    <Color x:Key="SuccessGreen">#2E7D32</Color>
 </ResourceDictionary>

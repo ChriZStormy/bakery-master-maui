@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PasteleriaMaui.Views.CarritoPage"
+             Title="Mi Carrito"
+             BackgroundColor="#F7F4EF">
+    <Grid RowDefinitions="*, Auto" Padding="20">
+        <CollectionView x:Name="CarritoCollection" Grid.Row="0">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="10">
+                    <Label Text="🛒" FontSize="48" HorizontalOptions="Center" />
+                    <Label Text="Tu carrito está vacío" FontSize="18" FontAttributes="Bold" TextColor="#5D4037" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Style="{StaticResource CardBorder}" Padding="15" Margin="0,0,0,10">
+                        <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto" RowSpacing="6">
+                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Pastel.Nombre}" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource DarkCocoa}" />
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding SubtotalFormateado}" FontSize="15" FontAttributes="Bold" TextColor="{StaticResource PrimaryBrown}" />
+                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding Porciones, StringFormat='Porciones: {0}'}" FontSize="13" TextColor="{StaticResource MutedCocoa}" />
+                            <HorizontalStackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Spacing="10" Margin="0,4,0,0">
+                                <Button Text="-" WidthRequest="44" HeightRequest="44" Padding="0" BackgroundColor="{StaticResource SurfaceSoft}" TextColor="{StaticResource DarkCocoa}" Clicked="OnRestarCantidadClicked" CommandParameter="{Binding .}" />
+                                <Label Text="{Binding Cantidad}" FontSize="15" FontAttributes="Bold" TextColor="{StaticResource DarkCocoa}" VerticalOptions="Center" />
+                                <Button Text="+" WidthRequest="44" HeightRequest="44" Padding="0" BackgroundColor="{StaticResource SurfaceSoft}" TextColor="{StaticResource DarkCocoa}" Clicked="OnSumarCantidadClicked" CommandParameter="{Binding .}" />
+                                <Button Text="Eliminar" HeightRequest="44" BackgroundColor="#FFF0F0" TextColor="{StaticResource DangerRed}" Clicked="OnEliminarItemClicked" CommandParameter="{Binding .}" />
+                            </HorizontalStackLayout>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <VerticalStackLayout Grid.Row="1" Spacing="10" Padding="0,10,0,0">
+            <Label x:Name="TotalLabel" Text="Total: $0.00 MXN" FontSize="18" FontAttributes="Bold" TextColor="#3E2723" HorizontalOptions="End" />
+            <Button Text="Confirmar Pedido" BackgroundColor="#8B5E34" TextColor="White" FontAttributes="Bold" CornerRadius="12" HeightRequest="50" Clicked="OnConfirmarPedidoClicked" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

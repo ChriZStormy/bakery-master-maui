@@ -19,37 +19,49 @@ namespace PasteleriaMaui.Views
 
         private void ActualizarVistaPorRol()
         {
+            if (AppSession.CurrentUser != null)
+            {
+                SaludoUsuarioLabel.Text = $"Bienvenido(a), {AppSession.CurrentUser.Nombre}";
+            }
+
             if (AppSession.CurrentUser != null && AppSession.CurrentUser.Rol == "Cliente")
             {
+                BotonPersonalizar.IsVisible = true;
                 BotonCatalogos.IsVisible = false;
                 BotonUsuarios.IsVisible = false;
                 BotonComandas.IsVisible = false;
                 BotonReporteEntregas.IsVisible = false;
                 BotonMermas.IsVisible = true;
                 BotonMermas.Text = "Reclamos";
-                BotonGestiones.Text = "Menú de Pasteles";
+                BotonGestiones.IsVisible = true;
+                BotonGestiones.Text = "Catálogo de Pasteles";
+                BotonPedidos.IsVisible = true;
                 BotonPedidos.Text = "Mis Pedidos";
             }
             else if (AppSession.CurrentUser != null && (AppSession.CurrentUser.Rol == "Repostero" || AppSession.CurrentUser.Rol == "Empleado"))
             {
+                BotonPersonalizar.IsVisible = false;
                 BotonCatalogos.IsVisible = false;
                 BotonUsuarios.IsVisible = false;
                 BotonComandas.IsVisible = true;
                 BotonReporteEntregas.IsVisible = false;
                 BotonMermas.IsVisible = true;
                 BotonMermas.Text = "Registro de Mermas";
-                BotonGestiones.Text = "Gestión de Pasteles";
-                BotonPedidos.Text = "Historial de Pedidos";
+                BotonGestiones.IsVisible = false;
+                BotonPedidos.IsVisible = false;
             }
             else
             {
+                BotonPersonalizar.IsVisible = true;
                 BotonCatalogos.IsVisible = true;
                 BotonUsuarios.IsVisible = true;
                 BotonComandas.IsVisible = true;
                 BotonReporteEntregas.IsVisible = true;
                 BotonMermas.IsVisible = true;
                 BotonMermas.Text = "Control y Reportes de Mermas";
+                BotonGestiones.IsVisible = true;
                 BotonGestiones.Text = "Gestión de Pasteles";
+                BotonPedidos.IsVisible = true;
                 BotonPedidos.Text = "Pedidos";
             }
         }

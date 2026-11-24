@@ -72,6 +72,24 @@
                                VerticalOptions="Center" />
                     </Border>
 
+                    <!-- Contenedor del Teléfono -->
+                    <Border Stroke="#D7CCC8" 
+                            StrokeThickness="1" 
+                            BackgroundColor="#FAF8F5" 
+                            HeightRequest="52"
+                            Padding="15,0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Entry x:Name="TelefonoEntry" 
+                               Placeholder="Teléfono (10 dígitos)" 
+                               Keyboard="Telephone" 
+                               BackgroundColor="Transparent" 
+                               TextColor="#3E2723" 
+                               PlaceholderColor="#A1887F"
+                               VerticalOptions="Center" />
+                    </Border>
+
                     <!-- Contenedor de la Contraseña y Botón de ver -->
                     <Border Stroke="#D7CCC8" 
                             StrokeThickness="1" 
